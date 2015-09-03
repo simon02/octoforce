@@ -1,5 +1,8 @@
 class Identity < ActiveRecord::Base
   belongs_to :user
+  has_many :content_items, dependent: :nullify
+  has_many :schedules, dependent: :nullify
+  after_save :setup
   validates_presence_of :uid, :provider
   validates_uniqueness_of :uid, :scope => :provider
 
@@ -18,4 +21,32 @@ class Identity < ActiveRecord::Base
     identity.save
     identity
   end
+
+  def client
+    return @client if @client
+    case self.provider
+    when 'facebook'
+      @client = Facebook.client(accesstoken: self.accesstoken)
+    when 'github'
+      @client = Github.client(accesstoken: self.accesstoken)
+    when 'google'
+      @client = GoogleAppsClient.client(accesstoken: self)
+    when 'instagram'
+      @client = Instagram.client(accesstoken: self.accesstoken)
+    when 'twitter'
+      @client = Twitter::REST::Client.new do |config|
+        config.consumer_key        = ENV['TWITTER_APP_ID']
+        config.consumer_secret     = ENV['TWITTER_APP_SECRET']
+        config.access_token        = twitter.accesstoken
+        config.access_token_secret = twitter.secrettoken
+      end
+    end
+  end
+
+  private
+
+  def setup
+    self.schedules.create name: "Schedule for #{self.nickname}", user: self.user
+  end
+
 end

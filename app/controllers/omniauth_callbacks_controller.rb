@@ -13,8 +13,6 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
 
-
-
   def generic_callback( provider )
     @identity = Identity.find_for_oauth env["omniauth.auth"]
 

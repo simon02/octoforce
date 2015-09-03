@@ -1,0 +1,31 @@
+.container
+  .row
+    .center_panel
+      %p= "You currently have #{@schedules.count} schedules"
+
+      - @schedules.each do |schedule|
+
+        .panel.panel-default
+          .panel-heading
+            = "Schedule: #{schedule.name}"
+
+          .panel-body
+            - schedule.timeslots.group_by { |slot| slot.day }.sort.each do |day, timeslots|
+              %p
+                %strong= "#{Date::DAYNAMES[day]}"
+              - timeslots.sort_by(&:offset).each do |timeslot|
+                %p
+                  = "#{offset_to_time(timeslot.offset)} from"
+                  = link_to(timeslot.list.name, list_path(timeslot.list)) if timeslot.list
+
+        .panel.panel-default
+          .panel-heading
+            Add new timeslot
+
+          .panel-body
+            = form_for @timeslot, url: schedule_add_timeslot_url(schedule) do |f|
+              = f.hidden_field :schedule_id, value: schedule.id
+              = f.select :day, day_options
+              = f.text_field :offset, placeholder: "Enter scheduling time"
+              = f.select :list_id, list_options
+              = f.submit "Add timeslot"

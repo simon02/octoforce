@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   namespace :admin do
     # get "/stats" => "stats#stats"
@@ -11,6 +13,21 @@ Rails.application.routes.draw do
   devise_for :users, class_name: 'FormUser', :controllers => { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations' }
   root 'setup#index'
   get '/setup' => 'setup#index'
+
+  mount Sidekiq::Web, at: '/sidekiq'
+
+  resources :schedules, only: :index do
+    post '/add_timeslot' => 'schedules#add_timeslot'
+  end
+  resources :lists do
+    post '/add_post' => 'lists#add_post'
+    post '/batch_add_post' => 'lists#batch_add_post'
+    post '/remove_post/:post_id' => 'lists#remove_post'
+  end
+  get '/queue' => 'queue#index'
+  get '/queue/reschedule' => 'queue#reschedule'
+  get '/history' => 'history#index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -1,0 +1,22 @@
+.container
+  .row
+    .center_panel
+
+      = link_to "Reschedule queue", queue_reschedule_path
+
+      .panel.panel-default.only
+        .panel-heading
+          = "Your Queue"
+
+        .panel-body
+          - @updates.each do |update|
+            %p
+              %strong= update.scheduled_at.strftime("%a %-d %B %Y at %l:%M%p")
+              %br
+              = update.text
+              - if update.has_media?
+                %br
+                = image_tag update.media_url(:thumb)
+              %br
+              - if update.timeslot && update.timeslot.list
+                = link_to "from #{update.timeslot.list.name}", list_path(update.timeslot.list)

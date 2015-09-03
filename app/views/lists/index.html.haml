@@ -1,0 +1,20 @@
+.container
+  .row
+    .center_panel
+
+      .panel.panel-default.only
+        .panel-heading
+          = "Your lists"
+
+        .panel-body
+          - @lists.each do |list|
+            %p= link_to "#{list.name} contains #{list.posts.count} posts", list_path(list)
+
+      .panel.panel-default.only
+        .panel-heading
+          Create a new list
+
+        .panel-body
+          = form_for @list, url: lists_path do |f|
+            = f.text_field :name
+            = f.submit "Create new list"

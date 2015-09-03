@@ -66,15 +66,10 @@ group :test do
   gem 'webmock'
 end
 
-group :production do
-  gem 'pg'
-end
-
 gem 'happy_seed'
 gem 'puma'
 gem 'rails_12factor'
 group :development, :test do
-  gem 'sqlite3'
   gem 'dotenv-rails'
   gem 'rdiscount'
 end
@@ -83,8 +78,15 @@ group :test do
 end
 
 group :production do
+  gem 'rmagick'
 end
 
+gem 'pg'
+gem 'sinatra'
+gem 'sidekiq'
+gem 'paperclip', "~> 4.3"
+gem 'aws-sdk', '~> 1.6'
+gem 'bitly'
 gem 'jazz_hands', github: 'danrabinowitz/jazz_hands', branch: 'use-newer-version-of-pry', groups: [:development, :test]
 gem 'bootstrap-sass'
 gem 'modernizr-rails'
