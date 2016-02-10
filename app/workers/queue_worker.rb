@@ -3,7 +3,7 @@ class QueueWorker
 
   def perform schedule_id
     schedule = Schedule.find(schedule_id)
-    schedule.reschedule(2) if schedule.outdated?
+    schedule.reschedule(2) if schedule.outdated? && schedule.identity
   end
 
 end

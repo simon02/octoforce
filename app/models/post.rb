@@ -1,44 +1,56 @@
 class Post < ActiveRecord::Base
   belongs_to :user
   belongs_to :list
-  belongs_to :next, class_name: "Post", foreign_key: "next_id"
-  has_many :content_items, dependent: :nullify
+  belongs_to :asset
+  has_many :updates
   before_save :check_position
+  after_save :update_updates
 
   def previous
     Post.where(next_id: self.id).first
   end
 
   def providers
-    content_items.map(&:identity).delete_if &:nil?
-  end
-
-  def content_item_for_identity identity
-    content_items.where(identity: identity).first
+    []
   end
 
   def text_for_identity identity
-    content_item = content_items.where(identity: identity).first
-    content_item ? content_item.text : ""
-  end
-
-  def text
-    content_items.first.text
+    text
   end
 
   def has_media?
-    !content_items.first.asset.nil?
+    !asset.nil?
   end
 
   def media_url options = {}
     options = :original if options.empty?
-    content_items.first.asset.media.url options
+    asset.media.url options
+  end
+
+  def schedule at
+    u = updates.create scheduled_at: at, text: text, user: user, list: list, asset: asset
+    list.move_to_back self
+    u
+  end
+
+  def unschedule
+    list.move_to_front self
   end
 
   private
 
   def check_position
     self.position = self.list.posts.count unless self.list.nil? || !self.position.nil?
+  end
+
+  def update_updates
+    self.updates.where(published: false).each do |update|
+      update.text = self.text
+      if self.has_media?
+        update.asset = self.asset
+      end
+      update.save
+    end
   end
 
 end

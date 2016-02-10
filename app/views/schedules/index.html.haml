@@ -5,18 +5,28 @@
 
       - @schedules.each do |schedule|
 
-        .panel.panel-default
-          .panel-heading
-            = "Schedule: #{schedule.name}"
+        = "Schedule: #{schedule.name}"
 
-          .panel-body
-            - schedule.timeslots.group_by { |slot| slot.day }.sort.each do |day, timeslots|
-              %p
-                %strong= "#{Date::DAYNAMES[day]}"
-              - timeslots.sort_by(&:offset).each do |timeslot|
-                %p
-                  = "#{offset_to_time(timeslot.offset)} from"
-                  = link_to(timeslot.list.name, list_path(timeslot.list)) if timeslot.list
+        %table{border: "1", style: "border-color: #CCC;border: 1px solid"}
+          - timeslots = schedule.timeslots.group_by { |slot| slot.day }
+          %thead
+            %tr
+              %th{style: "min-width: 60px"}
+              - 0.upto(6).each do |day|
+                %th{style: "width: 14%; text-align: center; padding: 3px"}= Date::DAYNAMES[day]
+          %tbody
+            - timeblocks = convert_to_timeblocks(schedule, 360)
+            - minute_blocks_per_day(360).times.each do |block|
+              %tr
+                %td{style: "font-size: 12px; padding: 3px; text-align: right"}
+                  = offset_to_time(block * 360, "%I:%M %P")
+                - 7.times.each do |day|
+                  %td{style: "padding: 3px"}
+                    - ((timeblocks[day] || {})[block] || []).each do |slot|
+                      .timeslot{style: "border: 1px solid #BBB; border-radius: 3px; margin-bottom: 3px; padding: 5px"}
+                        .timestamp
+                          %strong= offset_to_time(slot.offset, "%I:%M %P")
+                        .list{style: "font-size: 13px"}= link_to(slot.list.name, list_path(slot.list)) if slot.list
 
         .panel.panel-default
           .panel-heading

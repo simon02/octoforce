@@ -15,8 +15,8 @@ RSpec.describe List, type: :model do
       list = List.new
       p1 = Post.new
       p2 = Post.new
-      list.add_to_front p1
-      list.add_to_front p2
+      list.move_to_front p1
+      list.move_to_front p2
       expect(list.next_post).to eq(p2)
       puts p1.inspect
       puts p2.inspect
@@ -29,9 +29,9 @@ RSpec.describe List, type: :model do
       p1 = Post.create
       p2 = Post.create
       p3 = Post.create
-      list.add_to_front p1
-      list.add_to_front p2
-      list.add_to_front p3
+      list.move_to_front p1
+      list.move_to_front p2
+      list.move_to_front p3
       expect(list.next_post).to eq(p3)
       puts p1.inspect
       puts p2.inspect
@@ -50,10 +50,10 @@ RSpec.describe List, type: :model do
       c2 = ContentItem.new
       c3 = ContentItem.new
       p2.content_items << c2
-      list.add_to_front p1
+      list.move_to_front p1
       list.updates << Update.new(content_item: c1, scheduled_at: (Time.now + 1.hours))
       list.updates << Update.new(content_item: c3, scheduled_at: (Time.now + 2.hours))
-      list.add_to_front p2
+      list.move_to_front p2
       expect(list.next_post).to eq(p2)
       expect(list.updates.count).to eq(2)
       expect(list.updates.map &:content_item).to eq([c2,c1])
@@ -86,10 +86,10 @@ RSpec.describe List, type: :model do
 
     it 'should sort posts based on next' do
       list = List.new
-      list.add_to_front Post.new id: 1
-      list.add_to_front Post.new id: 2
-      list.add_to_front Post.new id: 3
-      list.add_to_front Post.new id: 4
+      list.move_to_front Post.new id: 1
+      list.move_to_front Post.new id: 2
+      list.move_to_front Post.new id: 3
+      list.move_to_front Post.new id: 4
       expect(list.sorted_posts.map &:id).to eq([4,3,2,1])
     end
 

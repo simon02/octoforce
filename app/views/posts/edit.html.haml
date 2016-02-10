@@ -1,0 +1,12 @@
+.container
+  .row
+    .center_panel
+
+      .panel.panel-default.only
+        .panel-heading
+          = "Edit this post"
+
+        .panel-body
+          = form_for @post do |f|
+            = f.text_field :text
+            = f.submit "Update"

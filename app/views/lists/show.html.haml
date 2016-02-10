@@ -15,7 +15,10 @@
               - if post.has_media?
                 %br
                 = image_tag post.media_url(:thumb)
+              %br
               = link_to "delete", "/lists/#{@list.id}/remove_post/#{post.id}", { method: "POST" }
+              = " | "
+              = link_to "edit", edit_post_path(post)
 
       .panel.panel-default.only
         .panel-heading

@@ -12,3 +12,37 @@
 //   background-color: $panel-inverse-bg;
 //   color: $panel-inverse-color;
 // }
+
+.tweet {
+  border: 1px solid #DDD;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  .social-networks {
+    font-size: 12px;
+    font-weight: 300;
+    font-style: italic;
+  }
+  .body {
+    padding: 8px 12px;
+    position: relative;
+  }
+  .text {
+    font-size: 16px;
+    padding: 6px 0 24px;
+  }
+  .media {
+    float: right;
+  }
+  .list {
+    font-style: italic;
+    position: absolute;
+    bottom: 4px;
+  }
+  .timestamp {
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .footer {
+    border-top: 1px solid #DDD;
+  }
+}

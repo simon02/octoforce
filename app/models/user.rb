@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :schedules, dependent: :destroy
   has_many :updates, dependent: :destroy
   has_many :posts, dependent: :destroy
+  has_many :assets, dependent: :destroy
   after_create :setup_user
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -11,7 +12,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable
 
   def time_zone
-    return "+02:00"
+    return TZInfo::Timezone.get("Europe/Brussels")
   end
 
   def bitly_client

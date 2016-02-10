@@ -1,13 +1,13 @@
 class UrlWorker
   include Sidekiq::Worker
 
-  def perform content_item_id
-    ci = ContentItem.find content_item_id
-    bitly = ci.identity.user.bitly_client
-    ci.update_column(:text, UrlWorker.replace_with_bitly_links(ci.text, bitly)) if bitly
+  def perform update_id
+    update = Update.find update_id
+    bitly = update.user.bitly_client
+    update.update text: replace_with_bitly_links(update.text, bitly)) if bitly
   end
 
-  def self.replace_with_bitly_links text, bitly_client
+  def replace_with_bitly_links text, bitly_client
     links = URI.extract text
     links.map! do |link|
       [link, bitly_client.shorten(link)]

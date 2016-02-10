@@ -24,6 +24,8 @@ Rails.application.routes.draw do
     post '/batch_add_post' => 'lists#batch_add_post'
     post '/remove_post/:post_id' => 'lists#remove_post'
   end
+  resources :posts, only: [:update, :edit]
+
   get '/queue' => 'queue#index'
   get '/queue/reschedule' => 'queue#reschedule'
   get '/history' => 'history#index'

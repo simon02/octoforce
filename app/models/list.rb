@@ -1,50 +1,22 @@
 class List < ActiveRecord::Base
   belongs_to :user
-  belongs_to :next_post, class_name: "Post", foreign_key: "next_post_id"
   has_many :posts, dependent: :destroy
   has_many :timeslots, dependent: :nullify
   has_many :updates, dependent: :nullify
 
-  def add_to_front post
-    first_post = find_first_post || post
-    last_post = first_post.previous || post
-    self.next_post = post
-    post.next = first_post
-    last_post.next = post
-
-    post.list = self
-
-    self.save
-    post.save
-    first_post.save
-    last_post.save
-
-    # then we also need to update all scheduled updates
-    unless updates.empty?
-      content_item = post.content_item_for_identity updates.first.content_item.identity
-    end
-    self.scheduled_updates.sort_by(&:scheduled_at).each do |update|
-      temp = update.content_item
-      update.content_item = content_item
-      update.save
-      content_item = temp
+  def move_to_front post
+    post.update position: (self.first_position - 1)
+    if post.list_id
+      self.posts(true)
+    else
+      self.posts << post
     end
   end
 
-  def add_to_back post
-    if self.next_post.nil?
-      self.next_post = post
-      post.next = post
-    else
-      last_post = Post.where(next: self.next_post).first
-      last_post.next = post
-      last_post.save
-      post.next = self.next_post
-      self.next_post.next = post if self.next_post.next == self.next_post
-    end
-    post.list = self
-    self.save
-    post.save
+  def move_to_back post
+    post.update position: (self.last_position + 1)
+    self.posts << post unless post.list_id
+    self.posts(true)
   end
 
   def scheduled_updates
@@ -52,14 +24,21 @@ class List < ActiveRecord::Base
   end
 
   def sorted_posts
-    # puts list.posts
-    sorted_posts = []
-    current = self.next_post
-    while current != sorted_posts.first do
-      sorted_posts << current
-      current = current.next
-    end
-    sorted_posts
+    # use true, because the changes in move_to_{front/back} are not registered in this model, we don't want to use the cached values
+    self.posts.sort_by &:position
+  end
+
+  def first_position
+    first = posts.order(:position).first
+    first ? first.position : 100
+  end
+
+  def last_position
+    sorted_posts.last.position
+  end
+
+  def find_next_post
+    sorted_posts.first
   end
 
   private

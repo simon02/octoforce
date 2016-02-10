@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150831123921) do
+ActiveRecord::Schema.define(version: 20160202150218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,19 +61,6 @@ ActiveRecord::Schema.define(version: 20150831123921) do
 
   add_index "assets", ["user_id"], name: "index_assets_on_user_id", using: :btree
 
-  create_table "content_items", force: :cascade do |t|
-    t.integer  "identity_id"
-    t.integer  "post_id"
-    t.string   "text"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "asset_id"
-  end
-
-  add_index "content_items", ["asset_id"], name: "index_content_items_on_asset_id", using: :btree
-  add_index "content_items", ["identity_id"], name: "index_content_items_on_identity_id", using: :btree
-  add_index "content_items", ["post_id"], name: "index_content_items_on_post_id", using: :btree
-
   create_table "identities", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "provider"
@@ -109,11 +96,13 @@ ActiveRecord::Schema.define(version: 20150831123921) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.datetime "last_scheduled"
-    t.integer  "next_id"
+    t.integer  "position"
+    t.integer  "asset_id"
+    t.string   "text"
   end
 
+  add_index "posts", ["asset_id"], name: "index_posts_on_asset_id", using: :btree
   add_index "posts", ["list_id"], name: "index_posts_on_list_id", using: :btree
-  add_index "posts", ["next_id"], name: "index_posts_on_next_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
   create_table "schedules", force: :cascade do |t|
@@ -141,18 +130,24 @@ ActiveRecord::Schema.define(version: 20150831123921) do
   add_index "timeslots", ["schedule_id"], name: "index_timeslots_on_schedule_id", using: :btree
 
   create_table "updates", force: :cascade do |t|
-    t.integer  "content_item_id"
     t.integer  "user_id"
     t.integer  "timeslot_id"
     t.datetime "scheduled_at"
-    t.boolean  "published",       default: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.boolean  "published",    default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.integer  "list_id"
+    t.integer  "post_id"
+    t.integer  "asset_id"
+    t.string   "text"
+    t.integer  "identity_id"
+    t.string   "jid"
   end
 
-  add_index "updates", ["content_item_id"], name: "index_updates_on_content_item_id", using: :btree
+  add_index "updates", ["asset_id"], name: "index_updates_on_asset_id", using: :btree
+  add_index "updates", ["identity_id"], name: "index_updates_on_identity_id", using: :btree
   add_index "updates", ["list_id"], name: "index_updates_on_list_id", using: :btree
+  add_index "updates", ["post_id"], name: "index_updates_on_post_id", using: :btree
   add_index "updates", ["timeslot_id"], name: "index_updates_on_timeslot_id", using: :btree
   add_index "updates", ["user_id"], name: "index_updates_on_user_id", using: :btree
 
@@ -188,19 +183,19 @@ ActiveRecord::Schema.define(version: 20150831123921) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "assets", "users"
-  add_foreign_key "content_items", "assets"
-  add_foreign_key "content_items", "identities"
-  add_foreign_key "content_items", "posts"
   add_foreign_key "identities", "users"
   add_foreign_key "lists", "users"
+  add_foreign_key "posts", "assets"
   add_foreign_key "posts", "lists"
   add_foreign_key "posts", "users"
   add_foreign_key "schedules", "identities"
   add_foreign_key "schedules", "users"
   add_foreign_key "timeslots", "lists"
   add_foreign_key "timeslots", "schedules"
-  add_foreign_key "updates", "content_items"
+  add_foreign_key "updates", "assets"
+  add_foreign_key "updates", "identities"
   add_foreign_key "updates", "lists"
+  add_foreign_key "updates", "posts"
   add_foreign_key "updates", "timeslots"
   add_foreign_key "updates", "users"
 end

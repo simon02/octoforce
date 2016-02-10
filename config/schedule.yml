@@ -1,0 +1,4 @@
+my_first_job:
+  cron: "*/2 * * * *"
+  class: "UpdateSchedulerWorker"
+  queue: default
