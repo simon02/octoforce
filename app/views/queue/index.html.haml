@@ -41,3 +41,4 @@
             .body
               %span.timestamp= calculate_local_time(update).strftime("%l:%M %P")
               %span.social-network= "on @#{update.identity.nickname} (#{update.identity.provider})"
+              %span.time-ago= "in #{time_ago_in_words(update.scheduled_at)}"
