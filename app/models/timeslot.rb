@@ -14,7 +14,7 @@ class Timeslot < ActiveRecord::Base
 
   # calculate schedule time based on given week + own weekday and time
   def calculate_scheduling_time year, week
-    date = Date.commercial(year, week, self.day)
+    date = Date.commercial(year, week, self.day == 0 ? 7 : self.day)
     datetime = date.to_time + self.offset * 60
     schedule.user.time_zone.local_to_utc(datetime)
   end
