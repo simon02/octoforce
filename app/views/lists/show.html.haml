@@ -1,8 +1,15 @@
 .container
   .row
-    .center_panel
+    .col-md-3
+      .filter
+        .title Lists
+        %ul.lists
+          - current_user.lists.each do |list|
+            = render partial: 'queue/list', locals: { list: list }
 
-      .panel.panel-default.only
+    .col-md-9
+
+      .panel
         .panel-heading
           = "#{@list.name} contains #{@list.posts.count} items"
 

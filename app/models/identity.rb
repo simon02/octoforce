@@ -43,6 +43,10 @@ class Identity < ActiveRecord::Base
     end
   end
 
+  def subname
+    (self.provider == 'twitter' ? '@' : '') + self.nickname
+  end
+
   private
 
   def setup

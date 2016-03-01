@@ -1,6 +1,13 @@
 .container
   .row
-    .center_panel
+    .col-md-3
+      .filter
+        .title Lists
+        %ul.lists
+          - current_user.lists.each do |list|
+            = render partial: 'queue/list', locals: { list: list }
+
+    .col-md-9
 
       .panel.panel-default.only
         .panel-heading

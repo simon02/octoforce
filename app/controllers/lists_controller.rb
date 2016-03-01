@@ -22,7 +22,7 @@ class ListsController < ApplicationController
     post.asset = Asset.new(media: params[:asset], user: current_user) if params[:asset]
     post.user = current_user
     post.save
-    List.find(params[:list_id]).add_to_front post
+    List.find(params[:list_id]).move_to_front post
 
     redirect_to list_url(params[:list_id])
   end
@@ -53,7 +53,7 @@ class ListsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:list_id, :text, :image)
+    params.require(:post).permit(:list_id, :text, :asset)
   end
 
 end

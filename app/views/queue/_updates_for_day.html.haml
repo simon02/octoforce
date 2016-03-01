@@ -1,0 +1,21 @@
+.panel
+  .panel-heading
+    = calculate_local_time(day.to_time).strftime("%A %-d %B")
+  .panel-body
+    - updates.each do |update|
+      .update
+        .profile
+          .channel
+            %i{'class': "fa fa-#{update.identity.provider}"}
+          %img{'src': update.identity.image}
+        .body
+          .time-ago
+            = "in #{time_ago_in_words(update.scheduled_at)}"
+          .account
+            = update.identity.name
+            %span.subtle= update.identity.subname
+          .timestamp= calculate_local_time(update.scheduled_at).strftime("%l:%M %P - %d/%m/%y")
+          .text= update.text
+          .category
+            .color-code{style: "background-color: ##{update.list.color}"}
+            .name= update.list.name

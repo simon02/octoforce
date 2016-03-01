@@ -1,0 +1,6 @@
+= form_for timeslot, url: schedule_add_timeslot_url(schedule), remote: true do |f|
+  = f.hidden_field :schedule_id, value: schedule.id
+  = f.select :day, day_options, selected: (defined?(day) ? day : 0).to_s
+  = f.text_field :offset, placeholder: "Enter scheduling time"
+  = f.select :list_id, list_options
+  = f.submit "Add timeslot"

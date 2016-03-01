@@ -13,4 +13,9 @@ module ApplicationHelper
     @title || controller_name.gsub( /Controller/, "" ).humanize
   end
 
+  def calculate_local_time time
+    tz = current_user.time_zone
+    tz.utc_to_local time
+  end
+
 end

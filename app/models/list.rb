@@ -3,6 +3,10 @@ class List < ActiveRecord::Base
   has_many :posts, dependent: :destroy
   has_many :timeslots, dependent: :nullify
   has_many :updates, dependent: :nullify
+  after_initialize do |list|
+    @generator = ColorGenerator.new saturation: 0.5, lightness: 0.5 unless @generator
+    list.color ||= @generator.create_hex
+  end
 
   def move_to_front post
     post.update position: (self.first_position - 1)
@@ -39,6 +43,19 @@ class List < ActiveRecord::Base
 
   def find_next_post
     sorted_posts.first
+  end
+
+  def reschedule weeks = 1
+    scheduled_updates.each &:unschedule
+    slots = timeslots.sort_by { |t| [t.day, t.offset] }
+    now = Time.now.to_date
+    year = now.year
+    week = now.cweek
+    slots.each do |slot|
+      time = slot.calculate_scheduling_time year, week
+      # timeslots that are before now should be scheduled next week
+      slot.schedule_next_update year, (time < now ? week + 1 : week)
+    end
   end
 
   private

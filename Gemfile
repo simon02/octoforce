@@ -87,6 +87,7 @@ gem 'sidekiq'
 gem 'paperclip', "~> 4.3"
 gem 'aws-sdk', '~> 1.6'
 gem 'bitly'
+gem 'color-generator'
 gem "sidekiq-cron", "~> 0.4.0"
 gem 'sidekiq-unique-jobs'
 gem 'jazz_hands', github: 'danrabinowitz/jazz_hands', branch: 'use-newer-version-of-pry', groups: [:development, :test]

@@ -13,6 +13,82 @@
 //   color: $panel-inverse-color;
 // }
 
+.panel {
+  @include border-radius(0);
+  border: none;
+  .panel-heading {
+    border-top: 4px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+    color: #757575;
+    @include border-radius(0);
+  }
+  .panel-body {
+    padding: 0;
+    .update {
+      padding: 20px;
+      border-bottom: 1px solid #f0f0f0;
+      &:last-child {
+        border-bottom: none;
+      }
+      .profile {
+        position: absolute;
+        img {
+          @include border-radius(3px);
+        }
+      }
+      .body {
+        margin: 0 0 0 70px;
+        .account {
+          font-weight: 600;
+          font-size: 105%;
+          .subtle {
+            font-weight: 500;
+            color: #555;
+          }
+        }
+        .text {
+          font-size: 1.8rem;
+          padding: 10px 0;
+        }
+        .timestamp {
+          color: #555;
+          font-size: 13px;
+        }
+        .time-ago {
+          float: right;
+          color: #555;
+          font-style: italic;
+        }
+        .category {
+          display: inline-block;
+          font-size: 11px;
+          font-weight: 600;
+          color: #555;
+          background-color: #f8f8f8;
+          position: relative;
+          .name {
+            border: 1px solid #ccc;
+            border-left: none;
+            padding: 1px 5px 1px 13px;
+            @include border-right-radius(3px);
+          }
+          .color-code {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 8px;
+            background-color: #aaa;
+            border: 1px solid rgba(0,0,0,.2);
+            border-right: none;
+            @include border-left-radius(3px)
+          }
+        }
+      }
+    }
+  }
+}
+
 .tweet {
   border: 1px solid #DDD;
   border-radius: 6px;
@@ -38,15 +114,14 @@
     position: absolute;
     bottom: 4px;
   }
-  .timestamp {
-    font-weight: 700;
-    font-size: 12px;
-  }
   .footer {
     border-top: 1px solid #DDD;
+    font-size: 12px;
+  }
+  .timestamp {
+    font-weight: 700;
   }
   .time-ago {
-    font-size: 12px;
     font-style: italic;
     float: right;
   }

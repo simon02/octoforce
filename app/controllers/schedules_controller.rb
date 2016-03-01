@@ -7,8 +7,11 @@ class SchedulesController < ApplicationController
 
   def add_timeslot
     offset = Time.parse(timeslot_params[:offset])
-    Timeslot.create timeslot_params.merge offset: (offset.hour * 60 + offset.min)
-    redirect_to schedules_path
+    @timeslot = Timeslot.create timeslot_params.merge offset: (offset.hour * 60 + offset.min)
+    respond_to do |format|
+      format.html { redirect_to schedules_path }
+      format.js
+    end
   end
 
   def reschedule

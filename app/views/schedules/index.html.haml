@@ -4,38 +4,5 @@
       %p= "You currently have #{@schedules.count} schedules"
 
       - @schedules.each do |schedule|
+        = render partial: 'schedule', locals: { schedule: schedule }
 
-        = "Schedule: #{schedule.name}"
-
-        %table{border: "1", style: "border-color: #CCC;border: 1px solid"}
-          - timeslots = schedule.timeslots.group_by { |slot| slot.day }
-          %thead
-            %tr
-              %th{style: "min-width: 60px"}
-              - 0.upto(6).each do |day|
-                %th{style: "width: 14%; text-align: center; padding: 3px"}= Date::DAYNAMES[day]
-          %tbody
-            - timeblocks = convert_to_timeblocks(schedule, 360)
-            - minute_blocks_per_day(360).times.each do |block|
-              %tr
-                %td{style: "font-size: 12px; padding: 3px; text-align: right"}
-                  = offset_to_time(block * 360, "%I:%M %P")
-                - 7.times.each do |day|
-                  %td{style: "padding: 3px"}
-                    - ((timeblocks[day] || {})[block] || []).each do |slot|
-                      .timeslot{style: "border: 1px solid #BBB; border-radius: 3px; margin-bottom: 3px; padding: 5px"}
-                        .timestamp
-                          %strong= offset_to_time(slot.offset, "%I:%M %P")
-                        .list{style: "font-size: 13px"}= link_to(slot.list.name, list_path(slot.list)) if slot.list
-
-        .panel.panel-default
-          .panel-heading
-            Add new timeslot
-
-          .panel-body
-            = form_for @timeslot, url: schedule_add_timeslot_url(schedule) do |f|
-              = f.hidden_field :schedule_id, value: schedule.id
-              = f.select :day, day_options
-              = f.text_field :offset, placeholder: "Enter scheduling time"
-              = f.select :list_id, list_options
-              = f.submit "Add timeslot"

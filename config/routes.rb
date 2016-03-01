@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     post '/remove_post/:post_id' => 'lists#remove_post'
   end
   resources :posts, only: [:update, :edit]
+  resources :timeslot, only: [:new, :create, :edit, :destroy]
 
   get '/queue' => 'queue#index'
   get '/queue/reschedule' => 'queue#reschedule'

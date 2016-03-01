@@ -7,6 +7,7 @@
           = "Edit this post"
 
         .panel-body
-          = form_for @post do |f|
-            = f.text_field :text
+          = form_for @post, html: { multipart: true } do |f|
+            = f.text_area :text
+            = file_field_tag :asset
             = f.submit "Update"

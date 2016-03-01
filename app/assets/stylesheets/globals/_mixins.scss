@@ -5,3 +5,7 @@
 //   ???
 // }
 
+@mixin border-radius($radius) {
+  @include border-top-radius($radius);
+  @include border-bottom-radius($radius);
+}

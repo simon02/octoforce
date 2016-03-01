@@ -1,44 +1,39 @@
 .container
   .row
-    .col-lg-3
-      %h2 Profiles
-      %ul.social-profiles
-        - current_user.identities.each do |identity|
-          %li
-            %img{src: "#{identity.image}"}
-            = identity.name
-            = identity.provider
-            = link_to "@#{identity.nickname}", "https://twitter.com/#{identity.nickname}"
+    .col-md-3
+      .filter
+        .title Accounts
+        = render partial: 'identities', locals: { identities: @identities }
 
-      %h2 Lists
-      %ul.lists
-        - current_user.lists.each do |list|
-          %li
-            = link_to list.name, list_path(list)
-            = "(#{list.scheduled_updates.count})"
+      .filter
+        .title Lists
+        %ul.lists
+          - @lists.each do |list|
+            = render partial: 'list', locals: { list: list }
 
-    .col-lg-9.center_panel
+    .col-md-9
 
       = link_to "Reschedule queue", queue_reschedule_path
 
       - date = nil
-      - @updates.each do |update|
-        - temp = calculate_local_time(update).strftime("%a %-d %B")
-        - if temp != date
-          %h2= temp
-        - date = temp
-        .tweet
-          .body
-            - if update.has_media?
-              .media= image_tag update.media_url(:thumb)
-            .text= update.text
-            - if update.timeslot && update.timeslot.list
-              .list
-                from
-                = link_to update.timeslot.list.name, list_path(update.timeslot.list)
-            .clearfix
-          .footer
-            .body
-              %span.timestamp= calculate_local_time(update).strftime("%l:%M %P")
-              %span.social-network= "on @#{update.identity.nickname} (#{update.identity.provider})"
-              %span.time-ago= "in #{time_ago_in_words(update.scheduled_at)}"
+      - split_updates_in_days.each do |day, updates|
+        = render partial: 'updates_for_day', locals: { updates: updates, day: day }
+        / - temp = calculate_local_time(update).strftime("%a %-d %B")
+        / - if temp != date
+        /   %h2= temp
+        / - date = temp
+        / .tweet
+        /   .body
+        /     - if update.has_media?
+        /       .media= image_tag update.media_url(:thumb)
+        /     .text= update.text
+        /     - if update.timeslot && update.timeslot.list
+        /       .list
+        /         from
+        /         = link_to update.timeslot.list.name, list_path(update.timeslot.list)
+        /     .clearfix
+        /   .footer
+        /     .body
+        /       %span.timestamp= calculate_local_time(update).strftime("%l:%M %P")
+        /       %span.social-network= "on @#{update.identity.nickname} (#{update.identity.provider})"
+        /       %span.time-ago= "in #{time_ago_in_words(update.scheduled_at)}"

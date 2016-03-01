@@ -1,0 +1,2 @@
+var appearance = $("#{escape_javascript(render partial: 'schedules/timeslot', locals: { slot: @timeslot })}");
+$("#schedule_#{@timeslot.schedule_id} #day_#{@timeslot.day}_block_#{@timeslot.offset / minutes_per_block}").append(appearance)

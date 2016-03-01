@@ -1,13 +1,17 @@
-= navbar position: :static do
-  = vertical do
-    = link_to root_path do
-      %span.glyphicon.glyphicon-cloud
-      Home
-  = horizontal do
-    = nav class: 'navbar-right' do
+%nav.navbar.navbar-default.navbar-static-side
+  .navbar-header
+    - identifier = rand(1000000000)
+    %button.navbar-toggle{'data-target': "#navbar-collapse-#{identifier}",'data-toggle': 'collapse', type: 'button'}
+      %span.sr-only Toggle navigation
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
+    %a.navbar-brand{href: '/'}
+      Octoforce
+  .collapse.navbar-collapse{id: "navbar-collapse-#{identifier}"}
+    = nav do
       = link_to 'Queue', queue_url
       = link_to 'Schedules', schedules_url
       = link_to 'Lists', lists_url
-      = link_to 'Contact', ""
-      = link_to 'About', ""
-      = render partial: "application/account_dropdown"
+      = link_to 'Queue', queue_url
+      = link_to 'Queue', queue_url

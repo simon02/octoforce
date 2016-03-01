@@ -7,12 +7,15 @@ class PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
     @post.update post_params
-    @post.save
+    if params[:asset]
+      @post.asset = Asset.new media: params[:asset], user: current_user
+      @post.save
+    end
     redirect_to list_path(@post.list)
   end
 
   def post_params
-    params.require(:post).permit(:text, :image)
+    params.require(:post).permit(:text)
   end
 
 end
