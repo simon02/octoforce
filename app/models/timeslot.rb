@@ -3,7 +3,6 @@ class Timeslot < ActiveRecord::Base
   belongs_to :schedule
   has_many :updates, dependent: :nullify
   validates_presence_of :day, :offset
-  after_create :trigger_create
 
   def schedule_next_update year, week
     post = list.find_next_post
@@ -17,12 +16,6 @@ class Timeslot < ActiveRecord::Base
     date = Date.commercial(year, week, self.day == 0 ? 7 : self.day)
     datetime = date.to_time + self.offset * 60
     schedule.user.time_zone.local_to_utc(datetime)
-  end
-
-  private
-
-  def trigger_create
-    QueueWorker.perform_async(self.schedule.id) if self.schedule
   end
 
 end

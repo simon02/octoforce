@@ -32,6 +32,7 @@ class ListsController < ApplicationController
     end
 
     List.find(params[:list_id]).move_to_front post
+    QueueWorker.perform_async(params[:list_id])
 
     redirect_to list_url(params[:list_id])
   end
@@ -43,6 +44,8 @@ class ListsController < ApplicationController
       list.move_to_front post
     end
 
+    QueueWorker.perform_async(list.id)
+
     intercom_event 'created-posts-batch', number_of_posts: current_user.posts.count, posts_added: params[:text].split(/\r?\n\r?\n/).count
 
     redirect_to list_url(list.id)
@@ -52,6 +55,7 @@ class ListsController < ApplicationController
     post = Post.find(params[:post_id])
     if post.user_id == current_user.id
       post.destroy
+      QueueWorker.perform_async(post.list.id)
     else
       flash[:error] = "Invalid operation"
     end

@@ -9,16 +9,12 @@
   .panel-body
     .panel-row
       = form_tag list_add_post_path(list),  multipart: true , id: 'share_expand' do
-        = hidden_field_tag :list_id, value: list.id
         .form-group
           = text_area_tag :text, nil, placeholder: "'What do you want to share?'", rows: 1, class: 'form-control m5'
         .form-group.hidden.can-hide
-          .fileinput-button.btn.btn-default.m5
-            %i.fa.fa-camera
-            %span.text{style: 'padding-left: 5px'}
-              add an image
-            = file_field_tag :asset
+          = file_field_tag :asset, class: 'pull-left'
           = submit_tag "Add to #{list.name}", class: 'btn btn-primary pull-right'
+          .clearfix
 
     - list.posts.sorted.each do |post|
       .panel-row

@@ -13,9 +13,3 @@ $ ->
     $(@).addClass('expanded')
     $(@).find('textarea').attr('rows', '3')
     $(@).find('.hidden').removeClass('hidden')
-
-  $('.fileinput-button').fileupload({
-      add: (e,data) ->
-        $(e.target).find('.text').text('image ready')
-        console.log data
-    })
