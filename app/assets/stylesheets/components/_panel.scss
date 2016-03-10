@@ -13,6 +13,10 @@
 //   color: $panel-inverse-color;
 // }
 
+.panel .panel-body.padded {
+  padding: 15px;
+}
+
 .panel {
   @include border-radius(0);
   border: none;
@@ -20,44 +24,107 @@
     border-top: 4px solid #e8e8e8;
     border-bottom: 1px solid #e8e8e8;
     color: #757575;
+    position: relative;
     @include border-radius(0);
+    .title {
+      font-size: 18px;
+
+    }
+    .subtitle {
+      margin-top: 5px;
+      font-size: 15px;
+    }
+    .actions {
+      float: right;
+    }
   }
   .panel-body {
     padding: 0;
-    .update {
-      padding: 20px;
+    .panel-row {
+      padding: 15px;
       border-bottom: 1px solid #f0f0f0;
       &:last-child {
         border-bottom: none;
       }
+    }
+    .profile-image {
+      float: left;
+      max-width: 54px;
+      position: relative;
+      &.rounded { @include border-radius(3px); }
+      i.fa {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 3px;
+        color: white;
+        text-shadow: 0 0 2px rgba(0,0,0,.4);
+        @include border-radius(3px);
+      }
+    }
+    .next-to-image {
+      margin-left: 62px;
+    }
+    .subtle {
+      font-size: 95%;
+      color: #555;
+    }
+    .large {
+      font-size: 18px;
+    }
+    .x-large {
+      font-size: 22px;
+    }
+    .small {
+      font-size: 14px;
+    }
+    .x-small {
+      font-size: 12px;
+    }
+    .update {
       .profile {
         position: absolute;
         img {
           @include border-radius(3px);
         }
+        i.fa {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          padding: 3px;
+          color: white;
+          text-shadow: 0 0 2px rgba(0,0,0,.4);
+          @include border-radius(3px);
+          &.twitter {
+            background-color: #55acee;
+          }
+        }
       }
-      .body {
-        margin: 0 0 0 70px;
         .account {
           font-weight: 600;
           font-size: 105%;
+          line-height: 28px;
           .subtle {
             font-weight: 500;
             color: #555;
           }
         }
-        .text {
-          font-size: 1.8rem;
-          padding: 10px 0;
-        }
         .timestamp {
           color: #555;
           font-size: 13px;
+        }
+        .account, .timestamp {
+          margin-left: 60px;
         }
         .time-ago {
           float: right;
           color: #555;
           font-style: italic;
+          line-height: 28px;
+        }
+        .text {
+          font-size: 1.8rem;
+          padding: 10px 0;
         }
         .category {
           display: inline-block;
@@ -84,7 +151,6 @@
             @include border-left-radius(3px)
           }
         }
-      }
     }
   }
 }
@@ -124,5 +190,24 @@
   .time-ago {
     font-style: italic;
     float: right;
+  }
+}
+.panel-devise {
+  @include border-radius(6px);
+  .panel-heading {
+    border: none;
+    @include border-top-radius(6px);
+    .brand {
+      color: #284161;
+      font-size: 36px;
+      font-weight: 700;
+      margin: 10px 0 0;
+      text-align: center;
+      width: 100%;
+      display: inline-block;
+    }
+  }
+  .panel-body {
+    padding: 15px;
   }
 }

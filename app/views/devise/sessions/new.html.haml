@@ -2,21 +2,22 @@
 .container
   .row
     .center_panel
-      .panel.panel-default.only
+      .panel.panel-devise.only
         .panel-heading
-          Sign in
+          %a.brand{href: '/'}
+            Octoforce
 
         .panel-body
 
           = form_for resource, as: resource_name, url: session_path(resource_name), layout: :horizontal do |f|
 
-            = f.email_field :email, autofocus: true
-            = f.password_field :password, autocomplete: "off"
+            = f.email_field :email, autofocus: true, placeholder: 'Email address'
+            = f.password_field :password, autocomplete: "off", placeholder: 'Password'
 
             - if devise_mapping.rememberable?
               = f.check_box :remember_me
 
-            = f.submit "Sign in", :class=>'btn btn-primary form-control'
+            = f.submit "Log in", :class=>'btn btn-primary form-control'
 
           %p.text-right
             = render partial: "devise/shared/links"

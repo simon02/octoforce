@@ -1,0 +1,25 @@
+html {
+  height: 100%
+}
+body.void {
+  height: 100%;
+  width: 500px;
+  margin: auto;
+  display: table;
+  .login-wrapper {
+    vertical-align: middle;
+    display: table-cell;
+    height: 100%;
+    width: 500px;
+    padding: 0;
+    padding-top: 36px;
+    .container {
+      width: auto;
+    }
+  }
+  .copyright {
+    color: white;
+    text-align: center;
+  }
+}
+

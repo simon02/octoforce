@@ -1,0 +1,40 @@
+.panel
+  .panel-heading
+    .title= "#{list.name} contains #{list.posts.count} items"
+    .subtitle
+      This will last you for
+      %strong= "#{list.number_of_unique_days} days "
+      given your current schedules.
+
+  .panel-body
+    .panel-row
+      = form_tag list_add_post_path(list),  multipart: true , id: 'share_expand' do
+        = hidden_field_tag :list_id, value: list.id
+        .form-group
+          = text_area_tag :text, nil, placeholder: "'What do you want to share?'", rows: 1, class: 'form-control m5'
+        .form-group.hidden.can-hide
+          .fileinput-button.btn.btn-default.m5
+            %i.fa.fa-camera
+            %span.text{style: 'padding-left: 5px'}
+              add an image
+            = file_field_tag :asset
+          = submit_tag "Add to #{list.name}", class: 'btn btn-primary pull-right'
+
+    - list.posts.sorted.each do |post|
+      .panel-row
+        .body{style: 'position: relative; min-height: 70px'}
+          - if post.has_media?
+            .pull-right
+              = link_to (image_tag post.media_url(:thumb)), post.media_url
+          .text.x-large= "#{post.text}"
+          .div{style: 'position: absolute; bottom: 0'}
+            .x-small
+              - if post.updates.scheduled.first
+                = "scheduled for publication onj #{post.updates.scheduled.first.scheduled_at}"
+              - elsif post.updates.published.first
+                = "last published #{time_ago_in_words calculate_local_time(post.updates.published.first.scheduled_at)} ago"
+            .x-small
+              = link_to "delete", "/lists/#{list.id}/remove_post/#{post.id}", { method: "POST" }
+              = " | "
+              = link_to "edit", edit_post_path(post)
+          .clearfix

@@ -16,7 +16,7 @@ module SchedulesHelper
   end
 
   def offset_to_time offset, format
-    time = calculate_local_time Time.new(0,1,1,offset / 60, offset % 60, 0) # offset is in minutes!
+    time = Time.now.change({ hour: offset / 60, min: offset % 60 }) # offset is in minutes!
     time.strftime(format)
   end
 

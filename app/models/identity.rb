@@ -5,6 +5,7 @@ class Identity < ActiveRecord::Base
   after_save :setup
   validates_presence_of :uid, :provider
   validates_uniqueness_of :uid, :scope => :provider
+  scope :filter_by_provider, -> (provider) { where('provider = ?', provider)}
 
   def self.find_for_oauth(auth)
     identity = find_by(provider: auth.provider, uid: auth.uid)
@@ -14,7 +15,7 @@ class Identity < ActiveRecord::Base
     identity.refreshtoken = auth.credentials.refresh_token
     identity.name = auth.info.name
     identity.email = auth.info.email
-    identity.nickname = auth.info.nickname
+    identity.nickname = auth.info.nickname || auth.info.name
     identity.image = auth.info.image
     identity.phone = auth.info.phone
     identity.urls = (auth.info.urls || "").to_json
@@ -26,7 +27,7 @@ class Identity < ActiveRecord::Base
     return @client if @client
     case self.provider
     when 'facebook'
-      @client = Facebook.client(accesstoken: self.accesstoken)
+      @client = Koala::Facebook::API.new(self.accesstoken)
     when 'github'
       @client = Github.client(accesstoken: self.accesstoken)
     when 'google'

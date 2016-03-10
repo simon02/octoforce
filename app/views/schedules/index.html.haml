@@ -1,8 +1,19 @@
 .container
   .row
-    .center_panel
-      %p= "You currently have #{@schedules.count} schedules"
+    .col-md-3
+      .filter
+        .title Filter by account
+        %ul.lists
+          = render partial: 'queue/identities', locals: { identities: @identities }
 
-      - @schedules.each do |schedule|
-        = render partial: 'schedule', locals: { schedule: schedule }
+    .col-md-9
+      .center_panel
+        - if @schedules.empty?
+          %p
+            = "You need to "
+            = link_to 'add a social network', identities_url
+            = "first."
+
+        - @schedules.each do |schedule|
+          = render partial: 'schedule', locals: { schedule: schedule }
 

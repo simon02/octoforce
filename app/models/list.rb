@@ -27,22 +27,17 @@ class List < ActiveRecord::Base
     self.updates.where "scheduled_at > ?", Time.now
   end
 
-  def sorted_posts
-    # use true, because the changes in move_to_{front/back} are not registered in this model, we don't want to use the cached values
-    self.posts.sort_by &:position
-  end
-
   def first_position
     first = posts.order(:position).first
     first ? first.position : 100
   end
 
   def last_position
-    sorted_posts.last.position
+    posts.sorted.last.position
   end
 
   def find_next_post
-    sorted_posts.first
+    posts.sorted.first
   end
 
   def reschedule weeks = 1
@@ -56,6 +51,12 @@ class List < ActiveRecord::Base
       # timeslots that are before now should be scheduled next week
       slot.schedule_next_update year, (time < now ? week + 1 : week)
     end
+  end
+
+  def number_of_unique_days
+    return 0 if updates.count == 0
+    return -1 if timeslots.count == 0
+    ((posts.count * 7)/ timeslots.count).to_i
   end
 
   private

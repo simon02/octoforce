@@ -5,6 +5,7 @@ class Post < ActiveRecord::Base
   has_many :updates
   before_save :check_position
   after_save :update_updates
+  scope :sorted, -> { order(:position) }
 
   def previous
     Post.where(next_id: self.id).first

@@ -14,4 +14,23 @@ class ApplicationController < ActionController::Base
       authenticate_user!
     end
   end
+
+  def intercom_event event_name, metadata = {}
+    @intercom ||= init_intercom
+    @intercom.events.create(
+      event_name: event_name,
+      created_at: Time.now.to_i,
+      email: current_user.email,
+      metadata: metadata
+    )
+  rescue
+    # log the intercom error...
+  end
+
+  private
+
+  def init_intercom
+    Intercom::Client.new(app_id: ENV["INTERCOM_APP_ID"], api_key: ENV["INTERCOM_API_KEY"])
+  end
+
 end

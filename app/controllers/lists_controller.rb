@@ -3,25 +3,34 @@ class ListsController < ApplicationController
   def index
     @lists = current_user.lists
     @list = List.new
+    redirect_to list_url(@lists.first)
   end
 
   def show
-    @list = List.find(params[:id])
-    @post = Post.new
+    @lists = current_user.lists
+    @list = List.find_by(id: params[:id]) || List.new
+    @new_post = Post.new
+    @new_list = List.new
   end
 
   def create
     list = List.create list_params
     list.user = current_user
-    list.save
-    redirect_to lists_url
+    if list.save
+      intercom_event 'created-list', number_of_lists: current_user.lists.count
+    end
+
+    redirect_to list_url(list)
   end
 
   def add_post
     post = Post.new text: params[:text]
     post.asset = Asset.new(media: params[:asset], user: current_user) if params[:asset]
     post.user = current_user
-    post.save
+    if post.save
+      intercom_event 'post-created', number_of_posts: current_user.posts.count, contains_media: !params[:asset].nil?
+    end
+
     List.find(params[:list_id]).move_to_front post
 
     redirect_to list_url(params[:list_id])
@@ -33,6 +42,9 @@ class ListsController < ApplicationController
       post = Post.create user: current_user, text: text
       list.move_to_front post
     end
+
+    intercom_event 'created-posts-batch', number_of_posts: current_user.posts.count, posts_added: params[:text].split(/\r?\n\r?\n/).count
+
     redirect_to list_url(list.id)
   end
 

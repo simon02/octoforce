@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users, class_name: 'FormUser', :controllers => { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations' }
-  root 'setup#index'
+  root 'queue#index'
   get '/setup' => 'setup#index'
 
   mount Sidekiq::Web, at: '/sidekiq'
@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     post '/batch_add_post' => 'lists#batch_add_post'
     post '/remove_post/:post_id' => 'lists#remove_post'
   end
+  resources :identities, path: 'accounts'
   resources :posts, only: [:update, :edit]
   resources :timeslot, only: [:new, :create, :edit, :destroy]
 

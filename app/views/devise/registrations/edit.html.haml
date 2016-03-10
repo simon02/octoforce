@@ -2,53 +2,36 @@
 .container
   .row
     .center_panel
-      .panel.panel-default.only
+      .panel.only
 
         .panel-heading
-          = @title
+          Edit user details
 
         .panel-body
+          .panel-row
+            = form_for resource, as: resource_name, url: registration_path(resource_name), layout: :horizontal do |f|
 
-          = form_for resource, as: resource_name, url: registration_path(resource_name), layout: :horizontal do |f|
+              / = devise_error_messages!
 
-            / = devise_error_messages!
+              = f.email_field :email, autofocus: true
 
-            = f.email_field :email, autofocus: true
+              - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+                %p
+                  Currently waiting confirmation for:
+                  = resource.unconfirmed_email
 
-            - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-              %p
-                Currently waiting confirmation for:
-                = resource.unconfirmed_email
+              = f.password_field :current_password
+              = f.password_field :password, autocomplete: "off"
+              = f.password_field :password_confirmation, autocomplete: "off"
 
-            = f.password_field :current_password
-            = f.password_field :password, autocomplete: "off"
-            = f.password_field :password_confirmation, autocomplete: "off"
+              = f.submit "Update"
 
-            = f.submit "Update"
-
-      - if devise_mapping.omniauthable?
-        .panel.panel-default.only
-          .panel-heading
-            Your Social Accounts
-
-          .panel-body
-            %ul
-              - current_user.identities.each do |identity|
-                %li= "#{identity.provider.to_s.titleize}: #{identity.nickname}"
-            %p Add more social accounts:
-            %ul
-              - resource_class.omniauth_providers.each do |provider|
-                - if resource.identities.where( :provider => provider ).first
-                  %li= link_to "Add another #{provider.to_s.titleize} account", omniauth_authorize_path(resource_name, provider, use_authorize: true)
-                - else
-                  %li= link_to "Add #{provider.to_s.titleize} account", omniauth_authorize_path(resource_name, provider)
-
-      .panel.panel-default.only
+      .panel.only
 
         .panel-heading
           Cancel my account
 
         .panel-body
-          %p
+          .panel-row
             Unhappy?
             = button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger"

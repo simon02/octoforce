@@ -5,6 +5,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def facebook
     generic_callback( 'facebook' )
   end
+  def facebook_page
+    generic_callback( 'facebook' )
+  end
   def google_oauth2
     generic_callback( 'google_oauth2' )
   end
@@ -31,8 +34,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # This is because we've created the user manually, and Device expects a
       # FormUser class (with the validations)
       @user = FormUser.find @user.id
-      sign_in_and_redirect @user, event: :authentication
+      sign_in @user
       set_flash_message(:notice, :success, kind: provider.capitalize) if is_navigational_format?
+      redirect_to identities_url
     else
       session["devise.#{provider}_data"] = env["omniauth.auth"]
       redirect_to new_user_registration_url

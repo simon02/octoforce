@@ -8,3 +8,14 @@ $ ->
     day = $(@).data('day')
     form.find("select option[value='#{day}']").prop('selected','selected')
     form.removeClass('hidden').show().find('input[type!="hidden"]:first').focus()
+
+  $('#share_expand').click ->
+    $(@).addClass('expanded')
+    $(@).find('textarea').attr('rows', '3')
+    $(@).find('.hidden').removeClass('hidden')
+
+  $('.fileinput-button').fileupload({
+      add: (e,data) ->
+        $(e.target).find('.text').text('image ready')
+        console.log data
+    })

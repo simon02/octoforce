@@ -22,3 +22,28 @@
 // .btn-primary.inverse {
 //   @include button-variant($btn-primary-inverse-color, $btn-primary-inverse-bg, $btn-primary-inverse-border);
 // }
+
+.btn-mini {
+  font-size: 12px;
+  padding: 0px 8px;
+  @include button-variant(#757575, #f0f0f0, #ccc);
+}
+
+.btn-twitter {
+  @include button-variant(white, $color-twitter, darken($color-twitter, 8%));
+}
+.btn-facebook {
+  @include button-variant(white, $color-facebook, darken($color-facebook, 8%));
+}
+.btn-instagram {
+  @include button-variant(white, $color-instagram, darken($color-instagram, 8%));
+}
+.btn-linkedin {
+  @include button-variant(white, $color-linkedin, darken($color-linkedin, 8%));
+}
+.btn-google-plus {
+  @include button-variant(white, $color-google-plus, darken($color-google-plus, 8%));
+}
+.btn-youtube {
+  @include button-variant(white, $color-youtube, darken($color-youtube, 8%));
+}

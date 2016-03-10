@@ -2,14 +2,28 @@
   .row
     .col-md-3
       .filter
-        .title Accounts
+        .pull-right
+          %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
+            %i.fa.fa-plus
+
+        .title Filter by account
         = render partial: 'identities', locals: { identities: @identities }
 
       .filter
-        .title Lists
+        .pull-right
+          %a.btn.btn-mini.btn-default#add_list
+            %i.fa.fa-plus
+        .title Filter by list
         %ul.lists
           - @lists.each do |list|
             = render partial: 'list', locals: { list: list }
+          %li.list.hidden#add_list_form
+            = form_for List.new, html: { class: 'form-inline' } do |f|
+              .color-code
+              .name{style: 'max-width: 50%'}
+                = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
+              .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'
+
 
     .col-md-9
 

@@ -1,29 +1,36 @@
-= "Schedule: #{schedule.name}"
+.panel
+  .panel-heading
+    .title= "Schedule for #{schedule.identity.name}"
+    .subtitle
+      - if (nr = schedule.number_of_unique_days) != -1
+        This schedule contains updates to fill
+        %strong= "#{nr} unique days"
+        = "."
+  .panel-body
+    %table{border: "1", style: "border: 1px solid #F0F0F0", id: "schedule_#{schedule.id}"}
+      - timeslots = schedule.timeslots.group_by { |slot| slot.day }
+      %thead
+        %tr
+          %th{style: "min-width: 60px"}
+          - 0.upto(6).each do |day|
+            %th{style: "width: 14%; text-align: center; padding: 3px"}= Date::DAYNAMES[day]
+      %tbody
+        - timeblocks = convert_to_timeblocks(schedule)
+        - minute_blocks_per_day.times.each do |block|
+          %tr
+            %td{style: "font-size: 12px; padding: 3px; text-align: right"}
+              = block_time(block, "%I:%M %P")
+            - 7.times.each do |day|
+              %td{style: "padding: 3px", id: "day_#{day}_block_#{block}"}
+                - ((timeblocks[day] || {})[block] || []).each do |slot|
+                  = render partial: 'timeslot', locals: { slot: slot }
+      %tfooter
+        %tr
+          %td
+          - 0.upto(6).each do |day|
+            %td
+              %a.btn.btn-default.btn-sm.add-timeslot{'data-add-timeslot': "#add_timeslot_#{schedule.id}", 'data-day': day}
+                Add timeslot
 
-%table{border: "1", style: "border: 1px solid #F0F0F0", id: "schedule_#{schedule.id}"}
-  - timeslots = schedule.timeslots.group_by { |slot| slot.day }
-  %thead
-    %tr
-      %th{style: "min-width: 60px"}
-      - 0.upto(6).each do |day|
-        %th{style: "width: 14%; text-align: center; padding: 3px"}= Date::DAYNAMES[day]
-  %tbody
-    - timeblocks = convert_to_timeblocks(schedule)
-    - minute_blocks_per_day.times.each do |block|
-      %tr
-        %td{style: "font-size: 12px; padding: 3px; text-align: right"}
-          = block_time(block, "%I:%M %P")
-        - 7.times.each do |day|
-          %td{style: "padding: 3px", id: "day_#{day}_block_#{block}"}
-            - ((timeblocks[day] || {})[block] || []).each do |slot|
-              = render partial: 'timeslot', locals: { slot: slot }
-  %tfooter
-    %tr
-      %td
-      - 0.upto(6).each do |day|
-        %td
-          %button.add-timeslot{'data-add-timeslot': "#add_timeslot_#{schedule.id}", 'data-day': day}
-            Add timeslot
-
-.hidden{id: "add_timeslot_#{schedule.id}"}
-  = render partial: 'add_timeslot', locals: { schedule: schedule, timeslot: Timeslot.new }
+    .panel-row.hidden.add-timeslot-form{id: "add_timeslot_#{schedule.id}"}
+      = render partial: 'add_timeslot', locals: { schedule: schedule, timeslot: Timeslot.new }

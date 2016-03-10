@@ -10,6 +10,11 @@
 //   $ bundle show bootstrap-sass
 //
 
+/*
+*= require jquery.fileupload
+*= require jquery.fileupload-ui
+*/
+
 
 // These both need to be imported before bootstrap:
 @import 'globals/fonts';
@@ -20,9 +25,12 @@
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
 
+// --------------Font Awesome-----------------------------
+@import 'font-awesome';
 
 // --------------Global definitions--------------------
 // For example (add your own!!):
+@import 'globals/colors';
 @import 'globals/mixins';
 
 
@@ -37,6 +45,7 @@
 @import 'components/panel';
 @import 'components/navbar';
 @import 'components/filters';
+@import 'components/void';
 
 
 // --------------Sections------------------------------

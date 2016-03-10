@@ -2,59 +2,22 @@
   .row
     .col-md-3
       .filter
-        .title Lists
+        .pull-right
+          %a.btn.btn-mini.btn-default#add_list
+            %i.fa.fa-plus
+
+        .title Select a List
+
         %ul.lists
           - current_user.lists.each do |list|
-            = render partial: 'queue/list', locals: { list: list }
+            = render partial: 'list_menu', locals: { list: list }
+          %li.list.hidden#add_list_form
+            = form_for List.new, html: { class: 'form-inline' } do |f|
+              .color-code
+              .name{style: 'max-width: 50%'}
+                = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
+              .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'
 
     .col-md-9
 
-      .panel
-        .panel-heading
-          = "#{@list.name} contains #{@list.posts.count} items"
-
-        .panel-body
-          - @list.sorted_posts.each do |post|
-            %p
-              %strong= post.providers.map(&:nickname).join(',')
-              %br
-              = "#{post.text}"
-              - if post.has_media?
-                %br
-                = image_tag post.media_url(:thumb)
-              %br
-              = link_to "delete", "/lists/#{@list.id}/remove_post/#{post.id}", { method: "POST" }
-              = " | "
-              = link_to "edit", edit_post_path(post)
-
-      .panel.panel-default.only
-        .panel-heading
-          Add more content
-
-        .panel-body
-          .row
-            .col-md-6
-              %p
-                %strong Add a single post
-              = form_tag list_add_post_path(@list), { multipart: true } do
-                - identities.each do |identity|
-                  = label_tag do
-                    = check_box_tag 'identity_ids[]', identity.id, false, id: "identity_ids_#{identity.id}"
-                    = identity.nickname
-                = hidden_field_tag :list_id, value: @list.id
-                = text_area_tag :text
-                = file_field_tag :asset
-                = submit_tag "Add Post"
-
-            .col-md-6
-              %p
-                %strong Add multiple posts, separated by double enters
-              = form_tag list_batch_add_post_path(@list) do
-                = hidden_field_tag :list_id, value: @list.id
-                = text_area_tag :text
-                = submit_tag "Add All"
-          / = form_for @post, url: list_add_post_path(@list), html: { multipart: true }, layout: :horizontal do |f|
-          /   = f.hidden_field :list_id, value: @list.id
-          /   = fields_for @post.content_item do |ci_form|
-          /     = ci_form.text_area :text
-          /   = f.submit "Add"
+      = render partial: 'list', locals: { list: @list }

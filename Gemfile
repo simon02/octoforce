@@ -88,7 +88,11 @@ gem 'paperclip', "~> 4.3"
 gem 'aws-sdk', '~> 1.6'
 gem 'bitly'
 gem 'color-generator'
-gem "sidekiq-cron", "~> 0.4.0"
+gem 'jquery-fileupload-rails'
+gem 'intercom-rails'
+gem 'intercom'
+gem 'font-awesome-rails'
+gem 'sidekiq-cron', "~> 0.4.0"
 gem 'sidekiq-unique-jobs'
 gem 'jazz_hands', github: 'danrabinowitz/jazz_hands', branch: 'use-newer-version-of-pry', groups: [:development, :test]
 gem 'bootstrap-sass'
@@ -102,6 +106,7 @@ gem 'devise', '~> 3.4'
 gem 'devise_invitable'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'koala'
 gem 'omniauth-google-oauth2'
 #gem 'google-api-client', require: 'google/api_client'
 gem 'omniauth-instagram'

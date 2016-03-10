@@ -1,0 +1,15 @@
+!!! 5
+%html.no-js
+  = render 'head'
+
+  %body.void{ :class => "#{ controller.controller_name }" }
+    = render 'chromeframe'
+    .login-wrapper
+      = render 'flashes'
+
+      = yield
+
+      = render 'footer'
+
+    -# Javascript at the bottom for fast page loading
+    = render 'javascripts'

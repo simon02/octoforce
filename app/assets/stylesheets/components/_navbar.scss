@@ -47,7 +47,7 @@ body {
       border: none;
       color: #b6c0d4;
       line-height: 3rem;
-      &:hover{
+      &:hover, &:focus {
         border: none;
         background: darken($menu-color, 5%);
       }
@@ -57,7 +57,7 @@ body {
       color: white;
       background: darken($menu-color, 5%);;
       border: none;
-      &:hover {
+      &:hover, &:focus {
         color: white;
         border: none;
         background: darken($menu-color, 5%);

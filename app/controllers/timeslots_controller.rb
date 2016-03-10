@@ -5,6 +5,10 @@ class TimeslotsController < ApplicationController
   end
 
   def create
+    schedule = Schedule.find timeslot_params[:schedule_id]
+    # event tracking
+    intercom_event 'created-timeslot', timeslots_in_schedule: schedule.timeslots.count, number_of_schedules: current_user.schedules.count, social_media: schedule.identity.provider
+
     offset = Time.parse(timeslot_params[:offset])
     @slot = Timeslot.create(timeslot_params.merge offset: (offset.hour * 60 + offset.min))
     respond_to do |format|
