@@ -7,6 +7,9 @@ class QueueWorker
   # end
 
   def perform list_id
+    puts "=+"*100
+    puts Time.zone.now
+    puts "=+"*100
     list = List.find(list_id)
     list.reschedule if list
   end

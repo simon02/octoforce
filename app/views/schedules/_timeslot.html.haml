@@ -1,4 +1,8 @@
 .timeslot{style: "border: 1px solid #BBB; border-radius: 3px; margin-bottom: 3px; padding: 5px"}
+  .pull-right
+    %small
+      %a{href: timeslot_path(slot), data: { method: 'delete'} }
+        %i.fa.fa-trash
   .timestamp
     %strong= offset_to_time(slot.offset, "%I:%M %P")
   .list{style: "font-size: 13px"}= link_to(slot.list.name, list_path(slot.list)) if slot.list

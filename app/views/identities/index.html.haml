@@ -19,33 +19,5 @@
                   .provider.actions
                     %small= link_to 'remove', identity_path(identity), method: :delete, data: { confirm: 'This will also remove the connected schedule. Are you sure you want to proceed?' }
 
-      .panel
-        %a{name: "add-new"}
-        .panel-heading
-          .title
-            Connect a social network
-          .subtitle
-            Share to unlimited social networks with Octoforce and we'll make sure the updates keep flowing. Each social network you connect, gets their own schedule.
-        .panel-body.padded
-          .row
-            .col-md-4{style: 'text-align: center'}
-              %i.fa.fa-4x.fa-twitter.color-twitter
-              %br
-              %br
-              - if @identities.filter_by_provider('twitter').count > 0
-                = link_to 'connect twitter account', omniauth_authorize_path('user', 'twitter', force_login: true), class: 'btn btn-twitter'
-              - else
-                = link_to 'connect twitter account', omniauth_authorize_path('user', 'twitter'), class: 'btn btn-twitter'
-            .col-md-4{style: 'text-align: center'}
-              %i.fa.fa-4x.fa-facebook.color-facebook
-              %br
-              %br
-              %div{'data-toggle': 'tooltip', title: 'not supported yet', style: 'display: inline-block'}
-                = link_to 'connect facebook account', omniauth_authorize_path('user', 'facebook'), class: 'btn btn-facebook disabled'
-            .col-md-4{style: 'text-align: center'}
-              %i.fa.fa-4x.fa-linkedin.color-linkedin
-              %br
-              %br
-              %div{'data-toggle': 'tooltip', title: 'not supported yet', style: 'display: inline-block'}
-                = link_to 'connect linkedin account', '', class: 'btn btn-linkedin disabled'
 
+      = render partial: 'add'

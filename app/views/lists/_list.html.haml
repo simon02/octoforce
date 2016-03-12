@@ -1,5 +1,7 @@
 .panel
   .panel-heading
+    .actions
+      = link_to 'add in bulk', list_add_in_bulk_path(list), class: 'btn btn-default btn-small'
     .title= "#{list.name} contains #{list.posts.count} items"
     .subtitle
       This will last you for
@@ -18,20 +20,4 @@
 
     - list.posts.sorted.each do |post|
       .panel-row
-        .body{style: 'position: relative; min-height: 70px'}
-          - if post.has_media?
-            .pull-right{style: 'margin-left: 10px'}
-              = link_to (image_tag post.media_url(:thumb)), post.media_url
-          .text.x-large{style: 'margin-bottom: 10px'}
-            = "#{post.text}"
-          .pull-left
-            .x-small
-              - if post.updates.scheduled.first
-                = "scheduled for publication onj #{post.updates.scheduled.first.scheduled_at}"
-              - elsif post.updates.published.first
-                = "last published #{time_ago_in_words calculate_local_time(post.updates.published.first.scheduled_at)} ago"
-            .x-small
-              = link_to "delete", "/lists/#{list.id}/remove_post/#{post.id}", { method: "POST" }
-              = " | "
-              = link_to "edit", edit_post_path(post)
-          .clearfix
+        = render partial: 'post', locals: { post: post }

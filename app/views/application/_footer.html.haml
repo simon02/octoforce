@@ -5,4 +5,6 @@
         %small.copyright
           Octoforce, Copyright &copy; #{ Date.today.year }
           %br
-          server time: #{ Time.now }
+          server time: #{ Time.zone.now }
+          %br
+          your time: #{ calculate_local_time Time.zone.now}

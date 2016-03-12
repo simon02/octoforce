@@ -1,0 +1,18 @@
+.body{style: 'position: relative; min-height: 70px'}
+  - if post.has_media?
+    .pull-right{style: 'margin-left: 10px'}
+      = link_to (image_tag post.media_url(:thumb)), post.media_url
+  .text.x-large{style: 'margin-bottom: 10px'}
+    = show post.text
+  - if !(preview ||= false)
+    .pull-left
+      .x-small
+        - if post.updates.scheduled.first
+          = "scheduled for publication in #{time_ago_in_words post.updates.scheduled.first.scheduled_at}"
+        - elsif post.updates.published.first
+          = "last published #{time_ago_in_words calculate_local_time(post.updates.published.first.scheduled_at)} ago"
+      .x-small
+        = link_to "delete", "/lists/#{post.list.id}/remove_post/#{post.id}", { method: "POST" }
+        = " | "
+        = link_to "edit", edit_post_path(post)
+    .clearfix

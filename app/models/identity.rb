@@ -1,6 +1,6 @@
 class Identity < ActiveRecord::Base
   belongs_to :user
-  has_many :schedules, dependent: :nullify
+  has_many :schedules, dependent: :destroy
   has_many :updates, dependent: :destroy
   after_save :setup
   validates_presence_of :uid, :provider
@@ -51,7 +51,9 @@ class Identity < ActiveRecord::Base
   private
 
   def setup
-    self.schedules.create name: "Schedule for #{self.nickname}", user: self.user
+    if self.schedules.empty? && self.user
+      self.schedules.create name: "Schedule for #{self.nickname}", user: self.user
+    end
   end
 
 end

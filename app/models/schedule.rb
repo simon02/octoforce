@@ -16,7 +16,7 @@ class Schedule < ActiveRecord::Base
     puts "Lets get our reschedule ON"
     remove_scheduled_updates
     today = Date.today
-    schedule Time.now, 7 * weeks
+    schedule Time.zone.now, 7 * weeks
   end
 
   def schedule starting_time, days
@@ -34,7 +34,7 @@ class Schedule < ActiveRecord::Base
   end
 
   def remove_scheduled_updates
-    updates.where("scheduled_at > ?", Time.now).order(scheduled_at: :desc).each { |u| u.unschedule }
+    updates.scheduled.order(scheduled_at: :desc).each { |u| u.unschedule }
   end
 
   def number_of_unique_days

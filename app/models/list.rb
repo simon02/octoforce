@@ -23,10 +23,6 @@ class List < ActiveRecord::Base
     self.posts(true)
   end
 
-  def scheduled_updates
-    self.updates.where "scheduled_at > ?", Time.now
-  end
-
   def first_position
     first = posts.order(:position).first
     first ? first.position : 100
@@ -41,9 +37,9 @@ class List < ActiveRecord::Base
   end
 
   def reschedule weeks = 1
-    scheduled_updates.each &:unschedule
+    updates.scheduled.each &:unschedule
     slots = timeslots.sort_by { |t| [t.day, t.offset] }
-    now = Time.now.to_date
+    now = Time.zone.now.to_date
     year = now.year
     week = now.cweek
     slots.each do |slot|
@@ -62,7 +58,7 @@ class List < ActiveRecord::Base
   private
 
   def find_first_post
-    updates = self.scheduled_updates.sort_by &:scheduled_at
+    updates = self.updates.scheduled.sort_by &:scheduled_at
     if updates.empty?
       self.next_post
     else

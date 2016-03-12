@@ -1,0 +1,19 @@
+.container
+  .panel
+    .panel-heading
+      .title
+        Preview
+      .subtitle
+        = "Check out these #{@posts.count} new updates. Think they got enough SWAG for #{@list.name}?"
+    .panel-body
+      = form_tag list_add_in_bulk_path(@list) do
+        .panel-row
+          = submit_tag "Lookin' good - I want to keep 'em", class: 'btn btn-default form-control'
+        - @posts.each do |post|
+          .panel-row
+            = hidden_field_tag "posts[][list_id]", post.list.id
+            = hidden_field_tag "posts[][text]", post.text
+            .text.large
+              = show post.text
+        .panel-row
+          = submit_tag "Lookin' good - I want to keep 'em", class: 'btn btn-primary form-control'

@@ -14,7 +14,7 @@
             = update.identity.name
             %span.subtle= update.identity.subname
           .timestamp= calculate_local_time(update.scheduled_at).strftime("%l:%M %P - %d/%m/%y")
-        .text= update.text
+        .text= show update.text
         .category
           .color-code{style: "background-color: ##{update.list.color}"}
           .name= update.list.name

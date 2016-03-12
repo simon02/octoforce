@@ -11,8 +11,8 @@ class User < ActiveRecord::Base
   devise :omniauthable, :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable
 
-  def time_zone
-    return TZInfo::Timezone.get("Europe/Brussels")
+  def tzinfo
+    TZInfo::Timezone.get(timezone)
   end
 
   def bitly_client

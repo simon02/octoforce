@@ -2,11 +2,16 @@
   .row
     .col-md-3
       .filter
-        .pull-right
-          %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
-            %i.fa.fa-plus
+        - if !@identities.empty?
+          .pull-right
+            %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
+              %i.fa.fa-plus
 
         .title Filter by account
+        - if @identities.empty?
+          = link_to 'Add your first social media account', identities_url, class: 'btn btn-primary form-control'
+          %br
+          %br
         = render partial: 'identities', locals: { identities: @identities }
 
       .filter

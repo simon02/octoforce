@@ -24,6 +24,17 @@ class TimeslotsController < ApplicationController
   end
 
   def destroy
+    @slot = Timeslot.find(params[:id]).destroy
+
+    QueueWorker.perform_async(@slot.list.id)
+
+    respond_to do |format|
+      format.html { redirect_to schedules_path }
+      format.js
+    end
+  rescue
+    flash[:error] = "An error occured."
+    redirect_to schedules_path
   end
 
   private

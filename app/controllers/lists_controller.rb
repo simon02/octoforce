@@ -13,6 +13,30 @@ class ListsController < ApplicationController
     @new_list = List.new
   end
 
+  def add_in_bulk
+    @list = List.find(params[:list_id])
+  end
+
+  def preview_add_in_bulk
+    regexp = /#{"\r?\n"*params[:nr_enters].to_i}/
+    @list = List.find(params[:list_id])
+    @posts = params[:text].split(regexp).map { |text| Post.new text: text, list: @list }
+  end
+
+  def post_add_in_bulk
+    list = List.find(params[:list_id])
+    params[:posts].to_a.reverse.each do |post|
+      p = Post.create user: current_user, text: post["text"]
+      list.move_to_front p
+    end
+
+    QueueWorker.perform_async(list.id)
+
+    intercom_event 'created-posts-batch', number_of_posts: current_user.posts.count, posts_added: params[:posts].to_a.count
+
+    redirect_to list_url(list.id)
+  end
+
   def create
     list = List.create list_params
     list.user = current_user

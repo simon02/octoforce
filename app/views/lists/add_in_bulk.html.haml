@@ -1,0 +1,56 @@
+.container
+  .row
+    .panel
+      .panel-heading
+        .title= "Adding updates in bulk for #{@list.name}"
+
+      .panel-body
+        .panel-row
+          = form_tag list_add_in_bulk_preview_path(@list),  multipart: true  do
+            .form-group
+              .pull-right
+                = label_tag :nr_enters
+                = number_field_tag :nr_enters, 1
+              %p
+                Type out or copy your updates here.
+            .form-group
+              = text_area_tag :text, nil, placeholder: "'What do you want to share?'", rows: 10, class: 'form-control m5'
+            = submit_tag "Preview", class: 'btn btn-primary form-control'
+
+    .panel
+      .panel-heading
+        .title
+          FAQ
+      .panel-body
+        .panel-row
+          %h4
+            What do I do?
+          %p
+            Just type or copy/paste your updates in the box above. Make sure the number of enters is filled in correctly as this is used to split them up.
+          %p
+            A simple example with number of enters 1 (the default):
+          %pre
+            :preserve
+              This is my first update.
+              This is my second update.
+              This is yet another third update. None of the updates should contain enters themselves, or they would be seen as a separate update.
+          %p
+            Another example where updates contain double enters themselves (number of enters is 3):
+          %pre
+            :preserve
+              The first update contains a link:
+
+              http://www.thisisthelink.com/interesting-post
+
+
+              This is the second update. See how there are 2 empty lines above and below to separate me from the other 2 updates.
+
+
+              A third update...
+
+              with built-in suspension!
+
+
+
+
+

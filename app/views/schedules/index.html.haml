@@ -1,19 +1,21 @@
 .container
   .row
-    .col-md-3
-      .filter
-        .title Filter by account
-        %ul.lists
-          = render partial: 'queue/identities', locals: { identities: @identities }
+    - if @identities.empty?
+      %p.large
+        = "You need to add a social network first:"
 
-    .col-md-9
-      .center_panel
-        - if @schedules.empty?
-          %p
-            = "You need to "
-            = link_to 'add a social network', identities_url
-            = "first."
+      = render partial: 'identities/add'
 
-        - @schedules.each do |schedule|
-          = render partial: 'schedule', locals: { schedule: schedule }
+    - else
+      .col-md-3
+        .filter
+          .title Filter by account
+          %ul.lists
+            = render partial: 'queue/identities', locals: { identities: @identities }
+
+      .col-md-9
+        .center_panel
+
+          - @schedules.each do |schedule|
+            = render partial: 'schedule', locals: { schedule: schedule }
 

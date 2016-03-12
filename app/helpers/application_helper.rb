@@ -14,8 +14,12 @@ module ApplicationHelper
   end
 
   def calculate_local_time time
-    tz = current_user.time_zone
+    tz = current_user.tzinfo
     tz.utc_to_local time
+  end
+
+  def show text
+    h(text).gsub("\n", "<br>").html_safe
   end
 
 end
