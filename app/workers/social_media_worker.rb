@@ -8,7 +8,7 @@ class SocialMediaWorker
     # updates can be destroyed between scheduling and execution
     return unless client
 
-    case self.provider
+    case update.identity.provider
     when 'facebook'
       perform_facebook update, client
     when 'github'
