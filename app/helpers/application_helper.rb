@@ -14,6 +14,7 @@ module ApplicationHelper
   end
 
   def calculate_local_time time
+    return Time.zone.now if !current_user
     tz = current_user.tzinfo
     tz.utc_to_local time
   end
