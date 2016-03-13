@@ -2,7 +2,8 @@ class Post < ActiveRecord::Base
   belongs_to :user
   belongs_to :list
   belongs_to :asset
-  has_many :updates
+  has_many :updates, dependent: :nullify
+  before_destroy :teardown, prepend: true
   before_save :check_position
   after_save :update_updates
   scope :sorted, -> { order(:position) }
@@ -52,6 +53,10 @@ class Post < ActiveRecord::Base
       end
       update.save
     end
+  end
+
+  def teardown
+    self.updates.scheduled.destroy_all
   end
 
 end

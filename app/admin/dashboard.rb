@@ -14,12 +14,12 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
       column do
         panel "Twitter" do
-          render partial: "admin/chart", locals: { scope: 'instagram_users' }
+          render partial: "admin/chart", locals: { scope: 'twitter_users' }
         end
       end
       column do
         panel "Instagram" do
-          render partial: "admin/chart", locals: { scope: 'twitter_users' }
+          render partial: "admin/chart", locals: { scope: 'instagram_users' }
         end
       end
     end
