@@ -36,16 +36,39 @@ class List < ActiveRecord::Base
     posts.sorted.first
   end
 
+  def sorted_posts
+    # always first show scheduled posts, based on scheduling time (should match position)
+    # NB: we don't want to show posts with multiple scheduled updates ahead of the pack (reason for the weird zero? construction)
+    posts.sort_by { |post| [post.updates.scheduled.count.zero? ? 0 : -1, post.position] }
+  end
+
   def reschedule weeks = 1
-    updates.scheduled.each &:unschedule
-    slots = timeslots.sort_by { |t| [t.day, t.offset] }
-    now = Time.zone.now.to_date
+    updates.scheduled.sorted.reverse.each &:unschedule
+    # sunday is 0, but we actually want those last, so we mess a little with the index here
+    slots = timeslots.sort_by { |t| [(t.day - 1)%7, t.offset] }
+    now = Time.zone.now
     year = now.year
-    week = now.cweek
+    week = now.to_date.cweek
+    backlog = []
+    first = []
+    last = []
     slots.each do |slot|
-      time = slot.calculate_scheduling_time year, week
+      scheduling_time = slot.calculate_scheduling_time year, week
       # timeslots that are before now should be scheduled next week
-      slot.schedule_next_update year, (time < now ? week + 1 : week)
+      if scheduling_time < now
+        last << slot
+      else
+        first << slot
+      end
+    end
+    weeks.times do |time|
+      first.each do |slot|
+        slot.schedule_next_update year, week
+      end
+      last.each do |slot|
+        slot.schedule_next_update year, week + 1
+      end
+      week += 1
     end
   end
 

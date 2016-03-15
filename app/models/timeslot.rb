@@ -6,7 +6,11 @@ class Timeslot < ActiveRecord::Base
 
   def schedule_next_update year, week
     post = list.find_next_post
-    return unless post
+    unless post
+      return
+    else
+      puts "Could not find the post :o"
+    end
     update = post.schedule calculate_scheduling_time(year, week)
     update.update timeslot: self, identity: schedule.identity
   end

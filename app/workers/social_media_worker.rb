@@ -21,9 +21,9 @@ class SocialMediaWorker
 
   def perform_twitter update, client
     if update.has_media?
-      client.update_with_media(update.text, open(update.media_url))
+      client.update_with_media(update.text[0..115], open(update.media_url))
     else
-      client.update(update.text)
+      client.update(update.text[0..139])
     end
     update.published = true
     update.save

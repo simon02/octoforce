@@ -12,6 +12,7 @@ class QueueController < ApplicationController
 
     current_user.lists.each do |list|
       QueueWorker.perform_async list.id
+      # list.reschedule
     end
     redirect_to queue_url
   end

@@ -81,6 +81,13 @@
     .x-small {
       font-size: 12px;
     }
+    .body {
+      position: relative;
+    }
+    .bottom {
+      position: absolute;
+      bottom: 0;
+    }
     .update {
       .profile {
         position: absolute;
@@ -124,7 +131,6 @@
         }
         .text {
           font-size: 1.8rem;
-          padding: 10px 0;
         }
         .category {
           display: inline-block;
@@ -132,7 +138,8 @@
           font-weight: 600;
           color: #555;
           background-color: #f8f8f8;
-          position: relative;
+          position: absolute;
+          bottom: 0;
           .name {
             border: 1px solid #ccc;
             border-left: none;

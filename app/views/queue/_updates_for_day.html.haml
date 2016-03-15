@@ -4,7 +4,7 @@
   .panel-body
     - updates.each do |update|
       .panel-row.update
-        .header
+        .header.m10
           .profile
             %i{'class': "fa fa-#{update.identity.provider} #{update.identity.provider}"}
             %img{'src': update.identity.image}
@@ -14,7 +14,13 @@
             = update.identity.name
             %span.subtle= update.identity.subname
           .timestamp= calculate_local_time(update.scheduled_at).strftime("%l:%M %P - %d/%m/%y")
-        .text= show update.text
-        .category
-          .color-code{style: "background-color: ##{update.list.color}"}
-          .name= update.list.name
+        .body
+          - if update.has_media?
+            .pull-right{style: 'margin-left: 10px'}
+              = link_to (image_tag update.media_url(:thumb)), update.media_url
+          .text.m30
+            = show update.text
+          .category
+            .color-code{style: "background-color: ##{update.list.color};"}
+            .name= update.list.name
+          .clearfix

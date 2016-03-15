@@ -1,16 +1,19 @@
-.body{style: 'position: relative; min-height: 70px'}
+.body
   - if post.has_media?
     .pull-right{style: 'margin-left: 10px'}
       = link_to (image_tag post.media_url(:thumb)), post.media_url
-  .text.x-large{style: 'margin-bottom: 10px'}
+  .text.x-large.m45
     = show post.text
   - if !(preview ||= false)
-    .pull-left
+    .bottom
       .x-small
-        - if post.updates.scheduled.first
-          = "scheduled for publication in #{time_ago_in_words post.updates.scheduled.first.scheduled_at}"
-        - elsif post.updates.published.first
-          = "last published #{time_ago_in_words calculate_local_time(post.updates.published.first.scheduled_at)} ago"
+        - if post.updates.scheduled.count > 0
+          - scheduled_at = calculate_local_time post.updates.scheduled.sorted.first.scheduled_at
+          scheduled for publication in
+          %abbr{'data-toggle': 'tooltip', title: "#{scheduled_at.strftime('%A %-d %B at %I:%M %P')}"}
+            = time_ago_in_words scheduled_at
+        - elsif post.updates.published.count > 0
+          = "last published #{time_ago_in_words calculate_local_time(post.updates.published.sorted.first.scheduled_at)} ago"
       .x-small
         = link_to "delete", "/lists/#{post.list.id}/remove_post/#{post.id}", { method: "POST" }
         = " | "

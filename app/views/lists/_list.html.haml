@@ -18,6 +18,6 @@
           = submit_tag "Add to #{list.name}", class: 'btn btn-primary pull-right'
           .clearfix
 
-    - list.posts.sorted.each do |post|
+    - list.sorted_posts.each do |post|
       .panel-row
         = render partial: 'post', locals: { post: post }
