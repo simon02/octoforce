@@ -20,15 +20,19 @@ Rails.application.routes.draw do
     post '/add_timeslot' => 'schedules#add_timeslot'
   end
   resources :lists do
-    get '/add_in_bulk' => 'lists#add_in_bulk'
-    post '/add_in_bulk/preview' => 'lists#preview_add_in_bulk'
-    post '/add_in_bulk' => 'lists#post_add_in_bulk'
-    post '/add_post' => 'lists#add_post'
-    post '/batch_add_post' => 'lists#batch_add_post'
-    post '/remove_post/:post_id' => 'lists#remove_post'
+    resources :posts, only: [:create]
+    get '/posts/bulk' => 'posts#show_bulk'
+    post '/posts/preview' => 'posts#bulk_preview'
+    post '/posts/bulk' => 'posts#create_bulk'
+    # get '/add_in_bulk' => 'lists#add_in_bulk'
+    # post '/add_in_bulk/preview' => 'lists#preview_add_in_bulk'
+    # post '/add_in_bulk' => 'lists#post_add_in_bulk'
+    # post '/add_post' => 'lists#add_post'
+    # post '/batch_add_post' => 'lists#batch_add_post'
+    # post '/remove_post/:post_id' => 'lists#remove_post'
   end
   resources :identities, path: 'accounts'
-  resources :posts, only: [:update, :edit]
+  resources :posts, only: [:update, :edit, :destroy]
   resources :timeslots, only: [:new, :create, :edit, :destroy]
 
   get '/queue' => 'queue#index'

@@ -4,6 +4,14 @@ class Timeslot < ActiveRecord::Base
   has_many :updates, dependent: :nullify
   validates_presence_of :day, :offset
 
+  def self.create_with_timestamp params
+    if params.key? :offset
+      offset = Time.parse(params[:offset])
+      params[:offset] = offset.hour * 60 + offset.min
+    end
+    create params
+  end
+
   def schedule_next_update year, week
     post = list.find_next_post
     unless post

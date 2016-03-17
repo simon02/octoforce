@@ -9,4 +9,13 @@ RSpec.describe Timeslot, type: :model do
     expect(time.to_time).to eq(Time.new(2015, 8, 27, 7, 32, 0, 0))
   end
 
+  describe '#create_with_timestamp' do
+
+    it 'should create a timeslot object' do
+      slot = Timeslot.create_with_timestamp offset: "9:03am", day: 1
+      expect(slot.offset).to eq 543
+    end
+
+  end
+
 end

@@ -2,3 +2,8 @@ my_first_job:
   cron: "*/2 * * * *"
   class: "UpdateSchedulerWorker"
   queue: default
+
+reschedule_everything:
+  cron: "0 0 * * *"
+  class: "ScheduleNewUpdatesWorker"
+  queue: default

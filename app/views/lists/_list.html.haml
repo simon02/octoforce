@@ -1,7 +1,7 @@
 .panel
   .panel-heading
     .actions
-      = link_to 'add in bulk', list_add_in_bulk_path(list), class: 'btn btn-default btn-small'
+      = link_to 'add in bulk', list_posts_bulk_path(list), class: 'btn btn-default btn-small'
     .title= "#{list.name} contains #{list.posts.count} items"
     .subtitle
       This will last you for
@@ -10,7 +10,7 @@
 
   .panel-body
     .panel-row
-      = form_tag list_add_post_path(list),  multipart: true , id: 'share_expand' do
+      = form_tag list_posts_path(list),  multipart: true , id: 'share_expand' do
         .form-group
           = text_area_tag :text, nil, placeholder: "'What do you want to share?'", rows: 1, class: 'form-control m5'
         .form-group.hidden.can-hide

@@ -9,10 +9,9 @@ class TimeslotsController < ApplicationController
     # event tracking
     intercom_event 'created-timeslot', timeslots_in_schedule: schedule.timeslots.count, number_of_schedules: current_user.schedules.count, social_media: schedule.identity.provider
 
-    offset = Time.parse(timeslot_params[:offset])
-    @slot = Timeslot.create(timeslot_params.merge offset: (offset.hour * 60 + offset.min))
+    @timeslot = Timeslot.create_with_timestamp timeslot_params
 
-    QueueWorker.perform_async(@slot.list.id)
+    QueueWorker.perform_async(@timeslot.list.id)
 
     respond_to do |format|
         format.html { redirect_to schedules_path(@slot.schedule) }
@@ -24,9 +23,10 @@ class TimeslotsController < ApplicationController
   end
 
   def destroy
-    @slot = Timeslot.find(params[:id]).destroy
+    puts "THIS GETS CALLED!!!"
+    @timeslot = Timeslot.find(params[:id]).destroy
 
-    QueueWorker.perform_async(@slot.list.id)
+    QueueWorker.perform_async(@timeslot.list.id)
 
     respond_to do |format|
       format.html { redirect_to schedules_path }

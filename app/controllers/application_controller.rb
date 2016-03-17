@@ -27,6 +27,11 @@ class ApplicationController < ActionController::Base
     # log the intercom error...
   end
 
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:warning] = exception.message
+    redirect_to root_path
+  end
+
   private
 
   def init_intercom

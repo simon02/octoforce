@@ -15,7 +15,7 @@
         - elsif post.updates.published.count > 0
           = "last published #{time_ago_in_words calculate_local_time(post.updates.published.sorted.first.scheduled_at)} ago"
       .x-small
-        = link_to "delete", "/lists/#{post.list.id}/remove_post/#{post.id}", { method: "POST" }
+        = link_to "delete", list_posts_path(post), { method: "delete" }
         = " | "
         = link_to "edit", edit_post_path(post)
     .clearfix
