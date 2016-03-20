@@ -2,7 +2,7 @@ $menu-color: #284161;
 $bg-color: #f8f8f8;
 
 .navbar-default {
-  z-index: 2001;
+  z-index: 1001;
   position: absolute;
   width: 220px;
   background-color: $menu-color;
@@ -15,11 +15,20 @@ $bg-color: #f8f8f8;
 
 .navbar-header {
   float: none;
-  .navbar-brand {
+  .navbar-brand, .navbar-brand:hover, .navbar-brand:focus {
     color: white;
     font-size: 24px;
     font-weight: 700;
     margin: 10px 0;
+    position: relative;
+    .beta {
+      font-size: 14px;
+      color: #A3C1D6;
+      position: absolute;
+      top: 0;
+      right: 15px;
+      font-weight: 300;
+    }
   }
 }
 .navbar-collapse {

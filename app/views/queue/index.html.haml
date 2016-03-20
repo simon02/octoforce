@@ -31,28 +31,13 @@
 
 
     .col-md-9
+      - if @updates.empty?
+        = render partial: 'identities/add'
 
-      = link_to "Reschedule queue", queue_reschedule_path
+      - else
 
-      - date = nil
-      - split_updates_in_days.each do |day, updates|
-        = render partial: 'updates_for_day', locals: { updates: updates, day: day }
-        / - temp = calculate_local_time(update).strftime("%a %-d %B")
-        / - if temp != date
-        /   %h2= temp
-        / - date = temp
-        / .tweet
-        /   .body
-        /     - if update.has_media?
-        /       .media= image_tag update.media_url(:thumb)
-        /     .text= update.text
-        /     - if update.timeslot && update.timeslot.list
-        /       .list
-        /         from
-        /         = link_to update.timeslot.list.name, list_path(update.timeslot.list)
-        /     .clearfix
-        /   .footer
-        /     .body
-        /       %span.timestamp= calculate_local_time(update).strftime("%l:%M %P")
-        /       %span.social-network= "on @#{update.identity.nickname} (#{update.identity.provider})"
-        /       %span.time-ago= "in #{time_ago_in_words(update.scheduled_at)}"
+        = link_to "Reschedule queue", queue_reschedule_path
+
+        - date = nil
+        - split_updates_in_days.each do |day, updates|
+          = render partial: 'updates_for_day', locals: { updates: updates, day: day }

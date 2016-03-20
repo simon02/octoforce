@@ -3,6 +3,7 @@ class List < ActiveRecord::Base
   has_many :posts, dependent: :destroy
   has_many :timeslots, dependent: :nullify
   has_many :updates, dependent: :nullify
+  has_many :feeds, dependent: :destroy
   after_initialize do |list|
     @generator = ColorGenerator.new saturation: 0.5, lightness: 0.5 unless @generator
     list.color ||= @generator.create_hex

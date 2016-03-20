@@ -36,7 +36,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       @user = FormUser.find @user.id
       sign_in @user
       set_flash_message(:notice, :success, kind: provider.capitalize) if is_navigational_format?
-      redirect_to identities_url
+      redirect_to @user.identities.count == 1 ? lists_url : identities_url
     else
       session["devise.#{provider}_data"] = env["omniauth.auth"]
       redirect_to new_user_registration_url

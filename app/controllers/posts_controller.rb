@@ -28,17 +28,20 @@ class PostsController < ApplicationController
   end
 
   def create
-    post = Post.new text: params[:text]
-    post.asset = Asset.new(media: params[:asset], user: current_user) if params[:asset]
-    post.user = current_user
-    if post.save
+    @post = Post.new text: params[:text]
+    @post.asset = Asset.new(media: params[:asset], user: current_user) if params[:asset]
+    @post.user = current_user
+    if @post.save
       intercom_event 'post-created', number_of_posts: current_user.posts.count, contains_media: !params[:asset].nil?
+
+      @list.move_to_front @post
+      QueueWorker.perform_async(@list.id)
     end
 
-    @list.move_to_front post
-    QueueWorker.perform_async(@list.id)
-
-    redirect_to list_url(@list)
+    respond_to do |format|
+      format.html { redirect_to list_url(@list) }
+      format.js
+    end
   end
 
   def create_bulk
@@ -56,15 +59,20 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    post = Post.find(params[:post_id])
+    post = Post.find(params[:id])
+    list = post.list
     authorize! :destroy, post
-    if post.user_id == current_user.id
-      QueueWorker.perform_async(post.list.id)
-    else
-      flash[:error] = "Invalid operation"
+    post.destroy
+    QueueWorker.perform_async(list.id)
+    @post_id = params[:id]
+
+    respond_to do |format|
+      format.html { redirect_to list_url(list) }
+      format.js
     end
-    redirect_to list_url id: params[:list_id]
   end
+
+  private
 
   def post_params
     params.require(:post).permit(:text)

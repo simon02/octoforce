@@ -1,6 +1,11 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  # mountain things
+  mount Sidekiq::Web, at: '/sidekiq'
+  mount SuperfeedrEngine::Engine => SuperfeedrEngine::Engine.base_path # Use the same to set path in the engine initialization!
+
+
   namespace :admin do
     # get "/stats" => "stats#stats"
     devise_scope :admin_user do
@@ -13,8 +18,6 @@ Rails.application.routes.draw do
   devise_for :users, class_name: 'FormUser', :controllers => { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations' }
   root 'queue#index'
   get '/setup' => 'setup#index'
-
-  mount Sidekiq::Web, at: '/sidekiq'
 
   resources :schedules, only: :index do
     post '/add_timeslot' => 'schedules#add_timeslot'
@@ -30,6 +33,7 @@ Rails.application.routes.draw do
     # post '/add_post' => 'lists#add_post'
     # post '/batch_add_post' => 'lists#batch_add_post'
     # post '/remove_post/:post_id' => 'lists#remove_post'
+    resources :feeds, only: [:index, :new, :create, :destroy]
   end
   resources :identities, path: 'accounts'
   resources :posts, only: [:update, :edit, :destroy]

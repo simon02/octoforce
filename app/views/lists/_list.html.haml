@@ -2,22 +2,30 @@
   .panel-heading
     .actions
       = link_to 'add in bulk', list_posts_bulk_path(list), class: 'btn btn-default btn-small'
+      = link_to 'rss feeds', list_feeds_path(list), class: 'btn btn-default btn-small'
     .title= "#{list.name} contains #{list.posts.count} items"
     .subtitle
-      This will last you for
-      %strong= "#{list.number_of_unique_days} days "
-      given your current schedules.
+      - if list.posts.empty?
+      - else
+        This will last you for
+        %strong= "#{list.number_of_unique_days} days "
+        given your current schedules.
 
   .panel-body
     .panel-row
-      = form_tag list_posts_path(list),  multipart: true , id: 'share_expand' do
+      - if current_user.posts.empty?
+        .large.m10
+          Enter your first tweet right here:
+      = form_tag list_posts_path(list),  multipart: true, remote: true, id: 'share_expand' do
         .form-group
-          = text_area_tag :text, nil, placeholder: "'What do you want to share?'", rows: 1, class: 'form-control m5'
-        .form-group.hidden.can-hide
+          - params = { placeholder: "'What do you want to share?'", rows: "#{list.posts.empty? ? 3 : 1}", class: 'form-control m5' }
+          - params.merge!({autofocus: 'autofocus'}) if list.posts.empty?
+          = text_area_tag :text, nil, params
+        .form-group.can-hide{class: "#{'hidden' unless list.posts.empty?}"}
           = file_field_tag :asset, class: 'pull-left'
           = submit_tag "Add to #{list.name}", class: 'btn btn-primary pull-right'
           .clearfix
-
-    - list.sorted_posts.each do |post|
-      .panel-row
-        = render partial: 'post', locals: { post: post }
+    .list-posts
+      - list.sorted_posts.each do |post|
+        .panel-row{id: "post_#{post.id}"}
+          = render partial: 'post', locals: { post: post }

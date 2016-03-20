@@ -1,0 +1,13 @@
+.modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "#{defined?(hidden) ? hidden : true}", id: "#{defined?(id) ? id : 'dialog'}"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
+          %span{'aria-hidden': true}
+            &times;
+        %h3.modal-title
+          - if defined? title
+            = title
+      .modal-body
+        - if defined? body
+          = body

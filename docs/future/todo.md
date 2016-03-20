@@ -1,11 +1,12 @@
 ## TODO
 
 - add RSS subscription service
-  - install superfeedr
-  - test superfeedr
-  - save feed entries as posts
+  [-] install superfeedr
+  [-] test superfeedr
+  [-] save feed entries as posts
+  [-] add into UI
 - add onboarding process
-  - add modal windows
+  [-] add modal windows
   - check if email address is known for user -> show modal asking for it
   - check if identities.count == 0 -> show modal asking to connect twitter account
   - check if posts.count == 0 -> ask to add first post -> inform when it will be posted -> show Q

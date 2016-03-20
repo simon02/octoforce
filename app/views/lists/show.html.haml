@@ -1,4 +1,7 @@
 .container
+  - if current_user.posts.empty?
+    = render partial: 'empty_library'
+
   .row
     .col-md-3
       .filter

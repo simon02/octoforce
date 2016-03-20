@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :updates, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :assets, dependent: :destroy
+  has_many :feeds, dependent: :destroy
   after_create :setup_user
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

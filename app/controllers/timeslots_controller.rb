@@ -14,8 +14,8 @@ class TimeslotsController < ApplicationController
     QueueWorker.perform_async(@timeslot.list.id)
 
     respond_to do |format|
-        format.html { redirect_to schedules_path(@slot.schedule) }
-        format.js
+      format.html { redirect_to schedules_path(@slot.schedule) }
+      format.js
     end
   end
 
