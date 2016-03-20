@@ -19,7 +19,7 @@
             .pull-right{style: 'margin-left: 10px'}
               = link_to (image_tag update.media_url(:thumb)), update.media_url
           .text.m30
-            = show update.text
+            = raw auto_link show update.text
           .category
             .color-code{style: "background-color: ##{update.list.color};"}
             .name= update.list.name

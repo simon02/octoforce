@@ -14,6 +14,6 @@
             = hidden_field_tag "posts[][list_id]", post.list.id
             = hidden_field_tag "posts[][text]", post.text
             .text.large
-              = show post.text
+              = raw auto_link show post.text
         .panel-row
           = submit_tag "Lookin' good - I want to keep 'em", class: 'btn btn-primary form-control'

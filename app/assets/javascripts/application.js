@@ -18,7 +18,18 @@
 
 //= require schedules
 //= require queue
+//= require posts
+
+var twitter = require('twitter-text')
+
+
+// console.log(twitter.txt.getTweetLength(twitter.htmlEscape('#hello < @world >')));
 
 $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    $('.twitter-text-counter').keyup(function() {
+      var target = $(this).data('target');
+      var length = 140 - twttr.txt.getTweetLength($(this).val());
+      $(target).html($('<span>').addClass(length < 10 ? 'warning' : '').text(length));
+    });
 });

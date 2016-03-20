@@ -18,12 +18,15 @@
           Enter your first tweet right here:
       = form_tag list_posts_path(list),  multipart: true, remote: true, id: 'share_expand' do
         .form-group
-          - params = { placeholder: "'What do you want to share?'", rows: "#{list.posts.empty? ? 3 : 1}", class: 'form-control m5' }
+          - params = { placeholder: "'What do you want to share?'", rows: "#{list.posts.empty? ? 3 : 1}", class: 'form-control m5 twitter-text-counter', id: "post_text", data: { target: '#text_counter' } }
           - params.merge!({autofocus: 'autofocus'}) if list.posts.empty?
           = text_area_tag :text, nil, params
         .form-group.can-hide{class: "#{'hidden' unless list.posts.empty?}"}
           = file_field_tag :asset, class: 'pull-left'
-          = submit_tag "Add to #{list.name}", class: 'btn btn-primary pull-right'
+          .pull-right
+            %span.subtle.small.twitter-counter#text_counter
+              140
+            = submit_tag "Add to #{list.name}", class: 'btn btn-primary pull-right'
           .clearfix
     .list-posts
       - list.sorted_posts.each do |post|

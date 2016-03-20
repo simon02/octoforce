@@ -1,1 +1,2 @@
 $(".list-posts").prepend($('<div>').attr('id', "post_#{@post.id}").addClass('panel-row').html("#{ j render(partial: 'lists/post', locals: { post: @post })}"))
+$(".twitter-text-counter").val('')
