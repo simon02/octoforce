@@ -1,4 +1,10 @@
 - if !flash.empty?
   .container#flash
     - flash.each do |key, value|
-      = alert_box value, context: flash_class(key), dismissible: true
+      .alert{role: 'alert', class: "#{flash_class(key)}"}
+        %button.close{'data-dismiss': 'alert', type: 'button'}
+          %span{'aria-hidden': 'true'}
+            ×
+          %span.sr-only
+            Close
+        = value

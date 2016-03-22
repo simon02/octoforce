@@ -1,0 +1,45 @@
+.calendar {
+  width: 100%;
+  th {
+    width: 14%;
+    padding: 3px;
+    text-align: center;
+    color: #666;
+    font-size: 12px;
+    &:first-child {
+      min-width: 50px;
+      width: auto;
+    }
+  }
+  td {
+    vertical-align: top;
+    padding: 4px;
+    &:first-child {
+      color: #757575;
+      font-size: 12px;
+      text-align: right;
+      padding: 1px 4px;
+    }
+  }
+  .timeslot {
+    border: 1px solid #BBB;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    padding: 5px;
+    .timestamp {
+      font-weight: 600;
+      font-size: 12px;
+      margin-bottom: 2px;
+      color: #333;
+    }
+    .list {
+      font-size: 13px;
+    }
+    .actions {
+      display: none;
+    }
+    &:hover .actions {
+      display: inline-block;
+    }
+  }
+}

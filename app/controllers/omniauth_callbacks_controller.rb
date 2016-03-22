@@ -1,4 +1,6 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  skip_before_filter :onboarding
+
   def instagram
     generic_callback( 'instagram' )
   end
@@ -17,7 +19,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
 
   def generic_callback( provider )
-    @identity = Identity.find_for_oauth env["omniauth.auth"]
+    @identity, created = Identity.find_for_oauth env["omniauth.auth"]
 
     @user = @identity.user || current_user
     if @user.nil?
@@ -35,7 +37,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # FormUser class (with the validations)
       @user = FormUser.find @user.id
       sign_in @user
-      set_flash_message(:notice, :success, kind: provider.capitalize) if is_navigational_format?
+      set_flash_message(:success, created ? :success : :authenticated, kind: provider.capitalize) if is_navigational_format?
       redirect_to @user.identities.count == 1 ? lists_url : identities_url
     else
       session["devise.#{provider}_data"] = env["omniauth.auth"]

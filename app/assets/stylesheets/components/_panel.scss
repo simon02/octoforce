@@ -13,6 +13,9 @@
 //   color: $panel-inverse-color;
 // }
 
+body,html {
+  height: 100%;
+}
 .panel .panel-body.padded {
   padding: 15px;
 }

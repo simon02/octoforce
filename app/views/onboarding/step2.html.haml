@@ -1,0 +1,68 @@
+- content_for :step_info do
+  .row
+    .col-md-12
+      .dialog
+        - if @posts.empty?
+          %h1
+            %strong Step 2:
+            Add Your First Tweet to Your Library
+          .actions.pull-right
+          .description
+            %p
+              This is your time to shine!
+            %p
+              Get creative below and carve an All-time Classic Tweet&#8482; or dig in your Twitter analytics and copy paste one of your best performing updates.
+
+          = link_to welcome_step3_path, class: 'small hidden-action' do
+            I'll do this later
+            %i.fa.fa-angle-right
+        - else
+          %h1
+            %strong Step 2:
+            That is Some Marvelous Writing!
+          .actions.pull-right
+          .description
+            %p
+              This content library forms the core of your social media console.
+            %p
+              Having a nice backlog of updates will make sure you never run out of interesting things to share with your lovely crowd so feel free to add as many tweets as you want.
+            %p.small
+              ps. use those lists to categorise them.
+          .bottom
+            .pull-right
+              = link_to welcome_step3_path, class: 'btn btn-primary' do
+                Next Step: Scheduling
+                %i.fa.fa-angle-double-right
+            %p
+              Temporarily out of grand ideas?
+            .clearfix
+
+.container
+  .row
+    .col-md-12
+      .panel
+        .panel-heading
+          .title
+            Add Content to Your Library
+        .panel-body
+          .panel-row
+            - list = @lists.first
+            = form_tag list_posts_path(list),  multipart: true, remote: true do
+              .form-group
+                = label_tag :list do
+                  Choose a list:
+                  %i.fa.fa-question-circle{'data-toggle': 'popover', 'data-content': 'Use lists to categorise your content', 'data-placement': 'top', 'data-trigger': 'hover'}
+                = select_tag :list, options_from_collection_for_select(@lists, :id, :name), class: 'form-control'
+              .form-group
+                .pull-right
+                  %span.subtle.small
+                    twitter text limit:
+                    %span.twitter-counter.text_counter
+                      140
+                = label_tag :text, "Text"
+                = text_area_tag :text, nil, placeholder: "What do you want to share?", rows: 4, class: 'form-control m5 twitter-text-counter', id: 'post_text', data: { target: '.text_counter' }
+              .form-group
+                = file_field_tag :asset, class: 'pull-left'
+                .pull-right
+                  = submit_tag "Save to Library", class: 'btn btn-primary pull-right'
+                .clearfix

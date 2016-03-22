@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :authenticate
+  before_filter :authenticate, :onboarding
 
   def authenticate
     unless ENV['HTTP_AUTH_USERNAME'].blank? or ENV['HTTP_AUTH_PASSWORD'].blank?
@@ -12,6 +12,12 @@ class ApplicationController < ActionController::Base
       end
     else
       authenticate_user!
+    end
+  end
+
+  def onboarding
+    if current_user.onboarding_active
+      redirect_to :"welcome_step#{current_user.onboarding_step || 0}"
     end
   end
 

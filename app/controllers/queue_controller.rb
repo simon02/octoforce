@@ -1,7 +1,7 @@
 class QueueController < ApplicationController
 
   def index
-    @updates = current_user.updates.scheduled.order :scheduled_at
+    @updates = current_user.updates.scheduled.sorted.group_by { |u| u.scheduled_at.to_date }
     @identities = current_user.identities
     @lists = current_user.lists
     @new_list = List.new

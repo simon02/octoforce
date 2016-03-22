@@ -1,17 +1,17 @@
-= form_for timeslot, url: schedule_add_timeslot_url(schedule), remote: true, html: { class: 'form-horizontal' } do |f|
+= form_for timeslot, url: schedule_add_timeslot_url(schedule), remote: true, html: { class: 'form-horizontal', id: "#{defined? id ? id : 'add_timeslot'}" } do |f|
   = f.hidden_field :schedule_id, value: schedule.id
   .form-group
     = f.label :day, class: 'col-sm-2 control-label'
     .col-sm-10
       = f.select :day, day_options, { selected: (defined?(day) ? day : 0).to_s }, { class: 'form-control' }
   .form-group
-    = f.label :offset, 'Time', class: 'col-sm-2 control-label'
+    = f.label :offset, 'Time', class: 'col-sm-2 control-label', required: 'required'
     .col-sm-10
-      = f.text_field :offset, placeholder: "Enter scheduling time", class: 'form-control'
+      = f.text_field :offset, placeholder: "Type scheduling time, eg. 2:32pm or 14:32", class: 'form-control'
   .form-group
     = f.label :list_id, 'List', class: 'col-sm-2 control-label'
     .col-sm-10
       = f.select :list_id, list_options, {}, { class: 'form-control' }
   .form-group
     .col-sm-10.col-sm-offset-2
-      = f.submit "Add timeslot", class: 'btn btn-primary'
+      = f.submit "Add timeslot", class: 'btn btn-primary', data: { disable_with: 'Submitting...' }

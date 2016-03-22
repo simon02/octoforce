@@ -9,7 +9,8 @@ class Identity < ActiveRecord::Base
 
   def self.find_for_oauth(auth)
     identity = find_by(provider: auth.provider, uid: auth.uid)
-    identity = create(uid: auth.uid, provider: auth.provider) if identity.nil?
+    create_identity = identity.nil?
+    identity = create(uid: auth.uid, provider: auth.provider) if create_identity
     identity.accesstoken = auth.credentials.token
     identity.secrettoken = auth.credentials.secret
     identity.refreshtoken = auth.credentials.refresh_token
@@ -20,7 +21,7 @@ class Identity < ActiveRecord::Base
     identity.phone = auth.info.phone
     identity.urls = (auth.info.urls || "").to_json
     identity.save
-    identity
+    return identity, create_identity
   end
 
   def client

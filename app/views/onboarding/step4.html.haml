@@ -1,3 +1,20 @@
+.tips-header
+  .row
+    .col-md-12
+      .dialog
+        %h1
+          %strong Step 4:
+          You Are All Set!
+        .actions.pull-right
+        .description
+          %p
+            :markdown
+              This is your queue. It shows all scheduled social media updates that will be sent out in the **next 2 weeks**.
+          %p
+            You can easily filter out updates for specific social media accounts on the left. Same goes for lists.
+          %p
+            This is the end of this small onboarding. Feel free to further explore Octoforce.
+
 .container
   .row
     .col-md-3
@@ -12,7 +29,7 @@
           = link_to 'Add your first social media account', identities_url, class: 'btn btn-primary form-control'
           %br
           %br
-        = render partial: 'identities', locals: { identities: @identities }
+        = render partial: 'queue/identities', locals: { identities: @identities }
 
       .filter
         .pull-right
@@ -21,7 +38,7 @@
         .title Filter by list
         %ul.lists
           - @lists.each do |list|
-            = render partial: 'list', locals: { list: list }
+            = render partial: 'queue/list', locals: { list: list }
           %li.list.hidden#add_list_form
             = form_for List.new, html: { class: 'form-inline' } do |f|
               .color-code
@@ -36,8 +53,7 @@
 
       - else
 
-        = link_to "Reschedule queue", queue_reschedule_path
-
         - date = nil
         - @updates.each do |day, updates|
-          = render partial: 'updates_for_day', locals: { updates: updates, day: day }
+          = render partial: 'queue/updates_for_day', locals: { updates: updates, day: day }
+

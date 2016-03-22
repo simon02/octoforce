@@ -15,9 +15,15 @@ Rails.application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  devise_for :users, class_name: 'FormUser', :controllers => { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations' }
+  devise_for :users, class_name: 'FormUser', :controllers => { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations', sessions: 'sessions' }
   root 'queue#index'
   get '/setup' => 'setup#index'
+
+  get '/welcome' => 'onboarding#step1'
+  get '/welcome/step1' => 'onboarding#step1'
+  get '/welcome/step2' => 'onboarding#step2'
+  get '/welcome/step3' => 'onboarding#step3'
+  get '/welcome/step4' => 'onboarding#step4'
 
   resources :schedules, only: :index do
     post '/add_timeslot' => 'schedules#add_timeslot'

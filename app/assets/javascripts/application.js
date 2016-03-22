@@ -27,6 +27,8 @@ var twitter = require('twitter-text')
 
 $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    $('[data-toggle="popover"]').popover()
+    $('.modal').modal()
     $('.twitter-text-counter').keyup(function() {
       var target = $(this).data('target');
       var length = 140 - twttr.txt.getTweetLength($(this).val());

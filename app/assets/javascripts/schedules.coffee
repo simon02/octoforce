@@ -4,9 +4,10 @@
 
 $ ->
   $('.add-timeslot').click ->
-    form = $(($(@).data('add-timeslot')))
+    form = $(($(@).data('target'))).find('form')
     day = $(@).data('day')
     form.find("select option[value='#{day}']").prop('selected','selected')
+    form.find("input[type='text']").focus()
     form.removeClass('hidden').show().find('input[type!="hidden"]:first').focus()
 
   $('#share_expand').click ->

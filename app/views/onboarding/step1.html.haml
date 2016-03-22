@@ -1,0 +1,66 @@
+- content_for :step_info do
+  .row
+    .col-md-12
+      .dialog
+        - if @identities.empty?
+          %h1
+            %strong Step 1:
+            Connect a Social Media Account
+          .actions.pull-right
+          .description
+            %p
+              You need to connect at least one social media account to Octoforce in order to start experiencing the juicy bits.
+          = link_to welcome_step2_path, class: 'small hidden-action' do
+            I'll do this later
+            %i.fa.fa-angle-right
+        - else
+          %h1
+            %strong Step 1:
+            Welcome Back!
+          .actions.pull-right
+          .description
+            %p
+              You can add as many social media accounts as you want, so feel free to go nuts.
+          .bottom
+            .pull-right
+              = link_to welcome_step2_path, class: 'btn btn-primary' do
+                Next Step: Adding Content
+                %i.fa.fa-angle-double-right
+            %p
+              Want to do the rest later?
+            .clearfix
+
+.container
+  .row
+    .col-md-12
+      - if @identities.count > 0
+        .panel
+          .panel-heading
+            .title
+              Connected Social Networks
+          .panel-body
+            - @identities.each do |identity|
+              .panel-row.update
+                %img.profile-image{src: "#{identity.image}"}
+                .next-to-image
+                  %strong.large= identity.subname || identity.name
+                  .subtle= identity.provider
+                .clearfix
+  .row
+    .col-md-12
+      = render partial: 'identities/add'
+
+- if current_user.email.nil?
+  .modal.fade{tabindex: 1, role: 'dialog', 'data-show': 'true', 'data-toggle': 'modal', 'data-backdrop': 'static', 'data-keyboard': 'false'}
+    .modal-dialog{style: 'max-width: 400px'}
+      .modal-content
+        .modal-header
+          %h3.modal-title
+            Complete your account
+        .modal-body
+          %p.large
+            Enter the email address where we can best reach you.
+          %p.m20
+            We'll send you some tips about octoforce and warn you if anything goes wrong.
+          = text_field_tag :email, nil, class: 'form-control m10', placeholder: 'enter email here', autofocus: 'autofocus'
+          = submit_tag "Let's get started!", class: 'form-control btn btn-primary'

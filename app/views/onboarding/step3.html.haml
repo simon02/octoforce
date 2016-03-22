@@ -1,0 +1,40 @@
+- content_for :step_info do
+  .row
+    .col-md-12
+      .dialog
+        - if @schedules.count { |s| s.timeslots.count } == 0
+          %h1
+            %strong Step 3:
+            When Do You Want to Post?
+          .actions.pull-right
+          .description
+            %p
+              You get to choose when you want Octoforce to post. Just add timeslots anywhere on your schedule and we will make sure your followers get to read the good stuff.
+            %p
+              Octoforce takes the first post from the selected list and shares it on your social media account. Then it adds it again at the end of the list. If no new updates are available, it will reschedule old ones - showing them to a new set of eyes.
+          = link_to welcome_step4_path, class: 'small hidden-action' do
+            I'll do this later
+            %i.fa.fa-angle-right
+        - else
+          %h1
+            %strong Step 3:
+            Excellent Choice!
+          .actions.pull-right
+          .description
+            %p
+              Add many more timeslots to increase your engagement.
+            %p
+              Octoforce takes the first post from the selected list and shares it on your social media account. Then it adds it again at the end of the list. If no new updates are available, it will reschedule old ones - showing them to a new set of eyes.
+          .bottom
+            .pull-right
+              = link_to welcome_step4_path, class: 'btn btn-primary' do
+                Next Step: View Your Queue
+                %i.fa.fa-angle-double-right
+            %p
+              Think your schedule is looking good (enough for now)?
+            .clearfix
+
+.container
+  .row
+    .col-md-12
+      = render partial: 'schedules/schedule', locals: { schedule: @schedules.first }

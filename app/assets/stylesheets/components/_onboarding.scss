@@ -6,3 +6,42 @@
   -moz-background-clip: text;
   background-clip: text;
 }
+
+.tips-header {
+  /*background-color: #666699;*/
+  margin-top: -24px;
+  padding: 20px;
+  .dialog {
+    background: white;
+    @include border-radius(6px);
+    margin: 20px auto;
+    max-width: 800px;
+    color: #666;
+    padding: 20px 40px;
+    font-size: 17px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    position: relative;
+    h1 {
+      /*font-size: 32px;*/
+      color: $brand-primary;
+      font-weight: 300;
+      strong {
+        font-weight: 500;
+      }
+    }
+    .description {
+      padding: 10px 0;
+    }
+    .hidden-action {
+      position: absolute;
+      bottom: -24px;
+      right: 10px;
+    }
+    .bottom {
+      margin: 10px -40px -20px -40px;
+      padding: 20px 40px;
+      background-color: #dadada;
+      @include border-bottom-radius(6px);
+    }
+  }
+}

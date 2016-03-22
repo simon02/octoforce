@@ -7,7 +7,7 @@ module SchedulesHelper
   end
 
   def list_options
-    current_user.lists.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }
+    current_user.lists.sort_by { |l| -l.posts.count }.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }
   end
 
   def block_time block, format
@@ -31,7 +31,7 @@ module SchedulesHelper
   end
 
   def minutes_per_block
-    240
+    120
   end
 
 end

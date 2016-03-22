@@ -7,13 +7,13 @@
       = render partial: 'identities/add'
 
     - else
-      .col-md-3
+      .col-md-2
         .filter
           .title Filter by account
           %ul.lists
             = render partial: 'queue/identities', locals: { identities: @identities }
 
-      .col-md-9
+      .col-md-10
         .center_panel
 
           - @schedules.each do |schedule|
