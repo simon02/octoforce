@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get '/setup' => 'setup#index'
 
   get '/welcome' => 'onboarding#step1'
+  get '/welcome/step0' => 'onboarding#step1'
   get '/welcome/step1' => 'onboarding#step1'
   get '/welcome/step2' => 'onboarding#step2'
   get '/welcome/step3' => 'onboarding#step3'

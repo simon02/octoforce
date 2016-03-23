@@ -13,6 +13,7 @@
 
             / = devise_error_messages!
 
+            = f.hidden_field :timezone
             = f.email_field :email, autofocus: true
             = f.password_field :password, autocomplete: "off"
             = f.password_field :password_confirmation, autocomplete: "off"
@@ -24,3 +25,10 @@
 
           %p.text-right
             = render partial: "devise/shared/links"
+
+- content_for :javascripts do
+  = javascript_include_tag "jstz.min", "/vendor/assets/javascripts"
+  :javascript
+    $(function() {
+      $("#user_timezone").val(jstz.determine().name())
+    })

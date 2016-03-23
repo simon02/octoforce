@@ -21,7 +21,7 @@ class RegistrationsController < Devise::RegistrationsController
   private
 
   def check_onboarding
-    current_user.onboarding_active ? 'onboarding' : 'application'
+    current_user ? current_user.onboarding_active ? 'onboarding' : 'application' : 'devise'
   end
 
 end

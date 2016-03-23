@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_filter :authenticate, :onboarding
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   def authenticate
     unless ENV['HTTP_AUTH_USERNAME'].blank? or ENV['HTTP_AUTH_PASSWORD'].blank?
@@ -16,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def onboarding
-    if current_user.onboarding_active
+    if current_user && current_user.onboarding_active
       redirect_to :"welcome_step#{current_user.onboarding_step || 0}"
     end
   end
@@ -42,6 +43,10 @@ class ApplicationController < ActionController::Base
 
   def init_intercom
     Intercom::Client.new(app_id: ENV["INTERCOM_APP_ID"], api_key: ENV["INTERCOM_API_KEY"])
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) << :timezone
   end
 
 end
