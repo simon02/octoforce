@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   load_resource :list
+  skip_before_filter :onboarding, only: [:create]
 
   def edit
     @post = Post.find(params[:id])
@@ -28,18 +29,22 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new text: params[:text]
+    @post = Post.new post_params
+    puts @post
     @post.asset = Asset.new(media: params[:asset], user: current_user) if params[:asset]
     @post.user = current_user
     if @post.save
       intercom_event 'post-created', number_of_posts: current_user.posts.count, contains_media: !params[:asset].nil?
+      flash[:success] = "Post has been added to #{@post.list.name}"
 
-      @list.move_to_front @post
-      QueueWorker.perform_async(@list.id)
+      @post.move_to_front
+      QueueWorker.perform_async(@post.list.id)
+    else
+      flash[:error] = "Failed to add post to #{@post.list.name}"
     end
 
     respond_to do |format|
-      format.html { redirect_to list_url(@list) }
+      format.html { redirect_to list_url(@post.list) }
       format.js
     end
   end
@@ -75,7 +80,7 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:text)
+    params.require(:post).permit(:text, :list_id)
   end
 
 end

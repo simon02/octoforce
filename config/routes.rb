@@ -43,7 +43,7 @@ Rails.application.routes.draw do
     resources :feeds, only: [:index, :new, :create, :destroy]
   end
   resources :identities, path: 'accounts'
-  resources :posts, only: [:update, :edit, :destroy]
+  resources :posts, only: [:update, :edit, :destroy, :create]
   resources :timeslots, only: [:new, :create, :edit, :destroy]
 
   get '/queue' => 'queue#index'

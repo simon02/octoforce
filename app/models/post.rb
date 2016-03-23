@@ -31,12 +31,16 @@ class Post < ActiveRecord::Base
 
   def schedule at
     u = updates.create scheduled_at: at, text: text, user: user, list: list, asset: asset
-    list.move_to_back self
+    move_to_back
     u
   end
 
-  def unschedule
+  def move_to_front
     list.move_to_front self
+  end
+
+  def move_to_back
+    list.move_to_back self
   end
 
   private

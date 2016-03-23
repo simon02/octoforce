@@ -15,6 +15,8 @@
 
               = f.email_field :email, autofocus: true
 
+              = f.select :timezone, options_for_select(TZInfo::Timezone.all.map { |zone| [zone.to_s, zone.identifier] }, current_user.timezone)
+
               - if devise_mapping.confirmable? && resource.pending_reconfirmation?
                 %p
                   Currently waiting confirmation for:

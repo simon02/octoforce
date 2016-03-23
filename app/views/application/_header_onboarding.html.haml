@@ -12,5 +12,4 @@
         beta
   .collapse.navbar-collapse{id: "navbar-collapse-#{identifier}"}
     = nav do
-      = link_to 'Profile', edit_user_registration_url
       = link_to 'Sign out', destroy_user_session_path, method: :delete

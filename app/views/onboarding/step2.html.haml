@@ -47,22 +47,22 @@
         .panel-body
           .panel-row
             - list = @lists.first
-            = form_tag list_posts_path(list),  multipart: true, remote: true do
+            = form_for Post.new,  multipart: true do |f|
               .form-group
-                = label_tag :list do
+                = f.label :list_id do
                   Choose a list:
                   %i.fa.fa-question-circle{'data-toggle': 'popover', 'data-content': 'Use lists to categorise your content', 'data-placement': 'top', 'data-trigger': 'hover'}
-                = select_tag :list, options_from_collection_for_select(@lists, :id, :name), class: 'form-control'
+                = f.select :list_id, options_for_select(@lists.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }), {}, class: 'form-control'
               .form-group
                 .pull-right
                   %span.subtle.small
                     twitter text limit:
                     %span.twitter-counter.text_counter
                       140
-                = label_tag :text, "Text"
-                = text_area_tag :text, nil, placeholder: "What do you want to share?", rows: 4, class: 'form-control m5 twitter-text-counter', id: 'post_text', data: { target: '.text_counter' }
+                = f.label :text, "Text"
+                = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: 'form-control m5 twitter-text-counter', id: 'post_text', data: { target: '.text_counter' }
               .form-group
-                = file_field_tag :asset, class: 'pull-left'
+                = f.file_field :asset, class: 'pull-left'
                 .pull-right
-                  = submit_tag "Save to Library", class: 'btn btn-primary pull-right'
+                  = submit_tag "Save to Library", class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
                 .clearfix

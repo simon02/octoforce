@@ -20,7 +20,7 @@ class Update < ActiveRecord::Base
   end
 
   def unschedule
-    post.unschedule
+    post.move_to_front
     self.destroy
   end
 
