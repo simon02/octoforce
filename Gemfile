@@ -95,6 +95,7 @@ gem 'intercom'
 gem 'font-awesome-rails'
 gem 'sidekiq-cron', "~> 0.4.0"
 gem 'sidekiq-unique-jobs'
+gem 'browserify-rails'
 gem 'jazz_hands', github: 'danrabinowitz/jazz_hands', branch: 'use-newer-version-of-pry', groups: [:development, :test]
 gem 'bootstrap-sass'
 gem 'modernizr-rails'
