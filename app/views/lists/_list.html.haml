@@ -2,7 +2,6 @@
   .panel-heading
     .actions
       = link_to 'add in bulk', list_posts_bulk_path(list), class: 'btn btn-default btn-small'
-      = link_to 'rss feeds', list_feeds_path(list), class: 'btn btn-default btn-small'
     .title= "#{list.name} contains #{list.posts.count} items"
     .subtitle
       - if list.posts.empty?
