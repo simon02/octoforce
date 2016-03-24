@@ -1,9 +1,10 @@
 {
   "name": "octoforce",
   "version": "0.2.0",
-  "dependencies" : {
+  "dependencies": {
     "browserify": "~10.2.4",
-    "browserify-incremental": "^3.0.1"
+    "browserify-incremental": "^3.0.1",
+    "twitter-text": "^1.13.4"
   },
   "license": "MIT",
   "engines": {
