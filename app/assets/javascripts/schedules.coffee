@@ -10,7 +10,5 @@ $ ->
     form.find("input[type='text']").focus()
     form.removeClass('hidden').show().find('input[type!="hidden"]:first').focus()
 
-  $('#share_expand').click ->
-    $(@).addClass('expanded')
-    $(@).find('textarea').attr('rows', '3')
-    $(@).find('.hidden').removeClass('hidden')
+  $('.share-expand').click ->
+    $(@).removeClass('reduced').addClass('expanded')

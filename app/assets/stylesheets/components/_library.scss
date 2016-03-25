@@ -1,0 +1,16 @@
+form.reduced {
+  textarea {
+    height: inherit;
+  }
+  .can-hide {
+    display: none;
+  }
+}
+form.expanded {
+  textarea {
+    height: 6em;
+  }
+  .can-hide {
+    display: block;
+  }
+}
