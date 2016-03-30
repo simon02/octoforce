@@ -57,3 +57,19 @@
         - @updates.each do |day, updates|
           = render partial: 'queue/updates_for_day', locals: { updates: updates, day: day }
 
+- content_for :javascripts do
+  / <!-- Qeryz code for app.octoforce.com -->
+  %script{type: 'text/javascript', src: 'https://qeryz-seohacker.netdna-ssl.com/survey/js/qryz_v3.2.js'}
+  :javascript
+    var qRz = qRz || [];
+    (function() {
+      setTimeout(function(){
+        var qryz_plks = document.createElement('div');
+        qryz_plks.id = 'qryz_plks';
+        qryz_plks.className = 'qryz_plks';
+        document.body.appendChild(qryz_plks);
+        qryzInit2('2650');
+      },0);
+    })();
+    qRz.push(['QrzTrackLoggedIn', {'name': "#{current_user.id}",'email': "#{current_user.email}"}]);
+    qRz.push(['QrzTrackSubmit', '3185']);

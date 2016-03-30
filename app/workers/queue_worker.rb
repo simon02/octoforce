@@ -9,7 +9,7 @@ class QueueWorker
   def perform list_id
     list = List.find_by id: list_id
     return if !list || list.timeslots.empty? || list.posts.empty?
-    list.reschedule if list
+    list.reschedule(2) if list
   end
 
 end

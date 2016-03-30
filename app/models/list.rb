@@ -79,6 +79,13 @@ class List < ActiveRecord::Base
     ((posts.count * 7)/ timeslots.count).to_i
   end
 
+  # def schedule_between start_time, end_time
+  #   timeslots.each do |timeslot|
+  #     timeslot.times_schedulable(start_time, end_time).each do
+  #     end
+  #   end
+  # end
+
   private
 
   def find_first_post

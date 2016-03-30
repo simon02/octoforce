@@ -3,9 +3,9 @@ class ScheduleNewUpdatesWorker
   include Sidekiq::Worker
 
   def perform
-    List.each do |list|
-      QueueWorker.perform_async list
-    end
+    # List.each do |list|
+    #   QueueWorker.perform_async list
+    # end
   end
 
 end
