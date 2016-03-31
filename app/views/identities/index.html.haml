@@ -15,7 +15,7 @@
                 %img.profile-image{src: "#{identity.image}"}
                 .next-to-image
                   %strong= identity.subname || identity.name
-                  .subtle= identity.provider
+                  .subtle= identity.provider.gsub('_',' ')
                   .provider.actions
                     %small= link_to 'remove', identity_path(identity), method: :delete, data: { confirm: 'This will also remove the connected schedule. Are you sure you want to proceed?' }
 

@@ -1,14 +1,14 @@
 module OmniAuth::Strategies
 
-  class FacebookPages < Facebook
+  class FacebookPage < Facebook
     def name
-      :facebook_pages
+      :facebook_page
     end
   end
 
-  class FacebookGroups < Facebook
+  class FacebookGroup < Facebook
     def name
-      :facebook_groups
+      :facebook_group
     end
   end
 

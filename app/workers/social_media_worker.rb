@@ -11,6 +11,13 @@ class SocialMediaWorker
     case update.identity.provider
     when 'facebook'
       perform_facebook update, client
+      break
+    when 'facebook_page'
+      perform_facebook_page update, client
+      break
+    when 'facebook_group'
+      perform_facebook_group update, client
+      break
     when 'github'
     when 'google'
     when 'instagram'
@@ -30,6 +37,30 @@ class SocialMediaWorker
   end
 
   def perform_facebook update, client
+    if update.has_media?
+      client.put_connections("me", "photos", caption: update.text, url: update.media_url)
+    # elsif update.contains_link?
+    #   params = { message: update.text, link: update.link.url, caption: update.link.caption, description: update.link.description }
+    #   if update.link.custom_image?
+    #     response = client.put_connections("me", "photos", caption: update.text, url: update.media_url, no_story: true)
+    #     fbid = response["id"]
+    #     params[:object_attachment] = fbid
+    #   end
+    #   client.put_connections("me", "feed", params)
+    else
+      client.put_connections("me", "feed", message: update.text)
+    end
+  end
+
+  def perform_facebook_page update, client
+    # if update.has_media?
+      # client.put_connections("me", "photos")
+    # else
+      client.put_connections(update.identity.uid, "feed", message: update.text)
+    # end
+  end
+
+  def perform_facebook_group update, client
     # if update.has_media?
       # client.put_connections("me", "photos")
     # else

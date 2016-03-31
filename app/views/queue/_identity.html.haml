@@ -1,5 +1,5 @@
 %li.social-profile
   %img{src: "#{identity.image}"}
   .name= identity.subname || identity.name
-  .provider= identity.provider
+  .provider= identity.provider.gsub('_',' ')
   .amount= identity.updates.scheduled.count

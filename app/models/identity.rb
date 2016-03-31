@@ -27,7 +27,7 @@ class Identity < ActiveRecord::Base
   def client
     return @client if @client
     case self.provider
-    when 'facebook'
+    when 'facebook', 'facebook_page', 'facebook_group'
       @client = Koala::Facebook::API.new(self.accesstoken)
     when 'github'
       @client = Github.client(accesstoken: self.accesstoken)
