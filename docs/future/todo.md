@@ -19,7 +19,7 @@
 
 Onboarding:
 
-1) Connect at least one account
-2) Add at least one post
-3) Add at least one timeslot (for each account?)
-4) Check out the result in your Queue
+1) Connect at least one account √
+2) Add at least one post √
+3) Add at least one timeslot (for each account?) +-
+4) Check out the result in your Queue √

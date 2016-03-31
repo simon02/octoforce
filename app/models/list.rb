@@ -11,26 +11,21 @@ class List < ActiveRecord::Base
 
   def move_to_front post
     post.update position: (self.first_position - 1)
-    if post.list_id
-      self.posts(true)
-    else
-      self.posts << post
-    end
+    post.update list: self if post.list.nil?
   end
 
   def move_to_back post
     post.update position: (self.last_position + 1)
-    self.posts << post unless post.list_id
-    self.posts(true)
+    post.update list: self if post.list.nil?
   end
 
   def first_position
-    first = posts.order(:position).first
+    first = posts.sorted.first
     first ? first.position : 100
   end
 
   def last_position
-    posts.sorted.last.position
+    posts.empty? ? 100 : posts.sorted.last.position
   end
 
   def find_next_post
@@ -79,12 +74,19 @@ class List < ActiveRecord::Base
     ((posts.count * 7)/ timeslots.count).to_i
   end
 
-  # def schedule_between start_time, end_time
-  #   timeslots.each do |timeslot|
-  #     timeslot.times_schedulable(start_time, end_time).each do
-  #     end
-  #   end
-  # end
+  def schedule_between start_time, end_time
+    # break up into weeks - otherwise timeslot will only schedule one instance
+    # can we alter this to use iteration over recursion?
+    if end_time - start_time >= 7.days
+      self.schedule_between start_time, start_time + 7.days - 1
+      self.schedule_between start_time + 7.days, end_time
+    else
+      timeslots.each do |timeslot|
+        scheduled_time = timeslot.calculate_scheduling_time_between start_time, end_time
+        find_next_post.schedule scheduled_time unless scheduled_time.nil?
+      end
+    end
+  end
 
   private
 
