@@ -15,6 +15,7 @@
 - edit/copy timeslots
 - edit bulk preview posts (+ add images right there per post?)
 - chrome extension :o
+- analytics
 
 
 Onboarding:
