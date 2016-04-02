@@ -5,8 +5,9 @@ RSpec.describe UrlWorker, type: :worker do
 
   describe '#perform' do
     it 'should perform' do
-      schedule = Schedule.create user: User.create(timezone: 'Europe/Brussels')
-      list = List.create
+      user = User.create(timezone: 'Europe/Brussels')
+      schedule = user.schedules.create
+      list = user.lists.create
       list.posts.create text: 'sample post 1'
       list.posts.create text: 'sample post 2'
       schedule.timeslots.create offset: 600, day: 1, list: list

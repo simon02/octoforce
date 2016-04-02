@@ -11,11 +11,13 @@ class ScheduleNewUpdatesWorker
   end
 
   def schedule_for_user user
-    p user
-    end_time = (Time.now + 2.weeks).to_i
+    end_time = (Time.now + 2.weeks)
     user.lists.each do |list|
-      p list
-      start_time = list.updates.scheduled.empty? ? Time.now.to_i : list.updates.scheduled.sorted.last.scheduled_at.to_i + 1
+      next if list.timeslots.empty? || list.posts.empty?
+      start_time = list.updates.scheduled.empty? ?
+        Time.now :
+        # add 1 so last update doesn't get scheduled again
+        list.updates.scheduled.sorted.last.scheduled_at + 1
       list.schedule_between start_time, end_time
     end
   end
