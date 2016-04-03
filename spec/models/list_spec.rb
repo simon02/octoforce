@@ -2,13 +2,12 @@ require 'rails_helper'
 
 RSpec.describe List, type: :model do
 
-  describe 'add_to_front' do
+  describe 'move_to_front' do
     it 'should be able to handle empty lists' do
       list = List.new
       post = Post.new
-      list.add_to_front post
-      expect(list.next_post).to eq(post)
-      expect(post.next).to eq(post)
+      list.move_to_front post
+      expect(list.posts.sorted.first).to eq(post)
     end
 
     it 'should be able to handle a list with a single item' do
@@ -17,80 +16,110 @@ RSpec.describe List, type: :model do
       p2 = Post.new
       list.move_to_front p1
       list.move_to_front p2
-      expect(list.next_post).to eq(p2)
-      puts p1.inspect
-      puts p2.inspect
-      expect(p2.next).to eq(p1)
-      expect(p1.next).to eq(p2)
-    end
-
-    it 'should be able to handle a list with multiple items' do
-      list = List.create
-      p1 = Post.create
-      p2 = Post.create
-      p3 = Post.create
-      list.move_to_front p1
-      list.move_to_front p2
-      list.move_to_front p3
-      expect(list.next_post).to eq(p3)
-      puts p1.inspect
-      puts p2.inspect
-      puts p3.inspect
-      expect(p3.next).to eq(p2)
-      expect(p2.next).to eq(p1)
-      expect(p1.next).to eq(p3)
-    end
-
-    it 'should also work with updates' do
-      list = List.new
-      p1 = Post.new
-      c1 = ContentItem.new
-      p1.content_items << c1
-      p2 = Post.new
-      c2 = ContentItem.new
-      c3 = ContentItem.new
-      p2.content_items << c2
-      list.move_to_front p1
-      list.updates << Update.new(content_item: c1, scheduled_at: (Time.now + 1.hours))
-      list.updates << Update.new(content_item: c3, scheduled_at: (Time.now + 2.hours))
-      list.move_to_front p2
-      expect(list.next_post).to eq(p2)
-      expect(list.updates.count).to eq(2)
-      expect(list.updates.map &:content_item).to eq([c2,c1])
+      expect(list.posts.sorted.first).to eq(p2)
+      expect(list.posts.sorted.last).to eq(p1)
     end
   end
 
-  describe 'add_to_back' do
+  describe 'move_to_back' do
 
     it 'should be able to handle empty lists' do
       list = List.new
       post = Post.new
-      list.add_to_back post
-      expect(list.next_post).to eq(post)
-      expect(post.next).to eq(post)
+      list.move_to_back post
+      expect(list.posts.sorted.first).to eq(post)
     end
 
     it 'should be able to handle non-empty lists' do
       list = List.new
       p1 = Post.new
       p2 = Post.new
-      list.add_to_back p1
-      list.add_to_back p2
-      expect(list.next_post).to eq(p1)
-      expect(p2.next).to eq(p1)
-      expect(p1.next).to eq(p2)
+      list.move_to_back p1
+      list.move_to_back p2
+      expect(list.posts.sorted.first).to eq(p1)
+      expect(list.posts.sorted.last).to eq(p2)
+      expect(list.posts.count).to eq 2
     end
   end
 
   describe '#sorted_posts' do
 
-    it 'should sort posts based on next' do
-      list = List.new
-      list.move_to_front Post.new id: 1
-      list.move_to_front Post.new id: 2
-      list.move_to_front Post.new id: 3
-      list.move_to_front Post.new id: 4
-      expect(list.sorted_posts.map &:id).to eq([4,3,2,1])
+    it 'should prioritize posts with scheduled updates' do
+    end
+
+  end
+
+  describe '#schedule_between' do
+
+    it 'does not schedule anything if no timeslots match the times' do
+      schedule = Schedule.create user: User.new(timezone: 'Europe/Brussels')
+      list = List.create
+      # 10am
+      schedule.timeslots.create offset: 600, day: 1, list: list
+      schedule.timeslots.create offset: 600, day: 2, list: list
+      start = Date.commercial(2016,4,3).to_time + 9.hours
+      end_t = Date.commercial(2016,4,3).to_time + 12.hours
+      list.schedule_between start, end_t
+      expect(list.updates.count).to eq 0
+    end
+
+    it 'works with a basic example' do
+      schedule = Schedule.create user: User.new(timezone: 'Europe/Brussels')
+      list = List.create
+      list.posts.create text: 'sample post 1'
+      list.posts.create text: 'sample post 2'
+      # 10am
+      schedule.timeslots.create offset: 600, day: 1, list: list
+      schedule.timeslots.create offset: 630, day: 1, list: list
+      schedule.timeslots.create offset: 600, day: 2, list: list
+      start = Date.commercial(2016,4,1).to_time
+      end_t = Date.commercial(2016,4,2).to_time - 1
+      list.schedule_between start, end_t
+      expect(list.updates.count).to eq 2
+      expect(list.updates.sorted.first.scheduled_at).to eq(Date.commercial(2016,4,1).to_time + 10.hours)
+      expect(list.updates.sorted.last.scheduled_at).to eq(Date.commercial(2016,4,1).to_time + 10.hours + 30.minutes)
+    end
+
+    it 'works with multiple weeks' do
+      schedule = Schedule.create user: User.new(timezone: 'Europe/Brussels')
+      list = List.create
+      list.posts.create text: 'sample post 1'
+      list.posts.create text: 'sample post 2'
+      # 10am
+      schedule.timeslots.create offset: 600, day: 1, list: list
+      schedule.timeslots.create offset: 600, day: 2, list: list
+      start = Date.commercial(2016,4,1).to_time
+      end_t = Date.commercial(2016,7,1).to_time - 1
+      list.schedule_between start, end_t
+      expect(list.updates.count).to eq 6
+    end
+
+    it 'should also work when start_time is an edge case' do
+      schedule = Schedule.create user: User.new(timezone: 'Europe/Brussels')
+      list = List.create
+      list.posts.create text: 'sample post 1'
+      list.posts.create text: 'sample post 2'
+      # 10am
+      schedule.timeslots.create offset: 600, day: 1, list: list
+      schedule.timeslots.create offset: 600, day: 2, list: list
+      start = Date.commercial(2016,4,1).to_time + 10.hours
+      end_t = Date.commercial(2016,4,1).to_time + 11.hours
+      list.schedule_between start, end_t
+      expect(list.updates.count).to eq 1
+    end
+
+    it 'should also work when end_time is an edge case' do
+      schedule = Schedule.create user: User.new(timezone: 'Europe/Brussels')
+      list = List.create
+      list.posts.create text: 'sample post 1'
+      list.posts.create text: 'sample post 2'
+      # 10am
+      schedule.timeslots.create offset: 600, day: 1, list: list
+      schedule.timeslots.create offset: 600, day: 2, list: list
+      start = Date.commercial(2016,4,1).to_time
+      end_t = Date.commercial(2016,4,1).to_time + 10.hours
+      list.schedule_between start, end_t
+      expect(list.updates.count).to eq 1
     end
 
   end

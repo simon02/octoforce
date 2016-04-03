@@ -6,7 +6,7 @@ RSpec.describe UrlWorker, type: :worker do
     it 'should perform' do
       user = User.create bitly_login: ENV["BITLY_TEST_LOGIN"], bitly_api_key: ENV["BITLY_TEST_API_KEY"]
       id = Identity.create user: user, provider: 'test', uid: '123'
-      ci = ContentItem.create text: "a lot of text at http://justdoit.co/alkla?param=1231&param2=some adf", identity: id
+      ci = Update.create text: "a lot of text at http://justdoit.co/alkla?param=1231&param2=some adf", identity: id, user: user
       u = UrlWorker.new
       VCR.use_cassette("url_worker/test_perform") do
         u.perform(ci.id)
@@ -16,7 +16,7 @@ RSpec.describe UrlWorker, type: :worker do
 
     it 'should also work without bitly' do
       text = "a lot of text at http://justdoit.co/alkla?param=1231&param2=some adf"
-      ci = ContentItem.create text: text, identity: (Identity.create user: User.create(), provider: 'test', uid: '123')
+      ci = Update.create text: text, identity: (Identity.create user: User.create(), provider: 'test', uid: '123'), user: User.create()
       u = UrlWorker.new
       u.perform(ci.id)
       expect(ci.reload.text).to eq(text)
