@@ -40,7 +40,7 @@ class SocialMediaWorker
     if update.has_media?
       client.put_connections("me", "photos", caption: update.text, url: update.media_url)
     # elsif update.contains_link?
-    #   params = { message: update.text, link: update.link.url, caption: update.link.caption, description: update.link.description }
+    #   params = { message: update.text, link: update.link.url, caption: update.link.caption, description: update.link.description, name: update.link.title }
     #   if update.link.custom_image?
     #     response = client.put_connections("me", "photos", caption: update.text, url: update.media_url, no_story: true)
     #     fbid = response["id"]
