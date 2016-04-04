@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
     @intercom ||= init_intercom
     @intercom.events.create(
       event_name: event_name,
-      created_at: Time.now.to_i,
+      created_at: Time.zone.now.to_i,
       email: current_user.email,
       metadata: metadata
     )
