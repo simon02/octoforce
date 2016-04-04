@@ -16,14 +16,14 @@
 
       .filter
         .pull-right
-          %a.btn.btn-mini.btn-default#add_list
+          %a.btn.btn-mini.btn-default#add_category
             %i.fa.fa-plus
-        .title Filter by list
-        %ul.lists
-          - @lists.each do |list|
-            = render partial: 'list', locals: { list: list }
-          %li.list.hidden#add_list_form
-            = form_for List.new, html: { class: 'form-inline' } do |f|
+        .title Filter by category
+        %ul.categories
+          - @categories.each do |category|
+            = render partial: 'category', locals: { category: category }
+          %li.category.hidden#add_category_form
+            = form_for Category.new, html: { class: 'form-inline' } do |f|
               .color-code
               .name{style: 'max-width: 50%'}
                 = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'

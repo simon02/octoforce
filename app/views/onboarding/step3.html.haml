@@ -2,7 +2,7 @@
   .row
     .col-md-12
       .dialog
-        - if @schedules.count { |s| s.timeslots.count } == 0
+        - if @schedules.to_a.sum { |s| s.timeslots.count } == 0
           %h1
             %strong Step 3:
             When Do You Want to Post?

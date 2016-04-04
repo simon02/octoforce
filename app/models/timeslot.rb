@@ -1,5 +1,5 @@
 class Timeslot < ActiveRecord::Base
-  belongs_to :list
+  belongs_to :category
   belongs_to :schedule
   has_many :updates, dependent: :nullify
   validates_presence_of :day, :offset
@@ -13,7 +13,7 @@ class Timeslot < ActiveRecord::Base
   end
 
   def schedule_next_update year, week
-    post = list.find_next_post
+    post = category.find_next_post
     unless post
       return
     else

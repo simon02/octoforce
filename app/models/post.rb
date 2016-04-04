@@ -1,12 +1,15 @@
 class Post < ActiveRecord::Base
+  include Filterable
   belongs_to :user
-  belongs_to :list
+  belongs_to :category
   belongs_to :asset
   has_many :updates, dependent: :nullify
   before_destroy :teardown, prepend: true
   before_save :check_position
   after_save :update_updates
   scope :sorted, -> { order(:position) }
+  scope :category, -> (category_id) { where category_id: category_id.split(',') }
+  scope :q, -> (query) { where('text LIKE ?', "%#{query}%")}
 
   def previous
     Post.where(next_id: self.id).first
@@ -30,23 +33,23 @@ class Post < ActiveRecord::Base
   end
 
   def schedule at
-    u = updates.create scheduled_at: at, text: text, user: user, list: list, asset: asset
+    u = updates.create scheduled_at: at, text: text, user: user, category: category, asset: asset
     move_to_back
     u
   end
 
   def move_to_front
-    list.move_to_front self
+    category.move_to_front self
   end
 
   def move_to_back
-    list.move_to_back self
+    category.move_to_back self
   end
 
   private
 
   def check_position
-    self.position = self.list.posts.count unless self.list.nil? || !self.position.nil?
+    self.position = self.category.posts.count unless self.category.nil? || !self.position.nil?
   end
 
   def update_updates

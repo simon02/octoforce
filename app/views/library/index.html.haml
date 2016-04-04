@@ -1,0 +1,36 @@
+.container
+  .row
+    .col-md-3
+      .filter
+        .pull-right
+          %a.btn.btn-mini.btn-default#add_category{data: {toggle: 'tooltip', title: 'add a new category', placement: 'auto'}}
+            %i.fa.fa-plus
+        .title Filter by Category
+        %ul.categories
+          - @categories.each do |category|
+            %li.category.filterable{data: {type: 'category', value: "#{category.id}"}}
+              = link_to category_path(category) do
+                .color-code{'style': "background-color: ##{category.color}"}
+                .name= category.name
+                .amount{data: {toggle: 'tooltip', title: 'number of scheduled updates'}}= category.posts.count
+
+          %li.category.hidden#add_category_form
+            = form_for Category.new, html: { class: 'form-inline' } do |f|
+              .color-code
+              .name{style: 'max-width: 50%'}
+                = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
+              .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'
+
+    .col-md-9
+      .panel
+        .panel-heading
+          .title
+            Your Content Library
+          .subtitle
+            = "Currently contains #{current_user.posts.count} items"
+        .panel-body
+          .category-posts
+            - @posts.sorted.each do |post|
+              .panel-row{id: "post_#{post.id}"}
+                = render partial: 'categories/post', locals: { post: post }
+

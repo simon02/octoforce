@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :list do
+  factory :category do
     user nil
 name "MyString"
   end

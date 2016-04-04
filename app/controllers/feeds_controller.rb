@@ -1,8 +1,8 @@
 class FeedsController < ApplicationController
 
   def index
-    set_list
-    @feeds = @list.feeds
+    set_category
+    @feeds = @category.feeds
   end
 
   def new
@@ -30,17 +30,17 @@ class FeedsController < ApplicationController
 
   def destroy
     set_feed
-    set_list
+    set_category
     if @feed.destroy
       flash[:success] = "Feed has been removed."
     end
-    redirect_to list_feeds_url(@list)
+    redirect_to category_feeds_url(@category)
   end
 
   private
 
-  def set_list
-    @list = List.find(params[:list_id])
+  def set_category
+    @category = Category.find(params[:category_id])
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -48,9 +48,9 @@ class FeedsController < ApplicationController
     @feed = Feed.find(params[:id])
   end
 
-  # Only allow a trusted parameter "white list" through.
+  # Only allow a trusted parameter "white category" through.
   def feed_params
-    params.require(:feed).permit(:title, :url, :user_id, :list_id)
+    params.require(:feed).permit(:title, :url, :user_id, :category_id)
   end
 
 end

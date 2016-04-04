@@ -1,22 +1,22 @@
-class List < ActiveRecord::Base
+class Category < ActiveRecord::Base
   belongs_to :user
   has_many :posts, dependent: :destroy
   has_many :timeslots, dependent: :nullify
   has_many :updates, dependent: :nullify
   has_many :feeds, dependent: :destroy
-  after_initialize do |list|
+  after_initialize do |category|
     @generator = ColorGenerator.new saturation: 0.5, lightness: 0.5 unless @generator
-    list.color ||= @generator.create_hex
+    category.color ||= @generator.create_hex
   end
 
   def move_to_front post
     post.update position: (self.first_position - 1)
-    post.update list: self if post.list.nil?
+    post.update category: self if post.category.nil?
   end
 
   def move_to_back post
     post.update position: (self.last_position + 1)
-    post.update list: self if post.list.nil?
+    post.update category: self if post.category.nil?
   end
 
   def first_position

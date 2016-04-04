@@ -12,13 +12,13 @@ class ScheduleNewUpdatesWorker
 
   def schedule_for_user user
     end_time = (Time.now + 2.weeks)
-    user.lists.each do |list|
-      next if list.timeslots.empty? || list.posts.empty?
-      start_time = list.updates.scheduled.empty? ?
+    user.categories.each do |category|
+      next if category.timeslots.empty? || category.posts.empty?
+      start_time = category.updates.scheduled.empty? ?
         Time.now :
         # add 1 so last update doesn't get scheduled again
-        list.updates.scheduled.sorted.last.scheduled_at + 1
-      list.schedule_between start_time, end_time
+        category.updates.scheduled.sorted.last.scheduled_at + 1
+      category.schedule_between start_time, end_time
     end
   end
 

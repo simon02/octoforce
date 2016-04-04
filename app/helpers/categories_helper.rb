@@ -1,4 +1,4 @@
-module ListsHelper
+module CategoriesHelper
 
   def identities
     current_user.identities

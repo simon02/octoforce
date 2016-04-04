@@ -9,9 +9,9 @@
     .col-sm-10
       = f.text_field :offset, placeholder: "Type scheduling time, eg. 2:32pm or 14:32", class: 'form-control'
   .form-group
-    = f.label :list_id, 'List', class: 'col-sm-2 control-label'
+    = f.label :category_id, 'Category', class: 'col-sm-2 control-label'
     .col-sm-10
-      = f.select :list_id, list_options, {}, { class: 'form-control' }
+      = f.select :category_id, category_options, {}, { class: 'form-control' }
   .form-group
     .col-sm-10.col-sm-offset-2
       = f.submit "Add timeslot", class: 'btn btn-primary', data: { disable_with: 'Submitting...' }

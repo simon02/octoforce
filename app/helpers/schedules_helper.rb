@@ -6,8 +6,8 @@ module SchedulesHelper
     days << sunday
   end
 
-  def list_options
-    current_user.lists.sort_by { |l| -l.posts.count }.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }
+  def category_options
+    current_user.categories.sort_by { |l| -l.posts.count }.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }
   end
 
   def block_time block, format

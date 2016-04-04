@@ -9,14 +9,19 @@
   ul {
     list-style: none;
     padding: 0;
-    li {
-      border-bottom: 1px solid #ccc;
-      padding: 8px 0;
-      &:last-child {
-        border-bottom: none;
-      }
+    li a {
+      padding: 8px 8px 8px 0;
+      margin-bottom: 6px;
+      background-color: #f0f0f0;
+      @include border-radius(4px);
+      cursor: pointer;
+      display: block;
       &:hover {
         background-color: #fcfcfc;
+      }
+      &.selected {
+        background-color: $brand-primary;
+        color: white;
       }
     }
   }
@@ -54,8 +59,8 @@
     }
   }
 }
-.lists {
-  .list {
+ul.categories {
+  .category {
     position: relative;
     .color-code {
       background-color: #ccc;

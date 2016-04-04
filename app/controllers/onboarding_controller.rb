@@ -11,7 +11,7 @@ class OnboardingController < ApplicationController
   def step2
     current_user.update onboarding_step: 2
     @posts = current_user.posts
-    @lists = current_user.lists
+    @categories = current_user.categories
   end
 
   def step3
@@ -22,7 +22,7 @@ class OnboardingController < ApplicationController
   def step4
     current_user.update onboarding_active: false
     @identities = current_user.identities
-    @lists = current_user.lists
+    @categories = current_user.categories
     @updates = current_user.updates.scheduled.sorted.group_by { |u| u.scheduled_at.to_date }
   end
 
