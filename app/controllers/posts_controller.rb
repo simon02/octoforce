@@ -44,7 +44,9 @@ class PostsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to category_url(@post.category) }
+      format.html do
+        redirect_to params[:redirect] || category_url(@post.category)
+      end
       format.js
     end
   end

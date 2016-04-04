@@ -24,11 +24,16 @@
     .col-md-9
       .panel
         .panel-heading
+          .actions
+            %a.btn.btn-default#add_content{href: '#'}
+              add content
           .title
             Your Content Library
           .subtitle
             = "Currently contains #{current_user.posts.count} items"
         .panel-body
+          .panel-row#add_content_panel{style: 'display: none'}
+            = render partial: 'posts/add_select_category', locals: { categories: @categories }
           .category-posts
             - @posts.sorted.each do |post|
               .panel-row{id: "post_#{post.id}"}

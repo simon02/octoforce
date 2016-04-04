@@ -18,6 +18,7 @@
 
 //= require schedules
 //= require queue
+//= require library
 //= require posts
 
 var twitter = require('twitter-text')
