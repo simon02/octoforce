@@ -33,7 +33,7 @@ class Post < ActiveRecord::Base
   end
 
   def schedule at
-    u = updates.create scheduled_at: at, text: text, user: user, category: category, asset: asset
+    u = updates.create scheduled_at: at, text: text, user: user, category: category, asset: asset, identity: identity
     move_to_back
     u
   end

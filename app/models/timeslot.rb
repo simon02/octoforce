@@ -6,7 +6,7 @@ class Timeslot < ActiveRecord::Base
 
   def self.create_with_timestamp params
     if params.key? :offset
-      offset = Time.parse(params[:offset])
+      offset = Time.zone.parse(params[:offset].sub('.',':'))
       params[:offset] = offset.hour * 60 + offset.min
     end
     create params

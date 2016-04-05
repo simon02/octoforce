@@ -12,7 +12,7 @@ class SchedulesController < ApplicationController
     # event tracking
     intercom_event 'created-timeslot', timeslots_in_schedule: schedule.timeslots.count, number_of_schedules: current_user.schedules.count
 
-    offset = Time.zone.parse(timeslot_params[:offset])
+    offset = Time.zone.parse(timeslot_params[:offset].sub('.',':'))
     @timeslot = Timeslot.create timeslot_params.merge offset: (offset.hour * 60 + offset.min)
 
     QueueWorker.perform_async(@timeslot.category.id)
