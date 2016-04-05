@@ -1,0 +1,49 @@
+{
+  "name": "octoforce",
+  "scripts": {
+  },
+  "env": {
+    "INTERCOM_API_KEY": {
+      "required": true
+    },
+    "INTERCOM_APP_ID": {
+      "required": true
+    },
+    "LANG": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    },
+    "RAILS_ENV": {
+      "required": true
+    },
+    "RAILS_SERVE_STATIC_FILES": {
+      "required": true
+    },
+    "REDIS_PROVIDER": {
+      "required": true
+    },
+    "SECRET_KEY_BASE": {
+      "required": true
+    },
+    "TWITTER_APP_ID": {
+      "required": true
+    },
+    "TWITTER_APP_SECRET": {
+      "required": true
+    }
+  },
+  "addons": [
+    "heroku-postgresql",
+    "heroku-redis"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs.git"
+    },
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-ruby.git"
+    }
+  ]
+}
