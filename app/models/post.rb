@@ -32,7 +32,7 @@ class Post < ActiveRecord::Base
     asset.media.url options
   end
 
-  def schedule at
+  def schedule at, identity
     u = updates.create scheduled_at: at, text: text, user: user, category: category, asset: asset, identity: identity
     move_to_back
     u
