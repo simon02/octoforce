@@ -1,8 +1,8 @@
 class FeedsController < ApplicationController
 
   def index
-    set_category
-    @feeds = @category.feeds
+    @feeds = current_user.feeds
+    @categories = current_user.categories
   end
 
   def new
@@ -13,15 +13,13 @@ class FeedsController < ApplicationController
     @feed = Feed.new(feed_params)
 
     if @feed.save
-      body, ok = SuperfeedrEngine::Engine.subscribe(@feed, {:retrieve => true})
+      body, ok = SuperfeedrEngine::Engine.subscribe(@feed, {:retrieve => false})
       if !ok
-        redirect_to @feed, notice: "Feed was successfully created but we could not subscribe: #{body}"
+        redirect_to feeds_url, notice: "Feed was successfully created but we could not subscribe: #{body}"
       else
-        feed.update active: true
-        if body
-          @feed.notified JSON.parse(body)
-        end
-        redirect_to @feed, notice: 'Feed was successfully created and subscribed!'
+        @feed.update active: true
+        FeedRetrieverWorker.perform_async @feed.id, params[:retrieve_content]
+        redirect_to feeds_url, notice: 'Feed has been added! Currently retrieving feed title.'
       end
     else
       render :new
@@ -30,18 +28,13 @@ class FeedsController < ApplicationController
 
   def destroy
     set_feed
-    set_category
     if @feed.destroy
       flash[:success] = "Feed has been removed."
     end
-    redirect_to category_feeds_url(@category)
+    redirect_to feeds_url
   end
 
   private
-
-  def set_category
-    @category = Category.find(params[:category_id])
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_feed

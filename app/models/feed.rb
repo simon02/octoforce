@@ -11,7 +11,12 @@ class Feed < ActiveRecord::Base
     update_attributes(:status => params["status"]["http"])
 
     params['items'].each do |i|
-      post = Post.new user: user, text: "#{i['title']} #{i['permalinkUrl']}"
+      begin
+        url = i['standardLinks']['canonical'].first['href']
+      rescue
+        url = i['permalinkUrl']
+      end
+      post = Post.new user: user, text: "#{i['title']} #{url}"
       category.move_to_front(post) if category
     end
   end

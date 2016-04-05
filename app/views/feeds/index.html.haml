@@ -7,7 +7,7 @@
             %a.btn.btn-default.btn-small{href: "#add_feed", onclick: "document.getElementById('feed_title').focus()"}
               add new feed
           .title
-            = "Feeds for #{@category.name}"
+            = "Feeds"
           .subtitle
             Every time a new item is added to the RSS feeds below, a post is added to your content library in this category.
 
@@ -17,7 +17,7 @@
               .xx-large.center
                 %i.fa.fa-rss.fa-4x.icon-fade
               .x-large.center.m45
-                This category currently has no connected RSS feeds -
+                You currently have no connected RSS feeds -
                 %br
                 add your first one below.
               %div{style: 'max-width: 600px; margin: auto; color: #666'}
@@ -37,15 +37,23 @@
               %p
                 = feed.url
               .small
-                = link_to 'remove', category_feed_path(@category, feed), method: :delete
+                = link_to 'delete', feed_path(feed), method: :delete
           .panel-row
             %a{name: "add_feed"}
             %p.large
               Add a new feed to this category
-            = form_for [@category, Feed.new] do |f|
-              = f.hidden_field :user_id, value: @category.user_id
+            = form_for Feed.new do |f|
+              = f.hidden_field :user_id, value: current_user.id
               .form-group
-                = f.text_field :title, placeholder: 'Title of the feed', class: 'form-control'
-              .form-group
+                = f.label :url, 'Enter the url of the feed'
                 = f.text_field :url, placeholder: 'URL of the feed', class: 'form-control'
-              = f.submit "Add feed to #{@category.name}", class: 'btn btn-primary'
+              .form-group
+                = f.label :category_id, 'Select category'
+                %i.fa.fa-question-circle{data: {toggle: 'tooltip', title: 'all posts from this feed will be added to the selected category'}}
+
+                = f.select :category_id, options_for_select(@categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }), {}, class: 'form-control'
+              .form-group
+                = check_box_tag :retrieve_content, 1, true
+                = label_tag :retrieve_content, 'retrieve already published content'
+                %i.fa.fa-question-circle{data: {toggle: 'tooltip', title: 'select this if you want older posts add to your library'}}
+              = f.submit "Add feed", class: 'btn btn-primary'

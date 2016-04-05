@@ -6,19 +6,31 @@
     = raw auto_link show post.text
   - if !(preview ||= false)
     .bottom
-      %span.x-small.pull-right
+      %span.x-small{style: 'margin-right: 10px'}
+        = link_to "delete", post_path(post), { method: "delete", remote: true }
+        = " | "
+        = link_to "edit", edit_post_path(post)
+        = " | "
+        %a{href: '#'}
+          move
+      %span.category
+        .color-code{style: "background-color: ##{post.category.color};"}
+        .name= post.category.name
+    .pull-right.x-small
+      %span
         - if post.updates.scheduled.count > 0
           - scheduled_at = calculate_local_time post.updates.scheduled.sorted.first.scheduled_at
           scheduled for publication in
           %abbr{'data-toggle': 'tooltip', title: "#{scheduled_at.strftime('%A %-d %B at %I:%M %P')}"}
             = time_ago_in_words scheduled_at
+          &#9679;
         - elsif post.updates.published.count > 0
           = "last published #{time_ago_in_words calculate_local_time(post.updates.published.sorted.first.scheduled_at)} ago"
-      %span.x-small{style: 'margin-right: 10px'}
-        = link_to "delete", post_path(post), { method: "delete", remote: true }
-        = " | "
-        = link_to "edit", edit_post_path(post)
-      %span.category
-        .color-code{style: "background-color: ##{post.category.color};"}
-        .name= post.category.name
+          &#9679;
+      %span
+        added
+        - added = calculate_local_time(post.created_at).strftime("%l:%M %P - %d/%m/%y")
+        %abbr{title: "#{added}", data: {toggle: 'tooltip'}}
+          = time_ago_in_words post.created_at
+        ago
     .clearfix
