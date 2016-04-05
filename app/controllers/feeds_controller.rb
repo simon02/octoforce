@@ -1,4 +1,4 @@
-class FeedsController < ApplicationController
+ class FeedsController < ApplicationController
 
   def index
     @feeds = current_user.feeds
@@ -40,6 +40,7 @@ class FeedsController < ApplicationController
   def destroy
     set_feed
     if @feed.destroy
+      SuperfeedrEngine::Engine.unsubscribe @feed
       flash[:success] = "Feed has been removed."
     end
     redirect_to feeds_url
