@@ -4,14 +4,43 @@
       .panel
         .panel-heading
           .actions
-            %a.btn.btn-default.btn-small{href: "#add_feed", onclick: "document.getElementById('feed_title').focus()"}
-              add new feed
+            %a.btn.btn-default.btn-sm.add-timeslot.center{data: { toggle: 'modal', target: "#dialog_feed"}}
+              add feed
           .title
             = "Feeds"
           .subtitle
             Every time a new item is added to the RSS feeds below, a post is added to your content library in this category.
 
         .panel-body
+          - @feeds.each do |feed|
+            .panel-row
+              %p
+                %span.large
+                  = feed.title || feed.url
+                - if !feed.active
+                  %strong.text-error
+                    not active
+
+              %p
+                = "Category: #{feed.category.name}"
+              .small
+                = link_to 'delete', feed_path(feed), method: :delete
+                = " | "
+                %a{href: '#', data: { toggle: 'modal', target: "#dialog_feed_#{feed.id}"}}
+                  edit
+
+            .modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_feed_#{feed.id}", 'data-show': 'false'}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
+                      %span{'aria-hidden': true}
+                        &times;
+                    .modal-title.large
+                      Edit feed
+                  .modal-body
+                    = render partial: 'feeds/edit_form', locals: { categories: @categories, feed: feed }
+
           - if @feeds.empty?
             .panel-row{style: 'padding-top: 50px; padding-bottom: 50px'}
               .xx-large.center
@@ -19,7 +48,8 @@
               .x-large.center.m45
                 You currently have no connected RSS feeds -
                 %br
-                add your first one below.
+                %a{href: '#', data: { toggle: 'modal', target: "#dialog_feed"}}
+                  add your first one.
               %div{style: 'max-width: 600px; margin: auto; color: #666'}
                 %h4 Sharing your content was never this easy
                 %p
@@ -29,31 +59,19 @@
                   You can add a feed to your own blog so everytime you publish a post, it will automatically be added to your content libray. You can easily change the text, add hashtags or mentions right here.
                 %p
                   Another possibility is to add all your favorite blogs to a new category just for that purpose. Then once a while just check out this category and filter out the posts you don't want to share. You can copy the ones you like to other categories and enjoy the rest of the week knowing your content calendar is nicely filled up!
-
-          - @feeds.each do |feed|
+          - else
             .panel-row
-              %p.large
-                = feed.title
-              %p
-                = feed.url
-              .small
-                = link_to 'delete', feed_path(feed), method: :delete
-          .panel-row
-            %a{name: "add_feed"}
-            %p.large
-              Add a new feed to this category
-            = form_for Feed.new do |f|
-              = f.hidden_field :user_id, value: current_user.id
-              .form-group
-                = f.label :url, 'Enter the url of the feed'
-                = f.text_field :url, placeholder: 'URL of the feed', class: 'form-control'
-              .form-group
-                = f.label :category_id, 'Select category'
-                %i.fa.fa-question-circle{data: {toggle: 'tooltip', title: 'all posts from this feed will be added to the selected category'}}
+              %a.btn.btn-default.add-timeslot.form-control{data: { toggle: 'modal', target: "#dialog_feed"}}
+                add another feed
 
-                = f.select :category_id, options_for_select(@categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }), {}, class: 'form-control'
-              .form-group
-                = check_box_tag :retrieve_content, 1, true
-                = label_tag :retrieve_content, 'retrieve already published content'
-                %i.fa.fa-question-circle{data: {toggle: 'tooltip', title: 'select this if you want older posts add to your library'}}
-              = f.submit "Add feed", class: 'btn btn-primary'
+.modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_feed", 'data-show': 'false'}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
+          %span{'aria-hidden': true}
+            &times;
+        .modal-title.large
+          Add a new feed
+      .modal-body
+        = render partial: 'feeds/new_form', locals: { categories: @categories }

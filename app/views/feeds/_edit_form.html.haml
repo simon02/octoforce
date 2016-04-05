@@ -1,0 +1,13 @@
+= form_for feed do |f|
+  .form-group
+    = f.label :title, 'The name of the feed'
+    = f.text_field :title, placeholder: 'name of the feed', class: 'form-control', required: 'required'
+  .form-group
+    = f.label :url, 'The url of the feed'
+    = f.text_field :url, placeholder: 'URL of the feed', class: 'form-control', disabled: 'disabled', data: { toggle: 'tooltip', title: 'you can not edit the url - delete this feed and add a new one if this is what you want'}
+  .form-group
+    = f.label :category_id, 'Category'
+    %i.fa.fa-question-circle{data: {toggle: 'tooltip', title: 'all posts from this feed will be added to the selected category'}}
+
+    = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }, feed.category_id), {}, class: 'form-control'
+  = f.submit "Save feed", class: 'btn btn-primary'
