@@ -29,8 +29,8 @@ class Post < ActiveRecord::Base
     asset.media.url options
   end
 
-  def schedule at
-    u = updates.create scheduled_at: at, text: text, user: user, list: list, asset: asset
+  def schedule at, identity
+    u = updates.create scheduled_at: at, text: text, user: user, list: list, asset: asset, identity: identity
     move_to_back
     u
   end
