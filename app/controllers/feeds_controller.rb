@@ -7,6 +7,7 @@ class FeedsController < ApplicationController
 
   def create
     @feed = Feed.new(feed_params)
+    @feed.user = current_user
 
     if @feed.save
       body, ok = SuperfeedrEngine::Engine.subscribe(@feed, {:retrieve => false})
@@ -51,10 +52,8 @@ class FeedsController < ApplicationController
     @feed = Feed.find(params[:id])
   end
 
-  # Only allow a trusted parameter "white category" through.
   def feed_params
     params.require(:feed).permit(:title, :url, :category_id)
-    params[:user_id] = current_user.id
   end
 
   def feed_params_edit

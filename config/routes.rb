@@ -41,7 +41,7 @@ Rails.application.routes.draw do
     # post '/batch_add_post' => 'categories#batch_add_post'
     # post '/remove_post/:post_id' => 'categories#remove_post'
   end
-  resources :feeds
+  resources :feeds, only: [:index, :create, :edit, :destroy]
   resources :identities, path: 'accounts'
   resources :posts, only: [:update, :edit, :destroy, :create]
   resources :timeslots, only: [:new, :create, :edit, :destroy]
