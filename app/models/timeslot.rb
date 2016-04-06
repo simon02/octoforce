@@ -19,8 +19,7 @@ class Timeslot < ActiveRecord::Base
     else
       puts "Could not find the post :o"
     end
-    update = post.schedule calculate_scheduling_time(year, week)
-    update.update timeslot: self, identity: schedule.identity
+    self.updates << post.schedule(calculate_scheduling_time(year, week), schedule.identity)
   end
 
   # calculate schedule time based on given week + own weekday and time
