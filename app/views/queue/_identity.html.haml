@@ -1,5 +1,6 @@
 %li.social-profile
-  %img{src: "#{identity.image}"}
-  .name= identity.subname || identity.name
-  .provider= identity.provider
-  .amount= identity.updates.scheduled.count
+  %a{href: "?identity=#{identity.id}"}
+    %img{src: "#{identity.image}"}
+    .name= identity.subname || identity.name
+    .provider= identity.provider
+    .amount= identity.updates.scheduled.count

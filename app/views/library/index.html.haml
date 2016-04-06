@@ -1,11 +1,12 @@
 .container
+  = params
   .row
     .col-md-3
       .filter
         .pull-right
           %a.btn.btn-mini.btn-default#add_category{data: {toggle: 'tooltip', title: 'add a new category', placement: 'auto'}}
             %i.fa.fa-plus
-        .title Filter by Category
+        .title Select a Category
         %ul.categories
           - @categories.each do |category|
             %li.category.filterable{data: {type: 'category', value: "#{category.id}"}}
@@ -35,7 +36,7 @@
           .panel-row#add_content_panel{style: 'display: none'}
             = render partial: 'posts/add_select_category', locals: { categories: @categories }
           .category-posts
-            - @posts.sorted.each do |post|
+            - @sorted_posts.each do |post|
               .panel-row{id: "post_#{post.id}"}
                 = render partial: 'categories/post', locals: { post: post }
 

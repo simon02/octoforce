@@ -1,21 +1,20 @@
-.body
+.body.m10
   - if post.has_media?
     .pull-right{style: 'margin-left: 10px'}
       = link_to (image_tag post.media_url(:thumb)), post.media_url
-  .text.x-large.m30
+  .text.x-large.m10
     = raw auto_link show post.text
+  .clearfix
+.footer
   - if !(preview ||= false)
-    .bottom
-      %span.x-small{style: 'margin-right: 10px'}
-        = link_to "delete", post_path(post), { method: "delete", remote: true }
-        = " | "
-        = link_to "edit", edit_post_path(post)
-        = " | "
-        %a{href: '#'}
-          move
-      %span.category
-        .color-code{style: "background-color: ##{post.category.color};"}
-        .name= post.category.name
+    %span.x-small{style: 'margin-right: 10px'}
+      = link_to "delete", post_path(post), { method: "delete", remote: true }
+      = " | "
+      %a{href: '#', data: { toggle: 'modal', target: "#dialog_post_#{post.id}"}}
+        edit
+    %span.category-badge
+      .color-code{style: "background-color: ##{post.category.color};"}
+      .name= post.category.name
     .pull-right.x-small
       %span
         - if post.updates.scheduled.count > 0
@@ -34,3 +33,15 @@
           = time_ago_in_words post.created_at
         ago
     .clearfix
+
+.modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_post_#{post.id}", 'data-show': 'false'}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
+          %span{'aria-hidden': true}
+            &times;
+        .modal-title.large
+          Edit post
+      .modal-body
+        = render partial: 'posts/edit_form', locals: { categories: current_user.categories, post: post }

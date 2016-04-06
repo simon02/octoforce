@@ -14,7 +14,8 @@
       = link_to (image_tag update.media_url(:thumb)), update.media_url
   .text.m30
     = raw auto_link show update.text
-  .category
-    .color-code{style: "background-color: ##{update.category.color};"}
-    .name= update.category.name
+  .bottom
+    .category-badge
+      .color-code{style: "background-color: ##{update.category.color};"}
+      .name= update.category.name
   .clearfix

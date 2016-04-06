@@ -6,35 +6,13 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
 
-  def update
-    @post = Post.find(params[:id])
-    @post.update post_params
-    if params[:asset]
-      @post.asset = Asset.new media: params[:asset], user: current_user
-      @post.save
-    end
-    redirect_to category_path(@post.category)
-  end
-
-  def show_bulk
-    @category = Category.find(params[:category_id])
-    authorize! :show_bulk, @category
-  end
-
-  def bulk_preview
-    regexp = /#{"\r?\n"*params[:nr_enters].to_i}/
-    @category = Category.find(params[:category_id])
-    @posts = params[:text].split(regexp).map { |text| Post.new text: text, category: @category }
-    authorize! :bulk_preview, @category
-  end
-
   def create
     @post = Post.new post_params
-    puts @post
-    @post.asset = Asset.new(media: params[:asset], user: current_user) if params[:asset]
+    asset = params[:post][:asset]
+    @post.asset = Asset.new(media: asset, user: current_user) if asset
     @post.user = current_user
     if @post.save
-      intercom_event 'post-created', number_of_posts: current_user.posts.count, contains_media: !params[:asset].nil?
+      intercom_event 'post-created', number_of_posts: current_user.posts.count, contains_media: !asset.nil?
       flash[:success] = "Post has been added to #{@post.category.name}"
 
       @post.move_to_front
@@ -49,6 +27,29 @@ class PostsController < ApplicationController
       end
       format.js
     end
+  end
+
+  def update
+    @post = Post.find(params[:id])
+    @post.update post_params
+    asset = params[:post][:asset]
+    if asset
+      @post.asset = Asset.new media: asset, user: current_user
+      @post.save
+    end
+    redirect_to (params[:redirect] || category_path(@post.category)), notice: 'Post was updated.'
+  end
+
+  def show_bulk
+    @category = Category.find(params[:category_id])
+    authorize! :show_bulk, @category
+  end
+
+  def bulk_preview
+    regexp = /#{"\r?\n"*params[:nr_enters].to_i}/
+    @category = Category.find(params[:category_id])
+    @posts = params[:text].split(regexp).map { |text| Post.new text: text, category: @category }
+    authorize! :bulk_preview, @category
   end
 
   def create_bulk

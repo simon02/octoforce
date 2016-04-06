@@ -30,9 +30,14 @@ $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
     $('[data-toggle="popover"]').popover()
     $('.modal').modal()
+    if ($('.twitter-text-counter').length > 0)
+      countTweetLength($('.twitter-text-counter').data('target'), $('.twitter-text-counter').val());
     $('.twitter-text-counter').keyup(function() {
-      var target = $(this).data('target');
-      var length = 140 - twttr.txt.getTweetLength($(this).val());
-      $(target).html($('<span>').addClass(length < 10 ? 'warning' : '').text(length));
+      countTweetLength($(this).data('target'), $(this).val());
     });
 });
+
+countTweetLength = function(target, text) {
+  var length = 140 - twttr.txt.getTweetLength(text);
+  $(target).html($('<span>').addClass(length < 10 ? 'warning' : '').text(length));
+}

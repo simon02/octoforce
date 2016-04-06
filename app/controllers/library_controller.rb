@@ -1,7 +1,7 @@
 class LibraryController < ApplicationController
 
   def index
-    @posts = current_user.posts.filter(filtering_params)
+    @sorted_posts = current_user.posts.filter(filtering_params).sort_by { |post| [post.updates.scheduled.count.zero? ? 0 : -1, post.position] }
     @categories = current_user.categories
   end
 

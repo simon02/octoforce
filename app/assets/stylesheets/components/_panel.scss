@@ -46,6 +46,7 @@ body,html {
     .panel-row {
       padding: 15px;
       border-bottom: 1px solid #f0f0f0;
+      position: relative;
       &:last-child {
         border-bottom: none;
       }
@@ -79,7 +80,7 @@ body,html {
       position: absolute;
       bottom: 0;
     }
-    .category {
+    .category-badge {
       display: inline-block;
       font-size: 11px;
       font-weight: 600;

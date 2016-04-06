@@ -8,13 +8,4 @@
 
         .panel-body
           .panel-row
-            = form_for @post, html: { multipart: true } do |f|
-              .form-group
-                = f.text_area :text, class: 'form-control m5'
-
-              - if @post.asset
-                %p
-                  = "Contains image: #{@post.asset.media_file_name}. Choose another one below to overwrite."
-              = file_field_tag :asset, class: 'pull-left'
-              = f.submit "Update", class: 'btn btn-primary pull-right'
-              .clearfix
+            = render partial: 'edit_form', locals: { post: @post, categories: current_user.categories }
