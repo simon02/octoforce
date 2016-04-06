@@ -19,5 +19,6 @@ class Feed < ActiveRecord::Base
       post = Post.new user: user, text: "#{i['title']} #{url}"
       category.move_to_front(post) if category
     end
+    QueueWorker.perform_async(category.id)
   end
 end
