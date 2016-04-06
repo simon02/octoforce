@@ -29,22 +29,24 @@ Rails.application.routes.draw do
   resources :schedules, only: :index do
     post '/add_timeslot' => 'schedules#add_timeslot'
   end
-  resources :lists do
+  resources :categories do
     resources :posts, only: [:create]
     get '/posts/bulk' => 'posts#show_bulk'
     post '/posts/preview' => 'posts#bulk_preview'
     post '/posts/bulk' => 'posts#create_bulk'
-    # get '/add_in_bulk' => 'lists#add_in_bulk'
-    # post '/add_in_bulk/preview' => 'lists#preview_add_in_bulk'
-    # post '/add_in_bulk' => 'lists#post_add_in_bulk'
-    # post '/add_post' => 'lists#add_post'
-    # post '/batch_add_post' => 'lists#batch_add_post'
-    # post '/remove_post/:post_id' => 'lists#remove_post'
-    resources :feeds, only: [:index, :new, :create, :destroy]
+    # get '/add_in_bulk' => 'categories#add_in_bulk'
+    # post '/add_in_bulk/preview' => 'categories#preview_add_in_bulk'
+    # post '/add_in_bulk' => 'categories#post_add_in_bulk'
+    # post '/add_post' => 'categories#add_post'
+    # post '/batch_add_post' => 'categories#batch_add_post'
+    # post '/remove_post/:post_id' => 'categories#remove_post'
   end
+  resources :feeds, only: [:index, :create, :edit, :destroy]
   resources :identities, path: 'accounts'
   resources :posts, only: [:update, :edit, :destroy, :create]
   resources :timeslots, only: [:new, :create, :edit, :destroy]
+
+  get '/library' => 'library#index'
 
   get '/queue' => 'queue#index'
   get '/queue/reschedule' => 'queue#reschedule'

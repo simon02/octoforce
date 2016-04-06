@@ -1,0 +1,25 @@
+.container
+  .row
+    .col-md-3
+      .filter
+        .pull-right
+          %a.btn.btn-mini.btn-default#add_category
+            %i.fa.fa-plus
+
+        .title Select Category
+
+        %ul.categories
+          - current_user.categories.each do |category|
+            = render partial: 'category_menu', locals: { category: category, selected: category == @category }
+          %li.category.hidden#add_category_form
+            = form_for Category.new, html: { class: 'form-inline' } do |f|
+              .color-code
+              .name{style: 'max-width: 50%'}
+                = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
+              .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'
+
+    .col-md-9
+
+      = link_to 'go back to full library', library_path
+
+      = render partial: 'category', locals: { category: @category }

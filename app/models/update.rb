@@ -1,7 +1,8 @@
 class Update < ActiveRecord::Base
+  include Filterable
   belongs_to :user
   belongs_to :timeslot
-  belongs_to :list
+  belongs_to :category
   belongs_to :asset
   belongs_to :post
   belongs_to :identity
@@ -9,6 +10,8 @@ class Update < ActiveRecord::Base
   scope :published, -> { where("published = true") }
   scope :sorted, -> { order("scheduled_at ASC") }
   scope :time_ago, -> (field, time) { where("? >= ?", field.to_s, time)}
+  scope :category, -> (category_ids) { where category_id: category_ids.split(',') }
+  scope :identity, -> (identity_ids) { where identity_id: identity_ids.split(',') }
 
   def has_media?
     !asset.nil?

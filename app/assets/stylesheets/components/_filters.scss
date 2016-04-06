@@ -9,14 +9,20 @@
   ul {
     list-style: none;
     padding: 0;
-    li {
-      border-bottom: 1px solid #ccc;
-      padding: 8px 0;
-      &:last-child {
-        border-bottom: none;
-      }
+    li a {
+      padding: 8px;
+      margin-bottom: 6px;
+      background-color: #f0f0f0;
+      @include border-radius(4px);
+      cursor: pointer;
+      display: block;
       &:hover {
         background-color: #fcfcfc;
+        text-decoration: none;
+      }
+      &.selected {
+        background-color: $brand-primary;
+        color: white;
       }
     }
   }
@@ -49,13 +55,13 @@
     }
     .amount {
       position: absolute;
-      right: 0;
-      top: 20px;
+      right: 8px;
+      top: 16px;
     }
   }
 }
-.lists {
-  .list {
+ul.categories {
+  .category {
     position: relative;
     .color-code {
       background-color: #ccc;

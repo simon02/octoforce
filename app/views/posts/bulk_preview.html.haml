@@ -4,14 +4,14 @@
       .title
         Preview
       .subtitle
-        = "Check out these #{@posts.count} new updates. Think they got enough SWAG for #{@list.name}?"
+        = "Check out these #{@posts.count} new updates. Think they got enough SWAG for #{@category.name}?"
     .panel-body
-      = form_tag list_posts_bulk_path(@list) do
+      = form_tag category_posts_bulk_path(@category) do
         .panel-row
           = submit_tag "Lookin' good - I want to keep 'em", class: 'btn btn-default form-control'
         - @posts.each do |post|
           .panel-row
-            = hidden_field_tag "posts[][list_id]", post.list.id
+            = hidden_field_tag "posts[][category_id]", post.category.id
             = hidden_field_tag "posts[][text]", post.text
             .text.large
               = raw auto_link show post.text

@@ -14,7 +14,7 @@ class Schedule < ActiveRecord::Base
 
   def number_of_unique_days
     return -1 if timeslots.count == 0
-    timeslots.map(&:list).map(&:number_of_unique_days).uniq.min
+    timeslots.map(&:category).map(&:number_of_unique_days).uniq.min
   end
 
 end

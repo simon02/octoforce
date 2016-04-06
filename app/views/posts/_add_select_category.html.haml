@@ -1,0 +1,20 @@
+- category = categories.first
+= form_for Post.new,  multipart: true do |f|
+  = hidden_field_tag :redirect, request.path
+  .form-group
+    = f.label :category_id do
+      Choose a category:
+    = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }), {}, class: 'form-control'
+  .form-group
+    .pull-right
+      %span.subtle.small
+        twitter text limit:
+        %span.twitter-counter.text_counter
+          140
+    = f.label :text, "Text"
+    = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: 'form-control m5 twitter-text-counter', id: 'post_text', data: { target: '.text_counter' }
+  .form-group
+    = f.file_field :asset, class: 'pull-left'
+    .pull-right
+      = submit_tag "Save to Library", class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
+    .clearfix

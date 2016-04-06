@@ -1,10 +1,22 @@
 %footer#footer
   .container
+    .m30
     .row
       .col-xs-12
-        %small.copyright
-          Octoforce, Copyright &copy; #{ Date.today.year }
-          %br
-          server time: #{ Time.zone.now }
-          %br
-          your time: #{ calculate_local_time Time.zone.now}
+        .alert.alert-info
+          %p.m10
+            %strong
+              Thank you for trying out this beta!
+          %p.m10
+            Need some help, have new ideas or just want to chat with the creator? You can always reach me directly at:
+          %p
+            %a{href: 'https://www.twitter.com/octoforce', target: '_blank'}
+              %i.fa.fa-twitter
+              @octoforce
+            or
+            %a{href: 'mailto:simonbuelens+octoforce@gmail.com?Subject=Need help with Octoforce!'}
+              %i.fa.fa-envelope
+              simonbuelens@gmail.com
+        .copyright.text-center
+          %small
+            Octoforce, Copyright &copy; #{ Date.today.year }
