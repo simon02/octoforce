@@ -34,11 +34,23 @@ $(document).ready(function() {
     if ($('.twitter-text-counter').length > 0)
       countTweetLength($('.twitter-text-counter').data('target'), $('.twitter-text-counter').val());
     $('.twitter-text-counter').keyup(function() {
-      countTweetLength($(this).data('target'), $(this).val());
+      countTweetLength(
+        $(this).data('target'),
+        $(this).val(),
+        $($(this).data('image')).val().length !== 0
+      );
+    });
+    $('.twitter-counter-image-trigger').on('change', function() {
+      countTweetLength(
+        $(this).data('target'),
+        $($(this).data('text')).val(),
+        $(this).val().length !== 0
+      );
     });
 });
 
-countTweetLength = function(target, text) {
-  var length = 140 - twttr.txt.getTweetLength(text);
+countTweetLength = function(target, text, containsImage) {
+  var length = 140 - twttr.txt.getTweetLength(text) - (containsImage ? 24 : 0);
+  console.log(length);
   $(target).html($('<span>').addClass(length < 10 ? 'warning' : '').text(length));
 }

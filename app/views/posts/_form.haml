@@ -1,7 +1,7 @@
 - post ||= Post.new
 = form_for post,  multipart: true, html: { class: 'jquery-upload-form' } do |f|
   = hidden_field_tag :redirect, request.path
-  = f.hidden_field :asset_id
+  = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
   - if select_category ||= false
     .form-group
       = f.label :category_id do
@@ -13,10 +13,10 @@
     .pull-right.can-hide
       %span.subtle.small
         twitter text limit:
-        %span.twitter-counter.text_counter
+        %span.twitter-counter{id: "text_counter_#{post.id}"}
           140
     = f.label :text, "Text", class: 'can-hide'
-    = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: 'form-control m5 twitter-text-counter', id: 'post_text', data: { target: '.text_counter' }
+    = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
   .form-group
     .assets#assets
       - if post.has_media?
