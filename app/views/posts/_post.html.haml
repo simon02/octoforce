@@ -44,4 +44,4 @@
         .modal-title.large
           Edit post
       .modal-body
-        = render partial: 'posts/edit_form', locals: { categories: current_user.categories, post: post }
+        = render partial: 'posts/form', locals: { categories: current_user.categories, post: post, select_category: true }

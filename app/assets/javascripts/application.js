@@ -14,7 +14,8 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 
-//= require jquery-fileupload
+//= require jquery-fileupload/basic-plus
+//= require file_upload
 
 //= require schedules
 //= require queue

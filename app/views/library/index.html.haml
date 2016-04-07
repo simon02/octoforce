@@ -6,20 +6,7 @@
           %a.btn.btn-mini.btn-default#add_category{data: {toggle: 'tooltip', title: 'add a new category', placement: 'auto'}}
             %i.fa.fa-plus
         .title Select a Category
-        %ul.categories
-          - @categories.each do |category|
-            %li.category.filterable{data: {type: 'category', value: "#{category.id}"}}
-              = link_to category_path(category) do
-                .color-code{'style': "background-color: ##{category.color}"}
-                .name= category.name
-                .amount{data: {toggle: 'tooltip', title: 'number of scheduled updates'}}= category.posts.count
-
-          %li.category.hidden#add_category_form
-            = form_for Category.new, html: { class: 'form-inline' } do |f|
-              .color-code
-              .name{style: 'max-width: 50%'}
-                = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
-              .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'
+        = render partial: 'library/filter_category', locals: { categories: @categories }
 
     .col-md-9
       .panel
@@ -33,9 +20,9 @@
             = "Currently contains #{current_user.posts.count} items"
         .panel-body
           .panel-row#add_content_panel{style: 'display: none'}
-            = render partial: 'posts/add_select_category', locals: { categories: @categories }
+            = render partial: 'posts/form', locals: { categories: @categories, select_category: true }
           .category-posts
             - @sorted_posts.each do |post|
               .panel-row{id: "post_#{post.id}"}
-                = render partial: 'categories/post', locals: { post: post }
+                = render partial: 'posts/post', locals: { post: post }
 

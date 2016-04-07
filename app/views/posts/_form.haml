@@ -1,0 +1,33 @@
+- post ||= Post.new
+= form_for post,  multipart: true, html: { class: 'jquery-upload-form' } do |f|
+  = hidden_field_tag :redirect, request.path
+  = f.hidden_field :asset_id
+  - if select_category ||= false
+    .form-group
+      = f.label :category_id do
+        Choose a category:
+      = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }, post.category_id), {}, class: 'form-control'
+  - else
+    = f.hidden_field :category_id
+  .form-group
+    .pull-right.can-hide
+      %span.subtle.small
+        twitter text limit:
+        %span.twitter-counter.text_counter
+          140
+    = f.label :text, "Text", class: 'can-hide'
+    = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: 'form-control m5 twitter-text-counter', id: 'post_text', data: { target: '.text_counter' }
+  .form-group
+    .assets#assets
+      - if post.has_media?
+        .preview
+          %i.fa.fa-close.close-button.remove-attachment
+          = image_tag post.media_url(:thumb)
+  .form-group.can-hide
+    .btn.btn-default.fileinput-button.pull-left
+      %i.fa.fa-camera
+      %span.text Select a file
+      = file_field_tag "asset[media]"
+    .pull-right
+      = submit_tag "Save to Library", class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
+    .clearfix
