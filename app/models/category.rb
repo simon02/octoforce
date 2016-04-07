@@ -83,7 +83,7 @@ class Category < ActiveRecord::Base
     else
       timeslots.each do |timeslot|
         scheduled_time = timeslot.calculate_scheduling_time_between start_time, end_time
-        timeslot.posts << find_next_post.schedule(scheduled_time, timeslot.schedule.identity) unless scheduled_time.nil?
+        timeslot.updates << find_next_post.schedule(scheduled_time, timeslot.schedule.identity) unless scheduled_time.nil?
       end
     end
   end
