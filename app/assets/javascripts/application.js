@@ -51,6 +51,5 @@ $(document).ready(function() {
 
 countTweetLength = function(target, text, containsImage) {
   var length = 140 - twttr.txt.getTweetLength(text) - (containsImage ? 24 : 0);
-  console.log(length);
   $(target).html($('<span>').addClass(length < 10 ? 'warning' : '').text(length));
 }

@@ -1,5 +1,5 @@
 - post ||= Post.new
-= form_for post,  multipart: true, html: { class: 'jquery-upload-form' } do |f|
+= form_for post, multipart: true, html: { class: 'jquery-upload-form' } do |f|
   = hidden_field_tag :redirect, request.path
   = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
   - if select_category ||= false
@@ -29,5 +29,5 @@
       %span.text Select a file
       = file_field_tag "asset[media]"
     .pull-right
-      = submit_tag "Save to Library", class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
+      = submit_tag "#{post.new_record? ? 'Save to Library' : 'Update this Post'}", class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
     .clearfix
