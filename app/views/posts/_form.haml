@@ -29,5 +29,8 @@
       %span.text Select a file
       = file_field_tag "asset[media]"
     .pull-right
-      = submit_tag "#{post.new_record? ? 'Save to Library' : 'Update this Post'}", class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
+      - if post.new_record?
+        = submit_tag 'Save to Library', class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
+      - else
+        = submit_tag 'Update this Post', class: 'btn btn-primary pull-right', data: { disable_with: 'Updating...' }
     .clearfix
