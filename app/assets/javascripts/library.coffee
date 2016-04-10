@@ -5,3 +5,14 @@
 $ ->
   $('#add_content').click ->
     $('#add_content_panel').show()
+
+
+  $('.share-expand').click ->
+    $(@).removeClass('reduced').addClass('expanded')
+
+  $('.jquery-upload-form').each ->
+    assets = $(@).find('.assets')
+    asset_id_field = $(@).find('input[name="post[asset_id]"]')
+    $(@).find('.remove-attachment').click ->
+      assets.empty()
+      asset_id_field.val('').trigger('change')

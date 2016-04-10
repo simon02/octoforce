@@ -44,4 +44,4 @@
             Add Content to Your Library
         .panel-body
           .panel-row
-            = render partial: 'posts/add_select_category', locals: { categories: @categories }
+            = render partial: 'posts/form', locals: { categories: @categories, select_category: true }

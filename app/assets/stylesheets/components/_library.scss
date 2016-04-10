@@ -1,16 +1,59 @@
-form.reduced {
-  textarea {
-    height: inherit;
-  }
-  .can-hide {
-    display: none;
+.post-form {
+  &.reduced {
+    textarea {
+      height: 3em;
+    }
+    .can-hide {
+      display: none;
+    }
+    .form-group {
+      margin-bottom: 0;
+    }
   }
 }
-form.expanded {
-  textarea {
-    height: 6em;
-  }
-  .can-hide {
-    display: block;
+
+.assets {
+  .preview {
+    display: inline-block;
+    position: relative;
+    canvas {
+      border: 1px solid #f5f5f5;
+    }
+    .close-button {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      height: 20px;
+      width: 20px;
+      border: 1px solid #ddd;
+      color: #888;
+      line-height: 18px;
+      font-size: 12px;
+      text-align: center;
+      cursor: pointer;
+      background-color: #f5f5f5;
+      @include border-radius(20px);
+      &:hover {
+        color: #666;
+        border-color: #CCC;
+      }
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(255,255,255,0.75);
+      .progress {
+        position: relative;
+        top: 100px;
+        height: 10px;
+        margin: 0 10px;
+      }
+    }
+    &.done .overlay {
+      display: none;
+    }
   }
 }

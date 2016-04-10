@@ -10,5 +10,3 @@ $ ->
     form.find("input[type='text']").focus()
     form.removeClass('hidden').show().find('input[type!="hidden"]:first').focus()
 
-  $('.share-expand').click ->
-    $(@).removeClass('reduced').addClass('expanded')

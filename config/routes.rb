@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   resources :identities, path: 'accounts'
   resources :posts, only: [:update, :edit, :destroy, :create]
   resources :timeslots, only: [:new, :create, :edit, :destroy]
+  # the assets route is reserved for files in /public !
+  resources :assets, path: 'files', only: [:create, :destroy]
 
   get '/library' => 'library#index'
 

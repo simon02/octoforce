@@ -1,6 +1,0 @@
-%li.category
-  - path = selected ? library_path : category_path(category)
-  = link_to path, class: "#{'selected' if selected}" do
-    .color-code{'style': "background-color: ##{category.color}"}
-    .name= category.name
-    .amount= category.posts.count
