@@ -1,0 +1,25 @@
+.header.m10
+  .profile
+    %i{'class': "fa fa-#{update.identity.provider} #{update.identity.provider}"}
+    %img{'src': update.identity.image}
+  .account
+    = update.identity.name
+    %span.subtle= update.identity.subname
+  .timestamp
+    = link_to calculate_local_time(update.scheduled_at).strftime("%l:%M %P"), update.social_media_url
+    from
+    = link_to update.category.name, category_url(update.category)
+.body
+  - if update.has_media?
+    .pull-right{style: 'margin-left: 10px'}
+      = link_to (image_tag update.media_url(:thumb)), update.media_url
+  .text.m10
+    = raw auto_link show update.text
+  .clearfix
+.row.large.text-muted
+  .col-xs-2.text-center
+    %i.fa.fa-retweet
+    = update.likes
+  .col-xs-2.text-center
+    %i.fa.fa-heart
+    = update.shares

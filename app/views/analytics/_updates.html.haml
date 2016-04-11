@@ -1,0 +1,8 @@
+- updates.each do |update|
+  .panel-row.update
+    = render partial: 'analytics/update', locals: { update: update }
+- if updates.count == count
+  - p = {count: count, offset: offset}
+  - p.merge! params if defined? params
+  .panel-row.text-center#load_more
+    = link_to 'load more', analytics_path(p), class: 'btn btn-primary', data: { remote: true, disable_with: 'loading...' }

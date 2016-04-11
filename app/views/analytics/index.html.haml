@@ -2,6 +2,7 @@
   .row
     .col-md-3
       .filter.m20
+        - @identities = current_user.identities
         - if !@identities.empty?
           .pull-right
             %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
@@ -12,16 +13,17 @@
           = link_to 'Add your first social media account', identities_url, class: 'btn btn-primary form-control'
           %br
           %br
-        = render partial: 'identities', locals: { identities: @identities }
+        = render partial: 'queue/identities', locals: { identities: @identities }
 
       .filter.m20
         .pull-right
           %a.btn.btn-mini.btn-default#add_category
             %i.fa.fa-plus
         .title Filter by category
+        = render partial: 'library/filter_category', locals: { categories: current_user. categories, relative: true, amount_proc: Proc.new { |cat| cat.updates.published.count }}
         %ul.categories
-          - @categories.each do |category|
-            = render partial: 'category', locals: { category: category }
+          - current_user.categories.each do |category|
+            = render partial: 'queue/category', locals: { category: category }
           %li.category.hidden#add_category_form
             = form_for Category.new, html: { class: 'form-inline' } do |f|
               .color-code
@@ -31,13 +33,12 @@
 
 
     .col-md-9
-      - if @identities.empty?
-        = render partial: 'identities/add'
-
-      - else
-
-        = link_to "Reschedule queue", queue_reschedule_path
-
-        - date = nil
-        - @updates.each do |day, updates|
-          = render partial: 'updates_for_day', locals: { updates: updates, day: day }
+      .panel
+        .panel-heading
+          .title
+            Published Updates
+          .subtitle
+            See when your updates have been published and how they performed.
+          %p
+        .panel-body
+          = render partial: 'analytics/updates', locals: { updates: @updates, count: @count, offset: @offset, params: @params }

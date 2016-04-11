@@ -27,4 +27,9 @@ class Update < ActiveRecord::Base
     self.destroy
   end
 
+  def social_media_url
+    return nil if !published || identity.provider != 'twitter'
+    "https://twitter.com/octoforce/status/#{response_id}"
+  end
+
 end

@@ -21,11 +21,13 @@ class SocialMediaWorker
 
   def perform_twitter update, client
     if update.has_media?
-      client.update_with_media(update.text[0..115], open(update.media_url))
+      tweet = client.update_with_media(update.text, open(update.media_url))
     else
-      client.update(update.text[0..139])
+      tweet = client.update(update.text)
     end
     update.published = true
+    update.published_at = Time.zone.now
+    update.response_id = tweet.id.to_s
     update.save
   end
 

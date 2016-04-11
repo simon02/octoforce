@@ -6,7 +6,7 @@
           %a.btn.btn-mini.btn-default#add_category{data: {toggle: 'tooltip', title: 'add a new category', placement: 'auto'}}
             %i.fa.fa-plus
         .title Select a Category
-        = render partial: 'library/filter_category', locals: { categories: @categories }
+        = render partial: 'library/filter_category', locals: { categories: @categories, amount_proc: Proc.new { |cat| cat.posts.count } }
 
     .col-md-9
       .panel

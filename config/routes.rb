@@ -52,7 +52,7 @@ Rails.application.routes.draw do
 
   get '/queue' => 'queue#index'
   get '/queue/reschedule' => 'queue#reschedule'
-  get '/history' => 'history#index'
+  get '/analytics' => 'analytics#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
