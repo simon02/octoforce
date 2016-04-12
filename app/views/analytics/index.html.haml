@@ -13,23 +13,14 @@
           = link_to 'Add your first social media account', identities_url, class: 'btn btn-primary form-control'
           %br
           %br
-        = render partial: 'queue/identities', locals: { identities: @identities }
+        = render partial: 'shared/filter_identities', locals: { identities: @identities }
 
       .filter.m20
         .pull-right
           %a.btn.btn-mini.btn-default#add_category
             %i.fa.fa-plus
         .title Filter by category
-        = render partial: 'library/filter_category', locals: { categories: current_user. categories, relative: true, amount_proc: Proc.new { |cat| cat.updates.published.count }}
-        %ul.categories
-          - current_user.categories.each do |category|
-            = render partial: 'queue/category', locals: { category: category }
-          %li.category.hidden#add_category_form
-            = form_for Category.new, html: { class: 'form-inline' } do |f|
-              .color-code
-              .name{style: 'max-width: 50%'}
-                = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
-              .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'
+        = render partial: 'shared/filter_categories', locals: { categories: current_user. categories }
 
 
     .col-md-9
@@ -41,4 +32,5 @@
             See when your updates have been published and how they performed.
           %p
         .panel-body
+          = render partial: 'shared/filter_bar'
           = render partial: 'analytics/updates', locals: { updates: @updates, count: @count, offset: @offset, params: @params }

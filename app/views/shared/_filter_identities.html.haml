@@ -1,0 +1,4 @@
+%ul.social-profiles
+  - identities.each do |identity|
+    = render layout: 'shared/filter_element', locals: { element: identity, id: identity.id } do
+      = render partial: 'shared/identity', locals: { identity: identity }

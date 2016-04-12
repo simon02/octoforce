@@ -1,5 +1,0 @@
-%li.category
-  %a{href: "?category=#{category.id}"}
-    .color-code{'style': "background-color: ##{category.color}"}
-    .name= category.name
-    .amount{data: {toggle: 'tooltip', title: 'number of scheduled updates'}}= category.updates.scheduled.count

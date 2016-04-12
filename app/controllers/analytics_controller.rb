@@ -6,7 +6,7 @@ class AnalyticsController < ApplicationController
     @updates = current_user.updates.published
       .order("scheduled_at DESC")
       .filter(filtering_params)
-    @params = filtering_params
+    @filters = filtering_params
     if params[:count] && params[:offset]
       @count = params[:count].to_i
       @offset = params[:offset].to_i
