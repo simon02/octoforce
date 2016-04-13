@@ -2,7 +2,7 @@ class QueueController < ApplicationController
 
   def index
     @filtering_params = filtering_params
-    @updates = current_user.updates.scheduled.filter(@filtering_params).sorted.group_by { |u| u.scheduled_at.to_date }
+    @updates = current_user.updates.published(false).filter(@filtering_params).sorted.group_by { |u| u.scheduled_at.to_date }
     @identities = current_user.identities
     @categories = current_user.categories
     @new_category = Category.new

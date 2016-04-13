@@ -6,9 +6,10 @@
     = update.identity.name
     %span.subtle= update.identity.subname
   .timestamp
-    = link_to calculate_local_time(update.scheduled_at).strftime("%l:%M %P"), update.social_media_url
+    - time = update.published_at < Time.zone.now - 10.days ? update.published_at.strftime("%I:%M %P %b %e") : "#{time_ago_in_words(update.published_at)} ago"
+    = link_to time, update.social_media_url
     from
-    = link_to update.category.name, category_url(update.category)
+    = link_to update.category.name, library_path(category: update.category)
 .body
   - if update.has_media?
     .pull-right{style: 'margin-left: 10px'}
@@ -19,7 +20,7 @@
 .row.large.text-muted
   .col-xs-2.text-center
     %i.fa.fa-retweet
-    = update.likes
+    = update.shares
   .col-xs-2.text-center
     %i.fa.fa-heart
-    = update.shares
+    = update.likes

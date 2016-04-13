@@ -7,7 +7,7 @@ class Update < ActiveRecord::Base
   belongs_to :post
   belongs_to :identity
   scope :scheduled, -> { where("scheduled_at > ?", Time.zone.now) }
-  scope :published, -> { where("published = true") }
+  scope :published, -> pub = true { where("published = ?", pub) }
   scope :sorted, -> { order("scheduled_at ASC") }
   scope :time_ago, -> (field, time) { where("? >= ?", field.to_s, time)}
   scope :category, -> (category_ids) { where category_id: category_ids.split(',').flatten }
