@@ -88,6 +88,11 @@ class Category < ActiveRecord::Base
     end
   end
 
+  # Override
+  def to_s
+    self.name
+  end
+
   private
 
   def find_first_post

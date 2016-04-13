@@ -27,6 +27,16 @@
       .panel
         .panel-heading
           .title
+            Charts
+        .panel-body
+          .row
+            .col-md-7
+              = column_chart current_user.updates.select("date(scheduled_at)").order("date(scheduled_at)").group("date(scheduled_at)").count, library: { chartArea: { left: 35, right: 35, top: 20, width: '90%', height: '80%' } }
+            .col-md-5
+              = pie_chart current_user.updates.published.group(:category).count, library: { chartArea: { left: 35, right: 35, top: 20, width: '90%', height: '80%' } }
+      .panel
+        .panel-heading
+          .title
             Published Updates
           .subtitle
             See when your updates have been published and how they performed.
