@@ -1,5 +1,6 @@
 class Update < ActiveRecord::Base
   include Filterable
+  has_shortened_urls
   belongs_to :user
   belongs_to :timeslot
   belongs_to :category

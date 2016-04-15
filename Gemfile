@@ -74,7 +74,8 @@ group :development, :test do
   gem 'rdiscount'
 end
 
-group :test do
+group :development do
+  gem 'powder'
 end
 
 group :production do
@@ -96,6 +97,7 @@ gem 'font-awesome-rails'
 gem 'sidekiq-cron', "~> 0.4.0"
 gem 'sidekiq-unique-jobs'
 gem 'browserify-rails'
+gem 'shortener'
 gem 'jazz_hands', github: 'danrabinowitz/jazz_hands', branch: 'use-newer-version-of-pry', groups: [:development, :test]
 gem 'bootstrap-sass'
 gem 'modernizr-rails'

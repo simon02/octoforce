@@ -17,10 +17,15 @@
   .text.m10
     = raw auto_link show update.text
   .clearfix
-.row.large.text-muted
-  .col-xs-2.text-center
+.row.large
+  .col-xs-2.text-center{class: "text-#{update.shares > 0 ? 'primary' : 'muted' }", data: { title: 'number of times this post was retweeted', toggle: 'tooltip'}}
     %i.fa.fa-retweet
     = update.shares
-  .col-xs-2.text-center
+  .col-xs-2.text-center{class: "text-#{update.likes > 0 ? 'primary' : 'muted' }", data: { title: 'number of times this post was liked', toggle: 'tooltip'}}
     %i.fa.fa-heart
     = update.likes
+  - if !(short_urls = update.shortened_urls).empty?
+    - clicks = short_urls.map(&:use_count).reduce :+
+    .col-xs-2.text-center{class: "text-#{clicks > 0 ? 'primary' : 'muted' }", data: { title: 'number of times the links in this post were clicked', toggle: 'tooltip'}}
+      %i.fa.fa-link
+      = clicks
