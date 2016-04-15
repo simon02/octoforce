@@ -33,4 +33,4 @@
           %p
         .panel-body
           = render partial: 'shared/filter_bar'
-          = render partial: 'analytics/updates', locals: { updates: @updates, count: @count, offset: @offset, params: @params }
+          = render partial: 'analytics/updates', locals: { updates: @updates, count: @count, offset: @offset, filters: @filters }
