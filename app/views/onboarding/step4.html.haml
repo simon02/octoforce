@@ -15,46 +15,7 @@
             This is the end of this small onboarding. Feel free to further explore Octoforce.
 
 .container
-  .row
-    .col-md-3
-      .filter
-        - if !@identities.empty?
-          .pull-right
-            %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
-              %i.fa.fa-plus
-
-        .title Filter by account
-        - if @identities.empty?
-          = link_to 'Add your first social media account', identities_url, class: 'btn btn-primary form-control'
-          %br
-          %br
-        = render partial: 'queue/identities', locals: { identities: @identities }
-
-      .filter
-        .pull-right
-          %a.btn.btn-mini.btn-default#add_category
-            %i.fa.fa-plus
-        .title Filter by category
-        %ul.categories
-          - @categories.each do |category|
-            = render partial: 'queue/category', locals: { category: category }
-          %li.category.hidden#add_category_form
-            = form_for Category.new, html: { class: 'form-inline' } do |f|
-              .color-code
-              .name{style: 'max-width: 50%'}
-                = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
-              .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'
-
-
-    .col-md-9
-      - if @updates.empty?
-        = render partial: 'identities/add'
-
-      - else
-
-        - date = nil
-        - @updates.each do |day, updates|
-          = render partial: 'queue/updates_for_day', locals: { updates: updates, day: day }
+  = render partial: 'queue/queue', locals: { updates: @updates }
 
 - content_for :javascripts do
   / <!-- Qeryz code for app.octoforce.com -->

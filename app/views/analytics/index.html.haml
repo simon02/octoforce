@@ -1,0 +1,36 @@
+.container
+  .row
+    .col-md-3
+      .filter.m20
+        - @identities = current_user.identities
+        - if !@identities.empty?
+          .pull-right
+            %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
+              %i.fa.fa-plus
+
+        .title Filter by account
+        - if @identities.empty?
+          = link_to 'Add your first social media account', identities_url, class: 'btn btn-primary form-control'
+          %br
+          %br
+        = render partial: 'shared/filter_identities', locals: { identities: @identities }
+
+      .filter.m20
+        .pull-right
+          %a.btn.btn-mini.btn-default#add_category
+            %i.fa.fa-plus
+        .title Filter by category
+        = render partial: 'shared/filter_categories', locals: { categories: current_user. categories }
+
+
+    .col-md-9
+      .panel
+        .panel-heading
+          .title
+            Published Updates
+          .subtitle
+            See when your updates have been published and how they performed.
+          %p
+        .panel-body
+          = render partial: 'shared/filter_bar'
+          = render partial: 'analytics/updates', locals: { updates: @updates, count: @count, offset: @offset, params: @params }

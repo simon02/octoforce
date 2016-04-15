@@ -1,4 +1,5 @@
 require 'sidekiq/web'
+require 'sidekiq/cron/web'
 
 Rails.application.routes.draw do
   # mountain things
@@ -52,7 +53,9 @@ Rails.application.routes.draw do
 
   get '/queue' => 'queue#index'
   get '/queue/reschedule' => 'queue#reschedule'
-  get '/history' => 'history#index'
+  get '/analytics' => 'analytics#index'
+
+  get '/:id' => "shortener/shortened_urls#show", constraints: { subdomain: 'shorten' }
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

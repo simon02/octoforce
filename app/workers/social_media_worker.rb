@@ -21,11 +21,13 @@ class SocialMediaWorker
 
   def perform_twitter update, client
     if update.has_media?
-      client.update_with_media(update.text[0..115], open(update.media_url))
+      tweet = client.update_with_media(generate_short_links(update.text, update), open(update.media_url))
     else
-      client.update(update.text[0..139])
+      tweet = client.update(update.text)
     end
     update.published = true
+    update.published_at = Time.zone.now
+    update.response_id = tweet.id.to_s
     update.save
   end
 
@@ -35,6 +37,17 @@ class SocialMediaWorker
     # else
       client.put_connections("me", "feed", message: update.text)
     # end
+  end
+
+  def self.generate_short_links text, owner = nil
+    urls = Twitter::Extractor.extract_urls text
+    mapping = urls.map do |url|
+      short_url = "#{ENV['SHORTEN_HOSTNAME']}/" + Shortener::ShortenedUrl.generate(url, owner: owner).unique_key
+      short_url = "#{ENV['SHORTEN_SUBDOMAIN']}.#{short_url}" if ENV['SHORTEN_SUBDOMAIN']
+      [url, short_url]
+    end
+    mapping.each { |l| text.sub!(l[0], l[1])}
+    text
   end
 
 end
