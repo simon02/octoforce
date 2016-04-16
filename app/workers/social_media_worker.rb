@@ -20,10 +20,11 @@ class SocialMediaWorker
   end
 
   def perform_twitter update, client
+    shorten_links = update.user.shorten_links
     if update.has_media?
-      tweet = client.update_with_media(generate_short_links(update.text, update), open(update.media_url))
+      tweet = client.update_with_media(shorten_links ? SocialMediaWorker.generate_short_links(update.text, update) : text, open(update.media_url))
     else
-      tweet = client.update(update.text)
+      tweet = client.update(shorten_links ? SocialMediaWorker.generate_short_links(update.text, update) : text)
     end
     update.published = true
     update.published_at = Time.zone.now
@@ -40,6 +41,7 @@ class SocialMediaWorker
   end
 
   def self.generate_short_links text, owner = nil
+    text = text.clone
     urls = Twitter::Extractor.extract_urls text
     mapping = urls.map do |url|
       short_url = "#{ENV['SHORTEN_HOSTNAME']}/" + Shortener::ShortenedUrl.generate(url, owner: owner).unique_key

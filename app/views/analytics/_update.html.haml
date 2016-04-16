@@ -7,7 +7,7 @@
     %span.subtle= update.identity.subname
   .timestamp
     - time = update.published_at < Time.zone.now - 10.days ? update.published_at.strftime("%I:%M %P %b %e") : "#{time_ago_in_words(update.published_at)} ago"
-    = link_to time, update.social_media_url
+    = link_to time, update.social_media_url, target: '_blank'
     from
     = link_to update.category.name, library_path(category: update.category)
 .body
