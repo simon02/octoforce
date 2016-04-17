@@ -97,7 +97,8 @@ gem 'font-awesome-rails'
 gem 'sidekiq-cron', "~> 0.4.0"
 gem 'sidekiq-unique-jobs'
 gem 'browserify-rails'
-gem 'shortener', github: 'simon02/shortener', tag: 'v5.1.0'
+gem 'shortener', github: 'simon02/shortener', tag: 'v5.1.1'
+gem 'voight_kampff'
 gem 'jazz_hands', github: 'danrabinowitz/jazz_hands', branch: 'use-newer-version-of-pry', groups: [:development, :test]
 gem 'bootstrap-sass'
 gem 'modernizr-rails'

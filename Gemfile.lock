@@ -36,11 +36,12 @@ GIT
 
 GIT
   remote: git://github.com/simon02/shortener.git
-  revision: 1821f2df42fe8fa811911c71b9f59b9c08e1c106
-  tag: v5.1.0
+  revision: c4c07b17c161178100bdbf8319f4fa67e46a3c90
+  tag: v5.1.1
   specs:
     shortener (0.5.4)
       rails (>= 3.0.7)
+      voight_kampff (>= 1.0.2)
 
 GEM
   remote: https://rubygems.org/
@@ -674,6 +675,8 @@ GEM
     unf_ext (0.0.7.1)
     unicode_utils (1.4.0)
     vcr (3.0.1)
+    voight_kampff (1.0.2)
+      rack (~> 1.6)
     warden (1.2.4)
       rack (>= 1.0)
     web-console (2.2.1)
@@ -768,6 +771,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 1.3.0)
   vcr
+  voight_kampff
   web-console (~> 2.0)
   webmock
 

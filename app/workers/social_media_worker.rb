@@ -22,9 +22,9 @@ class SocialMediaWorker
   def perform_twitter update, client
     shorten_links = update.user.shorten_links
     if update.has_media?
-      tweet = client.update_with_media(shorten_links ? SocialMediaWorker.generate_short_links(update.text, update) : text, open(update.media_url))
+      tweet = client.update_with_media(shorten_links ? SocialMediaWorker.generate_short_links(update.text, update) : update.text, open(update.media_url))
     else
-      tweet = client.update(shorten_links ? SocialMediaWorker.generate_short_links(update.text, update) : text)
+      tweet = client.update(shorten_links ? SocialMediaWorker.generate_short_links(update.text, update) : update.text)
     end
     update.published = true
     update.published_at = Time.zone.now
