@@ -36,7 +36,8 @@ GIT
 
 GIT
   remote: git://github.com/simon02/shortener.git
-  revision: 652065c79400052b42c52b71f73398c6c52299f0
+  revision: 1821f2df42fe8fa811911c71b9f59b9c08e1c106
+  tag: v5.1.0
   specs:
     shortener (0.5.4)
       rails (>= 3.0.7)
