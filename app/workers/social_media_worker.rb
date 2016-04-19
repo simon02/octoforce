@@ -3,7 +3,7 @@ class SocialMediaWorker
   sidekiq_options unique: :until_executed
 
   def perform update_id
-    update = Update.find(update_id)
+    update = Update.find_by id: update_id
     client = update.identity.client if update && update.identity
     # updates can be destroyed between scheduling and execution
     return unless client
