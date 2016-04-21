@@ -24,8 +24,9 @@ class TwitterMentionsWorker
     5.times do
       break if mentions.empty?
       mentions.each do |mention|
-        next unless mention.in_reply_to_status_id?
-        update = Update.find_by response_id: mention.in_reply_to_status_id.to_s
+        next unless mention.in_reply_to_status_id? || mention.quote?
+        id = mention.in_reply_to_status_id? ? mention.in_reply_to_status_id : mention.quoted_status.id
+        update = Update.find_by response_id: id.to_s
         updates[update.id] += 1 if update
       end
       # only works on 64-bit environments (local dev pc + heroku are OK)
