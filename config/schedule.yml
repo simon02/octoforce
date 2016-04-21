@@ -8,6 +8,11 @@ analytics:
   class: "AnalyticsWorker"
   queue: default
 
+twitter_mentions:
+  cron: "15 * * * *"
+  class: "TwitterMentionsWorker"
+  queue: default
+
 reschedule_everything:
   cron: "0 0 * * *"
   class: "ScheduleNewUpdatesWorker"
