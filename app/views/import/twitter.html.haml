@@ -1,0 +1,34 @@
+.container
+  .panel
+    .panel-heading
+      .title
+        Preview
+      .subtitle
+    .panel-body
+      %table
+        %thead
+          %tr
+            %th
+              = check_box_tag 'lala'
+            %th
+              Text
+            %th
+              %i.fa.fa-heart
+            %th
+              %i.fa.fa-retweet
+            %th
+              Date
+            %th
+              Category
+        %tbody
+          - @updates.each do |update|
+            %tr.large
+              %td
+                = check_box_tag 'lala'
+              %td= raw auto_link show update.text
+              %td= update.likes
+              %td= update.shares
+              %td
+                = link_to time_ago_in_words(update.published_at), update.social_media_url
+              %td
+                idk

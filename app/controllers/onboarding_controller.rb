@@ -12,6 +12,8 @@ class OnboardingController < ApplicationController
     current_user.update onboarding_step: 2
     @posts = current_user.posts
     @categories = current_user.categories
+    c = current_user.categories.find_by name: 'twitter_import'
+    @updates = c ? c.updates : [];
   end
 
   def step3
