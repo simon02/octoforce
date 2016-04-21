@@ -18,12 +18,15 @@
     = raw auto_link show update.text
   .clearfix
 .row.large
-  .col-xs-2.text-center{class: "text-#{update.shares > 0 ? 'primary' : 'muted' }", data: { title: 'number of times this post was retweeted', toggle: 'tooltip'}}
-    %i.fa.fa-retweet
+  .col-xs-2.text-center{class: "text-#{update.shares > 0 ? 'primary' : 'muted' }"}
+    %i.fa.fa-retweet{data: { title: 'number of times this post was retweeted', toggle: 'tooltip'}}
     = update.shares
-  .col-xs-2.text-center{class: "text-#{update.likes > 0 ? 'primary' : 'muted' }", data: { title: 'number of times this post was liked', toggle: 'tooltip'}}
-    %i.fa.fa-heart
+  .col-xs-2.text-center{class: "text-#{update.likes > 0 ? 'primary' : 'muted' }"}
+    %i.fa.fa-heart{data: { title: 'number of times this post was liked', toggle: 'tooltip'}}
     = update.likes
+  .col-xs-2.text-center{class: "text-#{update.comments > 0 ? 'primary' : 'muted' }"}
+    %i.fa.fa-comments{data: { title: 'number of mentions', toggle: 'tooltip'}}
+    = update.comments
   - if !(short_urls = update.shortened_urls).empty?
     - clicks = short_urls.map(&:use_count).reduce :+
     .col-xs-2.text-center{class: "text-#{clicks > 0 ? 'primary' : 'muted' }", data: { title: 'number of times the links in this post were clicked', toggle: 'tooltip'}}
