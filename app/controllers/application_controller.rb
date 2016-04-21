@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def onboarding
+    return if true_user != current_user
     if current_user && current_user.onboarding_active
       redirect_to :"welcome_step#{current_user.onboarding_step || 0}"
     end
