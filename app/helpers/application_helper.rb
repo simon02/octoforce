@@ -44,4 +44,57 @@ module ApplicationHelper
     "#%02x%02x%02x" % rgb
   end
 
+  def filter_link_contains element, value, params = {}
+    element_name = element.class.name.underscore.to_sym
+    params = params.symbolize_keys
+    if params.has_key? element_name
+      val = params[element_name]
+      return val.is_a?(Array) ? val.include?(value) : val == value
+    end
+    false
+  end
+
+  def filter_link_params element, value, params = {}
+    params = params.clone.symbolize_keys
+    element_name = element.class.name.underscore.to_sym
+    if filter_link_contains element, value, params
+      if params[element_name].is_a?(Array)
+        params[element_name].delete value
+      else
+        params.delete element_name
+      end
+      return params
+    elsif params.has_key? element_name
+      filter = params[element_name]
+      params[element_name] = ([filter] << value).flatten
+      return params
+    else
+      return params.merge "#{element_name}": value
+    end
+  rescue
+    params
+  end
+
+  def transform_filter_couple filter
+    name = filter[0]
+    value = filter[1]
+    case name
+    when 'category'
+      category = Category.find(value)
+      { name: category.name, link: filter_link_params(category,value,params) }
+    when 'identity'
+      identity = Identity.find(value)
+      { name: identity.subname, link: filter_link_params(identity,value,params) }
+    else
+      nil
+    end
+  end
+
+  def filter_links
+    result = []
+    return result unless defined? filter_keys
+    params.slice(*filter_keys).each { |k,v| [v].flatten.each { |vv| result << [k,vv]  } }
+    result
+  end
+
 end

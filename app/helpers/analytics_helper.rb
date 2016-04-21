@@ -1,19 +1,19 @@
-module QueueHelper
+module AnalyticsHelper
 
   def calculate_category_amount category
-    category.updates.scheduled.count
+    category.updates.published.count
   end
 
   def category_amount_tooltip
-    'number of scheduled updates'
+    'number of published updates'
   end
 
   def calculate_identity_amount identity
-    identity.updates.scheduled.count
+    identity.updates.published.count
   end
 
   def identity_amount_tooltip
-    'number of scheduled updates'
+    'number of published updates'
   end
 
   def filter_keys
@@ -21,3 +21,4 @@ module QueueHelper
   end
 
 end
+

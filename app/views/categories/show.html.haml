@@ -9,7 +9,7 @@
         .title Select A Category
 
         %ul.categories
-        = render partial: 'library/filter_category', locals: { categories: @categories }
+        = render partial: 'library/filter_category', locals: { categories: @categories, selected_category: @category, amount_proc: Proc.new { |cat| cat.posts.count } }
 
     .col-md-9
 
