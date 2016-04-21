@@ -10,51 +10,12 @@
           %p
             This is your queue. It shows all scheduled social media updates that will be sent out in the next 2 weeks.
           %p
-            You can easily filter out updates for specific social media accounts on the left. Same goes for lists.
+            You can easily filter out updates for specific social media accounts on the left. Same goes for categories.
           %p
             This is the end of this small onboarding. Feel free to further explore Octoforce.
 
 .container
-  .row
-    .col-md-3
-      .filter
-        - if !@identities.empty?
-          .pull-right
-            %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
-              %i.fa.fa-plus
-
-        .title Filter by account
-        - if @identities.empty?
-          = link_to 'Add your first social media account', identities_url, class: 'btn btn-primary form-control'
-          %br
-          %br
-        = render partial: 'queue/identities', locals: { identities: @identities }
-
-      .filter
-        .pull-right
-          %a.btn.btn-mini.btn-default#add_list
-            %i.fa.fa-plus
-        .title Filter by list
-        %ul.lists
-          - @lists.each do |list|
-            = render partial: 'queue/list', locals: { list: list }
-          %li.list.hidden#add_list_form
-            = form_for List.new, html: { class: 'form-inline' } do |f|
-              .color-code
-              .name{style: 'max-width: 50%'}
-                = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
-              .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'
-
-
-    .col-md-9
-      - if @updates.empty?
-        = render partial: 'identities/add'
-
-      - else
-
-        - date = nil
-        - @updates.each do |day, updates|
-          = render partial: 'queue/updates_for_day', locals: { updates: updates, day: day }
+  = render partial: 'queue/queue', locals: { updates: @updates }
 
 - content_for :javascripts do
   / <!-- Qeryz code for app.octoforce.com -->

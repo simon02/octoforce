@@ -1,0 +1,47 @@
+.body.m10
+  - if post.has_media?
+    .pull-right{style: 'margin-left: 10px'}
+      = link_to (image_tag post.media_url(:thumb)), post.media_url
+  .text.x-large.m10
+    = raw auto_link show post.text
+  .clearfix
+.footer
+  - if !(preview ||= false)
+    %span.x-small{style: 'margin-right: 10px'}
+      = link_to "delete", post_path(post), { method: "delete", remote: true }
+      = " | "
+      %a{href: '#', data: { toggle: 'modal', target: "#dialog_post_#{post.id}"}}
+        edit
+    %span.category-badge
+      .color-code{style: "background-color: ##{post.category.color};"}
+      .name= post.category.name
+    .pull-right.x-small
+      %span
+        - if post.updates.scheduled.count > 0
+          - scheduled_at = calculate_local_time post.updates.scheduled.sorted.first.scheduled_at
+          scheduled for publication in
+          %abbr{'data-toggle': 'tooltip', title: "#{scheduled_at.strftime('%A %-d %B at %I:%M %P')}"}
+            = time_ago_in_words scheduled_at
+          &#9679;
+        - elsif post.updates.published.count > 0
+          = "last published #{time_ago_in_words calculate_local_time(post.updates.published.sorted.first.scheduled_at)} ago"
+          &#9679;
+      %span
+        added
+        - added = calculate_local_time(post.created_at).strftime("%l:%M %P - %d/%m/%y")
+        %abbr{title: "#{added}", data: {toggle: 'tooltip'}}
+          = time_ago_in_words post.created_at
+        ago
+    .clearfix
+
+.modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_post_#{post.id}", 'data-show': 'false'}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
+          %span{'aria-hidden': true}
+            &times;
+        .modal-title.large
+          Edit post
+      .modal-body
+        = render partial: 'posts/form', locals: { categories: current_user.categories, post: post, select_category: true }

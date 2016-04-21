@@ -1,0 +1,29 @@
+.container
+  .row
+    .col-md-3
+      .filter
+        .pull-right
+          %a.btn.btn-mini.btn-default#add_category{data: {toggle: 'tooltip', title: 'add a new category', placement: 'auto'}}
+            %i.fa.fa-plus
+        .title Select a Category
+        = render partial: 'shared/filter_categories', locals: { categories: @categories }
+
+    .col-md-9
+      .panel
+        .panel-heading
+          .actions
+            %a.btn.btn-default#add_content{href: '#'}
+              add content
+          .title
+            Your Content Library
+          .subtitle
+            = "Currently contains #{current_user.posts.count} items"
+        .panel-body
+          .panel-row#add_content_panel{style: 'display: none'}
+            = render partial: 'posts/form', locals: { categories: @categories, select_category: true }
+          = render partial: 'shared/filter_bar'
+          .category-posts
+            - @sorted_posts.each do |post|
+              .panel-row{id: "post_#{post.id}"}
+                = render partial: 'posts/post', locals: { post: post }
+

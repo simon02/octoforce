@@ -26,8 +26,6 @@
               This content library forms the core of your social media console.
             %p
               Having a nice backlog of updates will make sure you never run out of interesting things to share with your lovely crowd so feel free to add as many tweets as you want.
-            %p.small
-              ps. use those lists to categorise them.
           .bottom
             .pull-right
               = link_to welcome_step3_path, class: 'btn btn-primary' do
@@ -46,23 +44,4 @@
             Add Content to Your Library
         .panel-body
           .panel-row
-            - list = @lists.first
-            = form_for Post.new,  multipart: true do |f|
-              .form-group
-                = f.label :list_id do
-                  Choose a list:
-                  %i.fa.fa-question-circle{'data-toggle': 'popover', 'data-content': 'Use lists to categorise your content', 'data-placement': 'top', 'data-trigger': 'hover'}
-                = f.select :list_id, options_for_select(@lists.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }), {}, class: 'form-control'
-              .form-group
-                .pull-right
-                  %span.subtle.small
-                    twitter text limit:
-                    %span.twitter-counter.text_counter
-                      140
-                = f.label :text, "Text"
-                = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: 'form-control m5 twitter-text-counter', id: 'post_text', data: { target: '.text_counter' }
-              .form-group
-                = f.file_field :asset, class: 'pull-left'
-                .pull-right
-                  = submit_tag "Save to Library", class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
-                .clearfix
+            = render partial: 'posts/form', locals: { categories: @categories, select_category: true }

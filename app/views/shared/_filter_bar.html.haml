@@ -1,0 +1,11 @@
+- filters = filter_links
+- unless filters.empty?
+  .panel-row
+    .small
+      filters:
+      - filters.each do |ff|
+        - f = transform_filter_couple ff
+        - next unless f
+        = link_to f[:link], class: "btn btn-default btn-xs" do
+          = f[:name]
+          %i.fa.fa-close

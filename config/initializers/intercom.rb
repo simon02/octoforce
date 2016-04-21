@@ -49,7 +49,7 @@ IntercomRails.config do |config|
   #
   config.user.custom_data = {
     :scheduled_updates => Proc.new { |user| user.updates.scheduled.count },
-    :number_of_lists => Proc.new { |user| user.lists.count },
+    :number_of_categories => Proc.new { |user| user.categories.count },
     :number_of_published_udpates => Proc.new { |user| user.updates.scheduled},
     :number_of_posts => Proc.new { |user| user.posts.count }
   }

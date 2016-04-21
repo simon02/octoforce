@@ -2,11 +2,11 @@
   .row
     .panel
       .panel-heading
-        .title= "Adding updates in bulk for #{@list.name}"
+        .title= "Adding updates in bulk for #{@category.name}"
 
       .panel-body
         .panel-row
-          = form_tag list_posts_preview_path(@list),  multipart: true  do
+          = form_tag category_posts_preview_path(@category),  multipart: true  do
             .form-group
               .pull-right
                 = label_tag :nr_enters

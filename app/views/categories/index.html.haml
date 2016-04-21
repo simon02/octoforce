@@ -1,0 +1,23 @@
+.container
+  .row
+    .col-md-3
+      .filter
+        .title Categories
+        %ul.categories
+          - @categories.each do |category|
+            = render partial: 'queue/category', locals: { category: category }
+        = form_for Category.new, url: categories_path do |f|
+          = f.text_field :name
+          = f.submit "Create new category"
+
+    .col-md-9
+      .panel
+        .panel-header
+          .title
+            Library
+        .panel-body
+          .category-posts
+            - @posts.sorted.each do |post|
+              .panel-row{id: "post_#{post.id}"}
+                = render partial: 'posts/post', locals: { post: post }
+

@@ -46,6 +46,7 @@ body,html {
     .panel-row {
       padding: 15px;
       border-bottom: 1px solid #f0f0f0;
+      position: relative;
       &:last-child {
         border-bottom: none;
       }
@@ -79,6 +80,31 @@ body,html {
       position: absolute;
       bottom: 0;
     }
+    .category-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #555;
+      background-color: #f8f8f8;
+      position: relative;
+      .name {
+        border: 1px solid #ccc;
+        border-left: none;
+        padding: 1px 5px 1px 13px;
+        @include border-right-radius(3px);
+      }
+      .color-code {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 8px;
+        background-color: #aaa;
+        border: 1px solid rgba(0,0,0,.2);
+        border-right: none;
+        @include border-left-radius(3px)
+      }
+    }
     .update {
       .profile {
         position: absolute;
@@ -97,6 +123,10 @@ body,html {
             background-color: #55acee;
           }
         }
+      }
+      .category {
+        position: absolute;
+        bottom: 0;
       }
         .account {
           font-weight: 600;
@@ -123,32 +153,6 @@ body,html {
         .text {
           font-size: 1.8rem;
         }
-        .category {
-          display: inline-block;
-          font-size: 11px;
-          font-weight: 600;
-          color: #555;
-          background-color: #f8f8f8;
-          position: absolute;
-          bottom: 0;
-          .name {
-            border: 1px solid #ccc;
-            border-left: none;
-            padding: 1px 5px 1px 13px;
-            @include border-right-radius(3px);
-          }
-          .color-code {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 8px;
-            background-color: #aaa;
-            border: 1px solid rgba(0,0,0,.2);
-            border-right: none;
-            @include border-left-radius(3px)
-          }
-        }
     }
   }
 }
@@ -173,7 +177,7 @@ body,html {
   .media {
     float: right;
   }
-  .list {
+  .category {
     font-style: italic;
     position: absolute;
     bottom: 4px;

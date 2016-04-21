@@ -1,0 +1,18 @@
+.container
+  .row
+    .col-md-3
+      .filter
+        .pull-right
+          %a.btn.btn-mini.btn-default#add_category{data: {toggle: 'tooltip', title: 'add a new category', placement: 'auto'}}
+            %i.fa.fa-plus
+
+        .title Select A Category
+
+        %ul.categories
+        = render partial: 'library/filter_category', locals: { categories: @categories, selected_category: @category, amount_proc: Proc.new { |cat| cat.posts.count } }
+
+    .col-md-9
+
+      = link_to 'go back to full library', library_path
+
+      = render partial: 'category', locals: { category: @category }

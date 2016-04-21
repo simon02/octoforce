@@ -1,42 +1,37 @@
-  .row
-    .col-md-3
-      .filter
-        - if !@identities.empty?
-          .pull-right
-            %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
-              %i.fa.fa-plus
-
-        .title Filter by account
-        - if @identities.empty?
-          = link_to 'Add your first social media account', identities_url, class: 'btn btn-primary form-control'
-          %br
-          %br
-        = render partial: 'identities', locals: { identities: @identities }
-
-      .filter
+- identities = current_user.identities
+- categories = current_user.categories
+.row
+  .col-md-3
+    .filter.m20
+      - if !identities.empty?
         .pull-right
-          %a.btn.btn-mini.btn-default#add_list
+          %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
             %i.fa.fa-plus
-        .title Filter by list
-        %ul.lists
-          - @lists.each do |list|
-            = render partial: 'list', locals: { list: list }
-          %li.list.hidden#add_list_form
-            = form_for List.new, html: { class: 'form-inline' } do |f|
-              .color-code
-              .name{style: 'max-width: 50%'}
-                = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
-              .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'
+
+      .title Filter by account
+      - if identities.empty?
+        = link_to 'Add your first social media account', identities_url, class: 'btn btn-primary form-control m20'
+      = render partial: 'shared/filter_identities', locals: { identities: identities }
+
+    .filter.m20
+      .pull-right
+        %a.btn.btn-mini.btn-default#add_category
+          %i.fa.fa-plus
+      .title Filter by category
+      = render partial: 'shared/filter_categories', locals: { categories: categories }
 
 
-    .col-md-9
-      - if @updates.empty?
-        = render partial: 'identities/add'
+  .col-md-9
+    - if identities.empty?
+      = render partial: 'identities/add'
 
-      - else
+    - else
 
-        = link_to "Reschedule queue", queue_reschedule_path
+      .m10= link_to "Reschedule queue", queue_reschedule_path
 
-        - date = nil
-        - @updates.each do |day, updates|
-          = render partial: 'updates_for_day', locals: { updates: updates, day: day }
+      .m10
+        = render partial: 'shared/filter_bar'
+
+      - date = nil
+      - @updates.each do |day, updates|
+        = render partial: 'queue/updates_for_day', locals: { updates: updates, day: day }

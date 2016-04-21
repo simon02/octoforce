@@ -1,0 +1,3 @@
+$(".category-posts").html('')
+- @posts.sorted.each do |post|
+  $(".category-posts").prepend($('<div>').attr('id', "post_#{@post.id}").addClass('panel-row').html("#{ j render(partial: 'categories/post', locals: { post: post })}"))

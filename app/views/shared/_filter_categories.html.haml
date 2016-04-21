@@ -1,0 +1,11 @@
+%ul.categories
+  - categories.each do |category|
+    = render layout: 'shared/filter_element', locals: { id: category.id, element: category } do
+      = render partial: 'shared/category', locals: { category: category }
+
+  %li.category.hidden#add_category_form
+    = form_for Category.new, html: { class: 'form-inline' } do |f|
+      .color-code
+      .name{style: 'max-width: 50%'}
+        = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
+      .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'

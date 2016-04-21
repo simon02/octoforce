@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160322204020) do
+ActiveRecord::Schema.define(version: 20160419103625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,18 +61,29 @@ ActiveRecord::Schema.define(version: 20160322204020) do
 
   add_index "assets", ["user_id"], name: "index_assets_on_user_id", using: :btree
 
+  create_table "categories", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "next_post_id"
+    t.string   "color"
+  end
+
+  add_index "categories", ["user_id"], name: "index_categories_on_user_id", using: :btree
+
   create_table "feeds", force: :cascade do |t|
-    t.integer  "list_id"
+    t.integer  "category_id"
     t.integer  "user_id"
     t.string   "title"
     t.string   "url"
     t.string   "status"
-    t.boolean  "active",     default: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.boolean  "active",      default: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
-  add_index "feeds", ["list_id"], name: "index_feeds_on_list_id", using: :btree
+  add_index "feeds", ["category_id"], name: "index_feeds_on_category_id", using: :btree
   add_index "feeds", ["url"], name: "index_feeds_on_url", using: :btree
   add_index "feeds", ["user_id"], name: "index_feeds_on_user_id", using: :btree
 
@@ -91,24 +102,14 @@ ActiveRecord::Schema.define(version: 20160322204020) do
     t.datetime "updated_at",   null: false
     t.string   "refreshtoken"
     t.string   "secrettoken"
+    t.string   "last_checked"
   end
 
   add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
 
-  create_table "lists", force: :cascade do |t|
-    t.integer  "user_id"
-    t.string   "name"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.integer  "next_post_id"
-    t.string   "color"
-  end
-
-  add_index "lists", ["user_id"], name: "index_lists_on_user_id", using: :btree
-
   create_table "posts", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "list_id"
+    t.integer  "category_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.datetime "last_scheduled"
@@ -118,7 +119,7 @@ ActiveRecord::Schema.define(version: 20160322204020) do
   end
 
   add_index "posts", ["asset_id"], name: "index_posts_on_asset_id", using: :btree
-  add_index "posts", ["list_id"], name: "index_posts_on_list_id", using: :btree
+  add_index "posts", ["category_id"], name: "index_posts_on_category_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
   create_table "schedules", force: :cascade do |t|
@@ -133,8 +134,23 @@ ActiveRecord::Schema.define(version: 20160322204020) do
   add_index "schedules", ["identity_id"], name: "index_schedules_on_identity_id", using: :btree
   add_index "schedules", ["user_id"], name: "index_schedules_on_user_id", using: :btree
 
+  create_table "shortened_urls", force: :cascade do |t|
+    t.integer  "owner_id"
+    t.string   "owner_type", limit: 20
+    t.text     "url",                               null: false
+    t.string   "unique_key", limit: 10,             null: false
+    t.integer  "use_count",             default: 0, null: false
+    t.datetime "expires_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "shortened_urls", ["owner_id", "owner_type"], name: "index_shortened_urls_on_owner_id_and_owner_type", using: :btree
+  add_index "shortened_urls", ["unique_key"], name: "index_shortened_urls_on_unique_key", unique: true, using: :btree
+  add_index "shortened_urls", ["url"], name: "index_shortened_urls_on_url", using: :btree
+
   create_table "timeslots", force: :cascade do |t|
-    t.integer  "list_id"
+    t.integer  "category_id"
     t.integer  "schedule_id"
     t.integer  "day"
     t.datetime "created_at",  null: false
@@ -142,7 +158,7 @@ ActiveRecord::Schema.define(version: 20160322204020) do
     t.integer  "offset"
   end
 
-  add_index "timeslots", ["list_id"], name: "index_timeslots_on_list_id", using: :btree
+  add_index "timeslots", ["category_id"], name: "index_timeslots_on_category_id", using: :btree
   add_index "timeslots", ["schedule_id"], name: "index_timeslots_on_schedule_id", using: :btree
 
   create_table "updates", force: :cascade do |t|
@@ -152,17 +168,22 @@ ActiveRecord::Schema.define(version: 20160322204020) do
     t.boolean  "published",    default: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.integer  "list_id"
+    t.integer  "category_id"
     t.integer  "post_id"
     t.integer  "asset_id"
     t.string   "text"
     t.integer  "identity_id"
     t.string   "jid"
+    t.integer  "likes",        default: 0
+    t.integer  "shares",       default: 0
+    t.integer  "comments",     default: 0
+    t.string   "response_id"
+    t.datetime "published_at"
   end
 
   add_index "updates", ["asset_id"], name: "index_updates_on_asset_id", using: :btree
+  add_index "updates", ["category_id"], name: "index_updates_on_category_id", using: :btree
   add_index "updates", ["identity_id"], name: "index_updates_on_identity_id", using: :btree
-  add_index "updates", ["list_id"], name: "index_updates_on_list_id", using: :btree
   add_index "updates", ["post_id"], name: "index_updates_on_post_id", using: :btree
   add_index "updates", ["timeslot_id"], name: "index_updates_on_timeslot_id", using: :btree
   add_index "updates", ["user_id"], name: "index_updates_on_user_id", using: :btree
@@ -193,6 +214,7 @@ ActiveRecord::Schema.define(version: 20160322204020) do
     t.string   "timezone",                         default: "Europe/Brussels"
     t.integer  "onboarding_step",        limit: 2, default: 0
     t.boolean  "onboarding_active",                default: true
+    t.boolean  "shorten_links",                    default: true
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
@@ -202,20 +224,20 @@ ActiveRecord::Schema.define(version: 20160322204020) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "assets", "users"
-  add_foreign_key "feeds", "lists"
+  add_foreign_key "categories", "users"
+  add_foreign_key "feeds", "categories"
   add_foreign_key "feeds", "users"
   add_foreign_key "identities", "users"
-  add_foreign_key "lists", "users"
   add_foreign_key "posts", "assets"
-  add_foreign_key "posts", "lists"
+  add_foreign_key "posts", "categories"
   add_foreign_key "posts", "users"
   add_foreign_key "schedules", "identities"
   add_foreign_key "schedules", "users"
-  add_foreign_key "timeslots", "lists"
+  add_foreign_key "timeslots", "categories"
   add_foreign_key "timeslots", "schedules"
   add_foreign_key "updates", "assets"
+  add_foreign_key "updates", "categories"
   add_foreign_key "updates", "identities"
-  add_foreign_key "updates", "lists"
   add_foreign_key "updates", "posts"
   add_foreign_key "updates", "timeslots"
   add_foreign_key "updates", "users"

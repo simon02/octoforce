@@ -10,8 +10,8 @@
       .col-md-2
         .filter
           .title Filter by account
-          %ul.lists
-            = render partial: 'queue/identities', locals: { identities: @identities }
+          %ul.categories
+            = render partial: 'shared/filter_identities', locals: { identities: @identities }
 
       .col-md-10
         .center_panel

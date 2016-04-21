@@ -1,9 +1,9 @@
-.timeslot{id: "timeslot_#{slot.id}", style: "background-color: #{lighten_color slot.list.color, 0.4}; border-color: ##{slot.list.color}"}
+.timeslot{id: "timeslot_#{slot.id}", style: "background-color: #{lighten_color slot.category.color, 0.4}; border-color: ##{slot.category.color}"}
   .pull-right.actions
     .x-small
       = link_to slot, method: :delete, remote: true do
         %i.fa.fa-trash
   .timestamp
     = offset_to_time(slot.offset, "%I:%M %P")
-  .list
-    = link_to(slot.list.name, list_path(slot.list)) if slot.list
+  .category
+    = link_to(slot.category.name, category_path(slot.category)) if slot.category

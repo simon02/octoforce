@@ -1,6 +1,16 @@
-my_first_job:
+schedule_updates_every_2_minutes:
   cron: "*/2 * * * *"
   class: "UpdateSchedulerWorker"
+  queue: default
+
+analytics:
+  cron: "5 * * * *"
+  class: "AnalyticsWorker"
+  queue: default
+
+twitter_mentions:
+  cron: "15 * * * *"
+  class: "TwitterMentionsWorker"
   queue: default
 
 reschedule_everything:

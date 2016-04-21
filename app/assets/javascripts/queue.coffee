@@ -3,6 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
-  $('#add_list').click ->
-    $('#add_list_form').removeClass('hidden').show()
-    $("#add_list_form input[type='text'").focus()
+  $('#add_category').click ->
+    $('#add_category_form').removeClass('hidden').show()
+    $("#add_category_form input[type='text'").focus()

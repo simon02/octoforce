@@ -1,26 +1,25 @@
 class Timeslot < ActiveRecord::Base
-  belongs_to :list
+  belongs_to :category
   belongs_to :schedule
   has_many :updates, dependent: :nullify
   validates_presence_of :day, :offset
 
   def self.create_with_timestamp params
     if params.key? :offset
-      offset = Time.parse(params[:offset])
+      offset = Time.zone.parse(params[:offset].sub('.',':'))
       params[:offset] = offset.hour * 60 + offset.min
     end
     create params
   end
 
   def schedule_next_update year, week
-    post = list.find_next_post
+    post = category.find_next_post
     unless post
       return
     else
       puts "Could not find the post :o"
     end
-    update = post.schedule calculate_scheduling_time(year, week)
-    update.update timeslot: self, identity: schedule.identity
+    self.updates << post.schedule(calculate_scheduling_time(year, week), schedule.identity)
   end
 
   # calculate schedule time based on given week + own weekday and time

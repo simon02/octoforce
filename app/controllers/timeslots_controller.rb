@@ -11,7 +11,7 @@ class TimeslotsController < ApplicationController
 
     @timeslot = Timeslot.create_with_timestamp timeslot_params
 
-    QueueWorker.perform_async(@timeslot.list.id)
+    QueueWorker.perform_async(@timeslot.category.id)
 
     respond_to do |format|
       format.html { redirect_to schedules_path(@slot.schedule) }
@@ -26,7 +26,7 @@ class TimeslotsController < ApplicationController
     puts "THIS GETS CALLED!!!"
     @timeslot = Timeslot.find(params[:id]).destroy
 
-    QueueWorker.perform_async(@timeslot.list.id)
+    QueueWorker.perform_async(@timeslot.category.id)
 
     respond_to do |format|
       format.html { redirect_to schedules_path }
@@ -40,7 +40,7 @@ class TimeslotsController < ApplicationController
   private
 
   def timeslot_params
-    params.require(:timeslot).permit(:schedule_id, :day, :offset, :list_id)
+    params.require(:timeslot).permit(:schedule_id, :day, :offset, :category_id)
   end
 
 end

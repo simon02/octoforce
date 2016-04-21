@@ -1,0 +1,5 @@
+.color-code{'style': "background-color: ##{category.color}"}
+.name= category.name
+- if defined? calculate_category_amount
+  .amount{data: {toggle: 'tooltip', title: category_amount_tooltip || '', placement: 'auto'}}
+    = calculate_category_amount category
