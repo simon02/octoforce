@@ -2,4 +2,4 @@ var appearance = $("#{escape_javascript(render partial: 'schedules/timeslot', lo
 $("#schedule_#{@timeslot.schedule_id} #day_#{@timeslot.day}_block_#{@timeslot.offset / minutes_per_block}").append(appearance)
 $("input[name='timeslot[offset]'").val('')
 $(".add-timeslot-form").addClass('hidden')
-$('#dialog_timeslot').modal('hide')
+$('.dialog-timeslot').modal('hide')

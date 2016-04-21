@@ -19,8 +19,10 @@
         %i.fa.fa-4x.fa-facebook.color-facebook
         %br
         %br
-        %div{'data-toggle': 'tooltip', title: 'not supported yet', style: 'display: inline-block'}
-          = link_to 'connect facebook account', omniauth_authorize_path('user', 'facebook'), class: 'btn btn-facebook disabled'
+        %div
+          .m5= link_to 'connect facebook profile', omniauth_authorize_path('user', 'facebook'), class: 'btn btn-facebook'
+          .m5= link_to 'connect facebook pages', omniauth_authorize_path('user', 'facebook_page'), class: 'btn btn-facebook'
+          .m5= link_to 'connect facebook groups', omniauth_authorize_path('user', 'facebook_group'), class: 'btn btn-facebook'
       .col-md-4{style: 'text-align: center'}
         %i.fa.fa-4x.fa-linkedin.color-linkedin
         %br

@@ -30,13 +30,13 @@
           %td
           - 0.upto(6).each do |day|
             %td.center
-              %a.btn.btn-default.btn-sm.add-timeslot.center{'data-day': day, 'data-toggle': 'modal', 'data-target': "#dialog_timeslot"}
+              %a.btn.btn-default.btn-sm.add-timeslot.center{'data-day': day, 'data-toggle': 'modal', 'data-target': "#dialog_timeslot_#{schedule.id}"}
                 Add timeslot
 
     / .panel-row.hidden.add-timeslot-form{id: "add_timeslot_#{schedule.id}"}
     /   = render partial: 'schedules/add_timeslot', locals: { schedule: schedule, timeslot: Timeslot.new }
 
-.modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_timeslot", 'data-show': 'false'}
+.modal.fade.dialog-timeslot{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_timeslot_#{schedule.id}", 'data-show': 'false'}
   .modal-dialog
     .modal-content
       .modal-header

@@ -40,8 +40,20 @@ class SocialMediaWorker
   end
 
   def perform_facebook update, client
+    post_to_facebook("me", update, client)
+  end
+
+  def perform_facebook_page update, client
+    post_to_facebook(update.identity.uid, update, client)
+  end
+
+  def perform_facebook_group update, client
+    post_to_facebook("me", update, client)
+  end
+
+  def post_to_facebook target, update, client
     if update.has_media?
-      client.put_connections("me", "photos", caption: update.text, url: update.media_url)
+      client.put_connections(target, "photos", caption: update.text, url: update.media_url)
     # elsif update.contains_link?
     #   params = { message: update.text, link: update.link.url, caption: update.link.caption, description: update.link.description, name: update.link.title }
     #   if update.link.custom_image?
@@ -51,24 +63,8 @@ class SocialMediaWorker
     #   end
     #   client.put_connections("me", "feed", params)
     else
-      client.put_connections("me", "feed", message: update.text)
+      client.put_connections(target, "feed", message: update.text)
     end
-  end
-
-  def perform_facebook_page update, client
-    # if update.has_media?
-      # client.put_connections("me", "photos")
-    # else
-      client.put_connections(update.identity.uid, "feed", message: update.text)
-    # end
-  end
-
-  def perform_facebook_group update, client
-    # if update.has_media?
-      # client.put_connections("me", "photos")
-    # else
-      client.put_connections("me", "feed", message: update.text)
-    # end
   end
 
   def self.generate_short_links text, owner = nil
