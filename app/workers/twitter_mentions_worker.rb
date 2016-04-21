@@ -1,7 +1,15 @@
 class TwitterMentionsWorker
   include Sidekiq::Worker
 
-  def perform identity_id
+  def perform identity_id = nil
+    if identity_id.nil?
+      Identity.filter_by_provider('twitter').each { |identity| TwitterMentionsWorker.perform_async identity.id }
+    else
+      perform_with_identity identity_id
+    end
+  end
+
+  def perform_with_identity identity_id
     identity = Identity.find_by id: identity_id
     return if identity.nil? || identity.provider != 'twitter'
     calculate_mentions identity
