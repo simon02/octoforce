@@ -1,6 +1,7 @@
 - post ||= Post.new
 = form_for post, multipart: true, html: { class: 'jquery-upload-form' } do |f|
-  = hidden_field_tag :redirect, request.path
+  - p request
+  = hidden_field_tag :redirect, request.fullpath
   = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
   - if select_category ||= false
     .form-group

@@ -50,4 +50,12 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) << :timezone
   end
 
+  def redirect_with_param path, options = {}
+    if params[:redirect]
+      uri = URI.parse(params[:redirect])
+      path = "#{uri.path}?#{uri.query}"
+    end
+    redirect_to path, options
+  end
+
 end
