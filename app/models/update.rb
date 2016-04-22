@@ -29,8 +29,17 @@ class Update < ActiveRecord::Base
   end
 
   def social_media_url
-    return nil if !published || identity.provider != 'twitter'
-    "https://twitter.com/octoforce/status/#{response_id}"
+    return nil if !published
+    case self.identity.provider
+    when Identity::FACEBOOK_PROFILE, Identity::FACEBOOK_GROUP, Identity::FACEBOOK_PAGE
+      return "https://www.facebook.com/#{response_id}"
+    when Identity::TWITTER
+      return "https://twitter.com/octoforce/status/#{response_id}"
+    when Identity::GITHUB
+    when Identity::GOOGLE_PLUS
+    when Identity::INSTAGRAM
+    end
+    return nil
   end
 
 end

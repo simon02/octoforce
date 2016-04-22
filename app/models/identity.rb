@@ -7,6 +7,14 @@ class Identity < ActiveRecord::Base
   validates_uniqueness_of :uid, :scope => :provider
   scope :filter_by_provider, -> (provider) { where('provider = ?', provider)}
 
+  FACEBOOK_PROFILE = 'facebook'
+  FACEBOOK_PAGE = 'facebook_page'
+  FACEBOOK_GROUP = 'facebook_group'
+  TWITTER = 'twitter'
+  GITHUB = 'github'
+  INSTAGRAM = 'instagram'
+  LINKEDIN = 'linkedin'
+
   def self.find_for_oauth(auth)
     identity = find_by(provider: auth.provider, uid: auth.uid)
     create_identity = identity.nil?

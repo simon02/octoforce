@@ -11,13 +11,10 @@ class SocialMediaWorker
     case update.identity.provider
     when 'facebook'
       perform_facebook update, client
-      break
     when 'facebook_page'
       perform_facebook_page update, client
-      break
     when 'facebook_group'
       perform_facebook_group update, client
-      break
     when 'github'
     when 'google'
     when 'instagram'
@@ -33,22 +30,22 @@ class SocialMediaWorker
     else
       tweet = client.update(shorten_links ? SocialMediaWorker.generate_short_links(update.text, update) : update.text)
     end
-    update.published = true
-    update.published_at = Time.zone.now
-    update.response_id = tweet.id.to_s
-    update.save
+    published_update update, tweet.id.to_s
   end
 
   def perform_facebook update, client
-    post_to_facebook("me", update, client)
+    fb = post_to_facebook("me", update, client)
+    published_update update, fb["id"]
   end
 
   def perform_facebook_page update, client
-    post_to_facebook(update.identity.uid, update, client)
+    fb = post_to_facebook(update.identity.uid, update, client)
+    published_update update, fb["id"]
   end
 
   def perform_facebook_group update, client
-    post_to_facebook("me", update, client)
+    fb = post_to_facebook("me", update, client)
+    published_update update, fb["id"]
   end
 
   def post_to_facebook target, update, client
@@ -65,6 +62,16 @@ class SocialMediaWorker
     else
       client.put_connections(target, "feed", message: update.text)
     end
+
+  end
+
+  private
+
+  def published_update update, response
+    update.published = true
+    update.published_at = Time.zone.now
+    update.response_id = response
+    update.save
   end
 
   def self.generate_short_links text, owner = nil
