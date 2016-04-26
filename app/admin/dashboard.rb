@@ -5,6 +5,19 @@ ActiveAdmin.register_page "Dashboard" do
   content title: proc{ I18n.t("active_admin.dashboard") } do
     columns do
       column do
+        panel "Published Updates" do
+          render partial: "admin/chart", locals: { scope: 'published' }
+        end
+      end
+      column do
+        panel "Scheduled Updates" do
+          render partial: "admin/chart", locals: { scope: 'scheduled' }
+        end
+      end
+    end
+
+    columns do
+      column do
         panel "Users" do
           render partial: "admin/chart", locals: { scope: 'users' }
         end
