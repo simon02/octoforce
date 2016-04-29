@@ -1,15 +1,13 @@
-- identities = current_user.identities
-- categories = current_user.categories
 .row
   .col-md-3
     .filter.m20
-      - if !identities.empty?
+      - if !identities.to_a.empty?
         .pull-right
           %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
             %i.fa.fa-plus
 
       .title Filter by account
-      - if identities.empty?
+      - if identities.to_a.empty?
         = link_to 'Add your first social media account', identities_url, class: 'btn btn-primary form-control m20'
       = render partial: 'shared/filter_identities', locals: { identities: identities }
 
@@ -22,7 +20,7 @@
 
 
   .col-md-9
-    - if identities.empty?
+    - if identities.to_a.empty?
       = render partial: 'identities/add'
 
     - else

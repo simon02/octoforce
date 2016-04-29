@@ -2,7 +2,7 @@ class SchedulesController < ApplicationController
   skip_before_filter :onboarding, only: :add_timeslot
 
   def index
-    @schedules = current_user.schedules
+    @schedules = current_user.schedules.includes(:timeslots)
     @identities = current_user.identities
     @new_timeslot = Timeslot.new
   end

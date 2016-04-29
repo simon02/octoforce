@@ -2,7 +2,7 @@ class LibraryController < ApplicationController
 
   def index
     @sorted_posts = current_user.posts.filter(filtering_params).sort_by { |post| [post.updates.scheduled.count.zero? ? 0 : -1, post.position] }
-    @categories = current_user.categories
+    @categories = current_user.categories.includes(:posts)
   end
 
   def filter

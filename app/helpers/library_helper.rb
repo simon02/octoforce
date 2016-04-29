@@ -1,7 +1,7 @@
 module LibraryHelper
 
   def calculate_category_amount category
-    category.posts.count
+    category.posts.size
   end
 
   def category_amount_tooltip

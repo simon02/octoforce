@@ -1,8 +1,8 @@
 class Post < ActiveRecord::Base
   include Filterable
-  belongs_to :user
-  belongs_to :category
-  belongs_to :asset
+  belongs_to :user, touch: true
+  belongs_to :category, touch: true
+  belongs_to :asset, touch: true
   has_many :updates, dependent: :nullify
   before_destroy :teardown, prepend: true
   before_save :check_position
