@@ -715,6 +715,7 @@ DEPENDENCIES
   capybara
   coffee-rails (~> 4.1.0)
   color-generator
+  connection_pool
   cucumber-rails
   dalli
   database_cleaner
