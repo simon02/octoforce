@@ -23,7 +23,6 @@
             = render partial: 'posts/form', locals: { categories: @categories, select_category: true }
           = render partial: 'shared/filter_bar'
           .category-posts
-            - cache ["v1",@sorted_posts] do
-              - @sorted_posts.each do |post|
-                .panel-row{id: "post_#{post.id}"}
-                  = render partial: 'posts/post', locals: { post: post }
+            - @sorted_posts.each do |post|
+              .panel-row{id: "post_#{post.id}"}
+                = render partial: 'posts/post', locals: { post: post }
