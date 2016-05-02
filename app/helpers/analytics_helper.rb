@@ -1,7 +1,8 @@
 module AnalyticsHelper
 
   def calculate_category_amount category
-    category.updates.published.count
+    # making sure we don't hit the DB again (no where, no count)
+    category.updates.select(&:published).size
   end
 
   def category_amount_tooltip
@@ -9,7 +10,8 @@ module AnalyticsHelper
   end
 
   def calculate_identity_amount identity
-    identity.updates.published.count
+    # making sure we don't hit the DB again (no where, no count)
+    identity.updates.select(&:published).size
   end
 
   def identity_amount_tooltip

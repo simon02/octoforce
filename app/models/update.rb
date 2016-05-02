@@ -3,10 +3,10 @@ class Update < ActiveRecord::Base
   has_shortened_urls
   belongs_to :user
   belongs_to :timeslot
-  belongs_to :category
+  belongs_to :category, touch: true
   belongs_to :asset
-  belongs_to :post
-  belongs_to :identity
+  belongs_to :post, touch: true
+  belongs_to :identity, touch: true
   scope :scheduled, -> { where("scheduled_at > ?", Time.zone.now) }
   scope :published, -> pub = true { where("published = ?", pub) }
   scope :sorted, -> { order("scheduled_at ASC") }

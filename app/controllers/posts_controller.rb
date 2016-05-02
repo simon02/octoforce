@@ -21,7 +21,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        redirect_to params[:redirect] || category_url(@post.category)
+        redirect_with_param category_url(@post.category)
       end
       format.js
     end
@@ -30,7 +30,7 @@ class PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
     @post.update post_params
-    redirect_to (params[:redirect] || category_path(@post.category)), notice: 'Post was updated.'
+    redirect_with_param category_path(@post.category), notice: 'Post was updated.'
   end
 
   def show_bulk

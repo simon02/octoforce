@@ -1,21 +1,22 @@
-.header.m10
-  .profile
-    %i{'class': "fa fa-#{update.identity.provider} #{update.identity.provider}"}
-    %img{'src': update.identity.image}
-  .time-ago
-    = "in #{time_ago_in_words(update.scheduled_at)}"
-  .account
-    = update.identity.name
-    %span.subtle= update.identity.subname
-  .timestamp= calculate_local_time(update.scheduled_at).strftime("%l:%M %P - %d/%m/%y")
-.body
-  - if update.has_media?
-    .pull-right{style: 'margin-left: 10px'}
-      = link_to (image_tag update.media_url(:thumb)), update.media_url
-  .text.m30
-    = raw auto_link show update.text
-  .bottom
-    .category-badge
-      .color-code{style: "background-color: ##{update.category.color};"}
-      .name= update.category.name
-  .clearfix
+- cache ["v1", update, update.identity, update.category] do
+  .header.m10
+    .profile
+      %i{'class': "fa fa-#{update.identity.provider} #{update.identity.provider}"}
+      %img{'src': update.identity.image}
+    .time-ago
+      = timeago update.scheduled_at
+    .account
+      = update.identity.name
+      %span.subtle= update.identity.subname
+    .timestamp= calculate_local_time(update.scheduled_at).strftime("%l:%M %P - %d/%m/%y")
+  .body
+    - if update.has_media?
+      .pull-right{style: 'margin-left: 10px'}
+        = link_to (image_tag update.media_url(:thumb)), update.media_url
+    .text.m30
+      = raw auto_link show update.text
+    .bottom
+      .category-badge
+        .color-code{style: "background-color: ##{update.category.color};"}
+        .name= update.category.name
+    .clearfix

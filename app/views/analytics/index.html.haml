@@ -2,7 +2,6 @@
   .row
     .col-md-3
       .filter.m20
-        - @identities = current_user.identities
         - if !@identities.empty?
           .pull-right
             %a.btn.btn-mini.btn-default{href: "#{identities_url}#add-new"}
@@ -20,7 +19,7 @@
           %a.btn.btn-mini.btn-default#add_category
             %i.fa.fa-plus
         .title Filter by category
-        = render partial: 'shared/filter_categories', locals: { categories: current_user. categories }
+        = render partial: 'shared/filter_categories', locals: { categories: @categories }
 
 
     .col-md-9

@@ -20,3 +20,5 @@
       = link_to 'Accounts', identities_url
       = link_to 'Profile', edit_user_registration_url
       = link_to 'Sign out', destroy_user_session_path, method: :delete
+      - if current_user != true_user
+        = link_to 'Back to Admin', stop_impersonating_admin_users_path
