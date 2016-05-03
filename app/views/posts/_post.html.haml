@@ -6,6 +6,16 @@
     .text.x-large.m10
       = raw auto_link show post.text
     .clearfix
+  - if post.link
+    .row.with-preview
+      - if post.has_media?
+        .col-xs-4
+          .thumb
+        .col-xs-8
+      - else
+        .col-md-12
+      = link_to post.link.title, post.link.url
+      .clearfix
   .footer
     - if !(preview ||= false)
       %span.x-small{style: 'margin-right: 10px'}

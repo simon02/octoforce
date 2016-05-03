@@ -13,13 +13,13 @@
         %button.move.left
           %i.fa.fa-chevron-left
   .col-xs-8
-    = hidden_field_tag "post[link][url]", @resource.url.to_s
+    = hidden_field_tag "post[link_attributes[url]]", @resource.url.to_s
     %h4.m0{style: 'margin-top: 0'}
-      = text_field_tag "post[link][title]", @resource.title, class: 'disguised-field padding-a-5'
+      = text_field_tag "post[link_attributes[title]]", @resource.title, class: 'disguised-field padding-a-5'
     %p.text-muted.small.m0
-      = text_field_tag "post[link][caption]", @resource.url.to_s, class: 'disguised-field padding-a-5'
+      = text_field_tag "post[link_attributes[caption]]", @resource.url.to_s, class: 'disguised-field padding-a-5'
     %p.m10
-      = text_area_tag "post[link][description]", @resource.description, class: 'disguised-field padding-a-5'
+      = text_area_tag "post[link_attributes[description]]", @resource.description, class: 'disguised-field padding-a-5'
     %p.text-muted.small.m0
       %i.fa.fa-facebook.color-facebook
       edit above for facebook
