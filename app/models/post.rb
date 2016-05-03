@@ -3,6 +3,7 @@ class Post < ActiveRecord::Base
   belongs_to :user, touch: true
   belongs_to :category, touch: true
   belongs_to :asset, touch: true
+  has_one :link
   has_many :updates, dependent: :nullify
   before_destroy :teardown, prepend: true
   before_save :check_position

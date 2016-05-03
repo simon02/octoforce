@@ -50,6 +50,18 @@ $(document).ready(function() {
         $(this).val().length !== 0
       );
     });
+
+    $(".link_extractor").on('keyup', function() {
+      if ($("#scrape_result").length == 0) {
+        text = $(this).val();
+        urls = twttr.txt.extractUrlsWithIndices(text);
+        // to make sure we are done typing the URL, at least one character should come after it.
+        if (urls.length > 0 && urls[0].indices[1] < text.length) {
+          $('#link_extraction').removeClass('hide');
+          $('#link_extraction').load('/ajax/scraper', { link: urls[0].url } );
+        }
+      }
+    });
 });
 
 countTweetLength = function(target, text, containsImage) {

@@ -6,6 +6,7 @@ class Update < ActiveRecord::Base
   belongs_to :category, touch: true
   belongs_to :asset
   belongs_to :post, touch: true
+  belongs_to :link
   belongs_to :identity, touch: true
   scope :scheduled, -> { where("scheduled_at > ?", Time.zone.now) }
   scope :published, -> pub = true { where("published = ?", pub) }

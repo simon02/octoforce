@@ -18,7 +18,14 @@
           %span.twitter-counter{id: "text_counter_#{post.id}"}
             140
       = f.label :text, "Text", class: 'can-hide'
-      = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
+      = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter link_extractor text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
+    .form-group
+      .row#link_extraction.hide.with-preview
+        .col-md-12
+          .text-center
+            %p
+              loading link content...
+            %i.fa.fa-spinner.fa-pulse.fa-3x
     .form-group
       .assets#assets
         - if post.has_media?

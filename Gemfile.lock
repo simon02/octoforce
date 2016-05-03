@@ -35,6 +35,19 @@ GIT
       railties (>= 3.0, < 5.0)
 
 GIT
+  remote: git://github.com/simon02/link_thumbnailer.git
+  revision: 0ea785c93d613ac9791ae4ce7c7a539d6b3cff0f
+  specs:
+    link_thumbnailer (3.1.2)
+      activesupport (>= 3.0)
+      image_info (~> 1.0)
+      json (~> 1.8, >= 1.7.7)
+      net-http-persistent (~> 2.9)
+      nokogiri (~> 1.6)
+      rake (>= 0.9)
+      video_info (~> 2.6)
+
+GIT
   remote: git://github.com/simon02/shortener.git
   revision: c4c07b17c161178100bdbf8319f4fa67e46a3c90
   tag: v5.1.1
@@ -83,9 +96,11 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    ansi (1.5.0)
     arbre (1.0.3)
       activesupport (>= 3.0.0)
     arel (6.0.3)
+    ast (2.2.0)
     autoprefixer-rails (6.3.1)
       execjs
       json
@@ -187,6 +202,8 @@ GEM
       railties (>= 4.0, < 5.1)
     equalizer (0.0.10)
     erubis (2.7.0)
+    ethon (0.9.0)
+      ffi (>= 1.3.0)
     excon (0.48.0)
     execjs (2.6.0)
     factory_girl (4.5.0)
@@ -368,6 +385,7 @@ GEM
       haml (~> 4.0.0)
       nokogiri (~> 1.6.0)
       ruby_parser (~> 3.5)
+    htmlentities (4.3.4)
     http (1.0.2)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -381,6 +399,10 @@ GEM
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
+    image_info (1.1.2)
+      image_size
+      typhoeus
+    image_size (1.4.2)
     inflecto (0.0.2)
     inherited_resources (1.6.0)
       actionpack (>= 3.2, < 5)
@@ -397,6 +419,7 @@ GEM
     intercom-rails (0.2.31)
       activesupport (> 3.0)
     ipaddress (0.8.3)
+    iso8601 (0.9.0)
     jbuilder (2.4.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -446,6 +469,8 @@ GEM
     multipart-post (2.0.0)
     naught (1.1.0)
     nenv (0.2.0)
+    net-http-persistent (2.9.4)
+    net_http_timeout_errors (0.3.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     notiffany (0.0.8)
@@ -458,6 +483,9 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (~> 1.2)
+    oga (2.2)
+      ast
+      ruby-ll (~> 2.1)
     omniauth (1.3.1)
       hashie (>= 1.2, < 4)
       rack (>= 1.0, < 3)
@@ -481,6 +509,7 @@ GEM
     omniauth-twitter (1.2.1)
       json (~> 1.3)
       omniauth-oauth (~> 1.1)
+    open_uri_redirections (0.2.1)
     orm_adapter (0.5.0)
     paperclip (4.3.2)
       activemodel (>= 3.2.0)
@@ -603,6 +632,9 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
+    ruby-ll (2.1.2)
+      ansi
+      ast
     ruby_parser (3.7.3)
       sexp_processor (~> 4.1)
     rufus-scheduler (3.2.0)
@@ -670,6 +702,8 @@ GEM
       simple_oauth (~> 0.3.0)
     twitter-text (1.13.4)
       unf (~> 0.1.0)
+    typhoeus (1.0.2)
+      ethon (>= 0.9.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     tzinfo-data (1.2015.7)
@@ -682,6 +716,14 @@ GEM
     unf_ext (0.0.7.1)
     unicode_utils (1.4.0)
     vcr (3.0.1)
+    video_info (2.6.0)
+      addressable (~> 2.3)
+      htmlentities (~> 4.3)
+      iso8601 (~> 0.9)
+      multi_json (~> 1.11)
+      net_http_timeout_errors (~> 0.3.0)
+      oga (~> 2.2)
+      open_uri_redirections (~> 0.2)
     voight_kampff (1.0.2)
       rack (~> 1.6)
     warden (1.2.4)
@@ -743,6 +785,7 @@ DEPENDENCIES
   jquery-rails
   koala
   launchy
+  link_thumbnailer!
   meta-tags
   modernizr-rails
   omniauth
