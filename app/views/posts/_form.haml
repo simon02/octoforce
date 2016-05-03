@@ -1,36 +1,38 @@
 - post ||= Post.new
-= form_for post, multipart: true, html: { class: 'jquery-upload-form' } do |f|
-  = hidden_field_tag :redirect, request.path
-  = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
-  - if select_category ||= false
+- cache ["v1",post, categories] do
+  = form_for post, multipart: true, html: { class: 'jquery-upload-form' } do |f|
+    - p request
+    = hidden_field_tag :redirect, request.fullpath
+    = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
+    - if select_category ||= false
+      .form-group
+        = f.label :category_id do
+          Choose a category:
+        = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }, post.category_id), {}, class: 'form-control'
+    - else
+      = f.hidden_field :category_id
     .form-group
-      = f.label :category_id do
-        Choose a category:
-      = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }, post.category_id), {}, class: 'form-control'
-  - else
-    = f.hidden_field :category_id
-  .form-group
-    .pull-right.can-hide
-      %span.subtle.small
-        twitter text limit:
-        %span.twitter-counter{id: "text_counter_#{post.id}"}
-          140
-    = f.label :text, "Text", class: 'can-hide'
-    = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
-  .form-group
-    .assets#assets
-      - if post.has_media?
-        .preview
-          %i.fa.fa-close.close-button.remove-attachment
-          = image_tag post.media_url(:thumb)
-  .form-group.can-hide
-    .btn.btn-default.fileinput-button.pull-left
-      %i.fa.fa-camera
-      %span.text Select a file
-      = file_field_tag "asset[media]"
-    .pull-right
-      - if post.new_record?
-        = submit_tag 'Save to Library', class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
-      - else
-        = submit_tag 'Update this Post', class: 'btn btn-primary pull-right', data: { disable_with: 'Updating...' }
-    .clearfix
+      .pull-right.can-hide
+        %span.subtle.small
+          twitter text limit:
+          %span.twitter-counter{id: "text_counter_#{post.id}"}
+            140
+      = f.label :text, "Text", class: 'can-hide'
+      = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
+    .form-group
+      .assets#assets
+        - if post.has_media?
+          .preview
+            %i.fa.fa-close.close-button.remove-attachment
+            = image_tag post.media_url(:thumb)
+    .form-group.can-hide
+      .btn.btn-default.fileinput-button.pull-left
+        %i.fa.fa-camera
+        %span.text Select a file
+        = file_field_tag "asset[media]"
+      .pull-right
+        - if post.new_record?
+          = submit_tag 'Save to Library', class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
+        - else
+          = submit_tag 'Update this Post', class: 'btn btn-primary pull-right', data: { disable_with: 'Updating...' }
+      .clearfix

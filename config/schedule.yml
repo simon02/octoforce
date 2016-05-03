@@ -1,4 +1,4 @@
-schedule_updates_every_2_minutes:
+check_for_updates:
   cron: "*/2 * * * *"
   class: "UpdateSchedulerWorker"
   queue: default
