@@ -39,6 +39,8 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'rack-mini-profiler'
+  gem 'flamegraph'
 end
 
 
@@ -110,6 +112,7 @@ gem 'select2-rails'
 gem 'bh'
 gem 'devise', '~> 3.4'
 gem 'devise_invitable'
+gem 'pretender'
 gem 'cancancan'
 gem 'omniauth'
 gem 'omniauth-facebook'
@@ -126,3 +129,5 @@ gem 'activeadmin', github: 'activeadmin', branch: 'master'
 gem 'inherited_resources'
 gem 'dateslices'
 gem 'rollbar', '~> 2.8.3'
+gem 'dalli'
+gem 'connection_pool'

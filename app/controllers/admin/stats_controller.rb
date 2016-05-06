@@ -4,6 +4,12 @@ class Admin::StatsController < ApplicationController
   def stats
     if params[:scope].blank?
       render :json => { :errors => "scope not set" }, :status => 422
+    elsif params[:scope] == 'scheduled'
+      ret = Update.published(false).group_by_day :scheduled_at
+      render json: ret
+    elsif params[:scope] == 'published'
+      ret = Update.published.where('published_at >= ?', Time.zone.now - 1.month).group_by_day :published_at
+      render json: ret
     else
       cls = User
       cls = Identity.where( "provider = ?", "twitter" ) if params[:scope] == 'twitter_users'

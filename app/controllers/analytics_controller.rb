@@ -3,7 +3,9 @@ class AnalyticsController < ApplicationController
   DEFAULT_RESULTS_PER_PAGE = 25
 
   def index
-    @updates = current_user.updates.published
+    @identities = current_user.identities.includes(:updates)
+    @categories = current_user.categories.includes(:updates)
+    @updates = current_user.updates.includes(:category).includes(:identity).published
       .order("published_at DESC")
       .filter(filtering_params)
     @filters = filtering_params

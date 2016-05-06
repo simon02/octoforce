@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 
+//= require jquery.timeago
 //= require jquery-fileupload/basic-plus
 //= require file_upload
 
@@ -22,7 +23,7 @@
 //= require library
 //= require posts
 
-var twitter = require('twitter-text')
+var twitter = require('twitter-text');
 
 
 // console.log(twitter.txt.getTweetLength(twitter.htmlEscape('#hello < @world >')));
@@ -31,6 +32,8 @@ $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
     $('[data-toggle="popover"]').popover()
     $('.modal').modal()
+    jQuery.timeago.settings.allowFuture = true
+    $("time.timeago").timeago()
     if ($('.twitter-text-counter').length > 0)
       countTweetLength($('.twitter-text-counter').data('target'), $('.twitter-text-counter').val());
     $('.twitter-text-counter').keyup(function() {
