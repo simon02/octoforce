@@ -1,62 +1,69 @@
 .filter {
   .title {
     text-transform: uppercase;
-    color: #757575;
+    color: #AAA;
     font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    padding-top: 2px;
   }
   ul {
     list-style: none;
     padding: 0;
+    margin: 0 -5px;
     li a {
-      padding: 8px;
-      margin-bottom: 6px;
-      background-color: #f0f0f0;
+      /*padding: 8px;*/
+      padding: 5px;
+      /*background-color: #f0f0f0;*/
       @include border-radius(4px);
       cursor: pointer;
       display: block;
       &:hover {
-        background-color: #fcfcfc;
+        background-color: #f0f0f0;
         text-decoration: none;
-      }
-      &.selected {
-        background-color: $brand-primary;
-        color: white;
       }
     }
   }
   .amount {
     padding: 0px 8px;
-    background-color: #f5f5f5;
     border: 1px solid #ddd;
     font-size: 12px;
     font-weight: 600;
     color: #757575;
     @include border-radius(3px);
   }
+  .selected .amount {
+    border-color: $brand-primary;
+    background-color: $brand-primary;
+    color: #fff;
+  }
 }
 .social-profiles {
   .identity {
+    margin-bottom: 2px;
     position: relative;
     img {
       @include border-radius(3px);
       position: absolute;
-      width: 36px;
+      width: 32px;
     }
     .name {
-      margin-left: 44px;
-      font-weight: 600;
+      margin-left: 40px;
+      font-weight: 500;
+      font-size: 14px;
     }
     .provider {
-      margin-left: 44px;
+      margin-left: 40px;
+      margin-top: -2px;
       color: #757575;
-      font-size: 13px;
+      font-size: 11px;
+      font-weight: 300;
     }
     .amount {
       position: absolute;
-      right: 8px;
-      top: 16px;
+      right: 5px;
+      top: 12px;
     }
   }
 }
@@ -70,14 +77,15 @@ ul.categories {
       @include border-radius(12px);
       float: left;
       margin-top: 5px;
-      margin-left: 12px;
+      margin-left: 10px;
     }
     .name {
-      margin-left: 18px;
+      margin-left: 14px;
       display: inline-block;
     }
     .amount {
       float: right;
+      margin-top: 1px;
     }
   }
 }

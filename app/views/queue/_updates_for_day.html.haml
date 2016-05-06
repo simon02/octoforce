@@ -1,8 +1,6 @@
 - cache ["v1", day, updates] do
-  .panel
-    .panel-heading
-      = calculate_local_time(day.to_time).strftime("%A %-d %B")
-    .panel-body
-      - updates.each do |update|
-        .panel-row.update
-          = render partial: 'updates/update', locals: { update: update }
+  %p.large.m10{style: 'margin-left: 15px'}
+    = raw calculate_local_time(day.to_time).strftime("%A <span class='text-muted'>%-d %B</span>")
+  - updates.each do |update|
+    .scheduled-update.m20
+      = render partial: 'updates/update', locals: { update: update }

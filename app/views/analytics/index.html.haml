@@ -1,6 +1,12 @@
 .container
   .row
-    .col-md-3
+    .col-md-3.sidebar-left
+    .col-md-9.main-content
+      %h1.page-title
+        Analytics Overview
+      %hr/
+  .row
+    .col-md-3.sidebar-left
       .filter.m20
         - if !@identities.empty?
           .pull-right
@@ -22,14 +28,6 @@
         = render partial: 'shared/filter_categories', locals: { categories: @categories }
 
 
-    .col-md-9
-      .panel
-        .panel-heading
-          .title
-            Published Updates
-          .subtitle
-            See when your updates have been published and how they performed.
-          %p
-        .panel-body
-          = render partial: 'shared/filter_bar'
-          = render partial: 'analytics/updates', locals: { updates: @updates, count: @count, offset: @offset, filters: @filters }
+    .col-md-9.main-content
+      = render partial: 'shared/filter_bar'
+      = render partial: 'analytics/updates', locals: { updates: @updates, count: @count, offset: @offset, filters: @filters }

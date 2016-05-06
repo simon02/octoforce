@@ -1,68 +1,69 @@
 .container
   .row
-    .col-md-12
-      .panel
-        .panel-heading
-          .actions
-            %a.btn.btn-default.btn-sm.add-timeslot.center{data: { toggle: 'modal', target: "#dialog_feed"}}
-              add feed
-          .title
-            = "Feeds"
-          .subtitle
-            Every time a new item is added to the RSS feeds below, a post is added to your content library in this category.
+    .col-md-10.col-md-offset-1
+      .header-actions
+        %a.btn.btn-default.center{data: { toggle: 'modal', target: "#dialog_feed"}}
+          connect rss feed
+      %h1.page-title
+        Your Feeds
+      %h4.page-subtitle
+        You currently have
+        %strong
+          = @feeds.count
+          feeds
+        connected to your account.
+      %hr/
+      - @feeds.each do |feed|
+        .panel-row
+          %p
+            %span.large
+              = feed.title || feed.url
+            - if !feed.active
+              %strong.text-danger
+                not active
 
-        .panel-body
-          - @feeds.each do |feed|
-            .panel-row
-              %p
-                %span.large
-                  = feed.title || feed.url
-                - if !feed.active
-                  %strong.text-danger
-                    not active
+          %p
+            = "Category: #{feed.category.name}"
+          .small
+            = link_to 'delete', feed_path(feed), method: :delete
+            = " | "
+            %a{href: '#', data: { toggle: 'modal', target: "#dialog_feed_#{feed.id}"}}
+              edit
 
-              %p
-                = "Category: #{feed.category.name}"
-              .small
-                = link_to 'delete', feed_path(feed), method: :delete
-                = " | "
-                %a{href: '#', data: { toggle: 'modal', target: "#dialog_feed_#{feed.id}"}}
-                  edit
+        .modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_feed_#{feed.id}", 'data-show': 'false'}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
+                  %span{'aria-hidden': true}
+                    &times;
+                .modal-title.large
+                  Edit feed
+              .modal-body
+                = render partial: 'feeds/edit_form', locals: { categories: @categories, feed: feed }
 
-            .modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_feed_#{feed.id}", 'data-show': 'false'}
-              .modal-dialog
-                .modal-content
-                  .modal-header
-                    %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
-                      %span{'aria-hidden': true}
-                        &times;
-                    .modal-title.large
-                      Edit feed
-                  .modal-body
-                    = render partial: 'feeds/edit_form', locals: { categories: @categories, feed: feed }
-
-          - if @feeds.empty?
-            .panel-row{style: 'padding-top: 50px; padding-bottom: 50px'}
-              .xx-large.center
-                %i.fa.fa-rss.fa-4x.icon-fade
-              .x-large.center.m45
-                You currently have no connected RSS feeds -
-                %br
-                %a{href: '#', data: { toggle: 'modal', target: "#dialog_feed"}}
-                  add your first one.
-              %div{style: 'max-width: 600px; margin: auto; color: #666'}
-                %h4 Sharing your content was never this easy
-                %p
-                  You can add any feed you want. Everytime an item is added to one of these feeds, we  receive a notification and add a fresh, newly minted post to your category.
-                %h4 Wondering how you can use this?
-                %p
-                  You can add a feed to your own blog so everytime you publish a post, it will automatically be added to your content libray. You can easily change the text, add hashtags or mentions right here.
-                %p
-                  Another possibility is to add all your favorite blogs to a new category just for that purpose. Then once a while just check out this category and filter out the posts you don't want to share. You can copy the ones you like to other categories and enjoy the rest of the week knowing your content calendar is nicely filled up!
-          - else
-            .panel-row
-              %a.btn.btn-default.add-timeslot.form-control{data: { toggle: 'modal', target: "#dialog_feed"}}
-                add another feed
+      - if @feeds.empty?
+        .panel-row{style: 'padding-top: 25px; padding-bottom: 25px'}
+          .xx-large.center
+            %i.fa.fa-rss.fa-4x.icon-fade
+          .x-large.center.m45
+            You currently have no connected RSS feeds -
+            %br
+            %a{href: '#', data: { toggle: 'modal', target: "#dialog_feed"}}
+              add your first one.
+          .text-muted.col-md-8.col-md-offset-2
+            %h4 Sharing your content was never this easy
+            %p
+              You can add any feed you want. Everytime an item is added to one of these feeds, we  receive a notification and add a fresh, newly minted post to your category.
+            %h4 Wondering how you can use this?
+            %p
+              You can add a feed to your own blog so everytime you publish a post, it will automatically be added to your content libray. You can easily change the text, add hashtags or mentions right here.
+            %p
+              Another possibility is to add all your favorite blogs to a new category just for that purpose. Then once a while just check out this category and filter out the posts you don't want to share. You can copy the ones you like to other categories and enjoy the rest of the week knowing your content calendar is nicely filled up!
+      - else
+        .panel-row
+          %a.btn.btn-default.add-timeslot.form-control{data: { toggle: 'modal', target: "#dialog_feed"}}
+            add another feed
 
 .modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_feed", 'data-show': 'false'}
   .modal-dialog
