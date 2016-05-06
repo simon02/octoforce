@@ -4,9 +4,9 @@
       %i{'class': "fa fa-#{update.identity.provider} #{update.identity.provider}"}
       %img{'src': update.identity.image}
     .account
-      = update.identity.name
-      %span.subtle= update.identity.subname
-    .timestamp
+      %strong= update.identity.name
+      %span.text-muted= update.identity.subname
+    .timestamp.text-muted
       = link_to update.social_media_url, target: '_blank' do
         = timeago update.published_at
       from

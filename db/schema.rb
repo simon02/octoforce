@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160419103625) do
+ActiveRecord::Schema.define(version: 20160503124327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,6 +107,23 @@ ActiveRecord::Schema.define(version: 20160419103625) do
 
   add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
 
+  create_table "links", force: :cascade do |t|
+    t.integer  "post_id"
+    t.string   "url"
+    t.string   "title"
+    t.string   "caption"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "links", ["post_id"], name: "index_links_on_post_id", using: :btree
+
+  create_table "onboardings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "posts", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "category_id"
@@ -179,11 +196,13 @@ ActiveRecord::Schema.define(version: 20160419103625) do
     t.integer  "comments",     default: 0
     t.string   "response_id"
     t.datetime "published_at"
+    t.integer  "link_id"
   end
 
   add_index "updates", ["asset_id"], name: "index_updates_on_asset_id", using: :btree
   add_index "updates", ["category_id"], name: "index_updates_on_category_id", using: :btree
   add_index "updates", ["identity_id"], name: "index_updates_on_identity_id", using: :btree
+  add_index "updates", ["link_id"], name: "index_updates_on_link_id", using: :btree
   add_index "updates", ["post_id"], name: "index_updates_on_post_id", using: :btree
   add_index "updates", ["timeslot_id"], name: "index_updates_on_timeslot_id", using: :btree
   add_index "updates", ["user_id"], name: "index_updates_on_user_id", using: :btree

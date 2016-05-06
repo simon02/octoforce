@@ -40,4 +40,5 @@
   .row
     .col-md-12
       - @schedules.each do |schedule|
-        = render partial: 'schedules/schedule', locals: { schedule: schedule }
+        .m30
+          = render partial: 'schedules/schedule', locals: { schedule: schedule }

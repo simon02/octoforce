@@ -1,23 +1,28 @@
 .container
   .row
     .col-md-12
-      - if @identities.count > 0
-        .panel
-          .panel-heading
-            .actions
-              %a.btn.btn-default.btn-sm{href: '#add-new'}
-                add network
-            .title
-              Connected Social Networks
-          .panel-body
-            - @identities.each do |identity|
-              .panel-row.update
-                %img.profile-image{src: "#{identity.image}"}
-                .next-to-image
-                  %strong= identity.subname || identity.name
-                  .subtle= identity.provider
-                  .provider.actions
-                    %small= link_to 'remove', identity_path(identity), method: :delete, data: { confirm: 'This will also remove the connected schedule. Are you sure you want to proceed?' }
+  .row
+    .col-md-10.col-md-offset-1
+      %h1.page-title
+        Social Media Accounts
+      %h4.page-subtitle
+        You currently have
+        %strong
+          = @identities.count
+          accounts
+        on Octoforce.
+      %hr/
+      .row
+        - @identities.each do |identity|
+          .col-md-4.col-sm-6.m20
+            .card.bordered
+              .profile-image
+                %img.rounded{src: "#{identity.image}"}
+              .next-to-image
+                %strong= identity.subname || identity.name
+                .text-muted.small= identity.provider
+                %small= link_to 'remove', identity_path(identity), method: :delete, data: { confirm: 'This will also remove the connected schedule. Are you sure you want to proceed?' }
+      %hr/
 
 
       = render partial: 'add'

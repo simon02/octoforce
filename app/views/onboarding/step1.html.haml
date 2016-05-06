@@ -30,25 +30,24 @@
               Want to do the rest later?
             .clearfix
 
-.container
-  .row
-    .col-md-12
-      - if @identities.count > 0
-        .panel
-          .panel-heading
-            .title
-              Connected Social Networks
-          .panel-body
-            - @identities.each do |identity|
-              .panel-row.update
-                %img.profile-image{src: "#{identity.image}"}
-                .next-to-image
-                  %strong.large= identity.subname || identity.name
-                  .subtle= identity.provider
-                .clearfix
-  .row
-    .col-md-12
-      = render partial: 'identities/add'
+.row
+  .col-md-12
+    - if @identities.count > 0
+      .panel
+        .panel-heading
+          .title
+            Connected Social Networks
+        .panel-body
+          - @identities.each do |identity|
+            .panel-row.update
+              %img.profile-image{src: "#{identity.image}"}
+              .next-to-image
+                %strong.large= identity.subname || identity.name
+                .subtle= identity.provider
+              .clearfix
+.row
+  .col-md-12
+    = render partial: 'identities/add'
 
 - if current_user.email.nil?
   .modal.fade{tabindex: 1, role: 'dialog', 'data-show': 'true', 'data-toggle': 'modal', 'data-backdrop': 'static', 'data-keyboard': 'false'}

@@ -1,24 +1,26 @@
-%nav.navbar.navbar-default.navbar-static-side
-  .navbar-header
-    - identifier = rand(1000000000)
-    %button.navbar-toggle{'data-target': "#navbar-collapse-#{identifier}",'data-toggle': 'collapse', type: 'button'}
-      %span.sr-only Toggle navigation
-      %span.icon-bar
-      %span.icon-bar
-      %span.icon-bar
-    %a.navbar-brand{href: '/'}
-      Octoforce
-      .beta
-        beta
-  .collapse.navbar-collapse{id: "navbar-collapse-#{identifier}"}
-    = nav do
-      = link_to 'Queue', queue_url
-      = link_to 'Analytics', analytics_url
-      = link_to 'Schedules', schedules_url
-      = link_to 'Library', library_url
-      = link_to 'Feeds', feeds_url
-      = link_to 'Accounts', identities_url
-      = link_to 'Profile', edit_user_registration_url
-      = link_to 'Sign out', destroy_user_session_path, method: :delete
-      - if current_user != true_user
-        = link_to 'Back to Admin', stop_impersonating_admin_users_path
+%nav.navbar.navbar-default
+  .container
+    .navbar-header
+      - identifier = rand(1000000000)
+      %button.navbar-toggle{'data-target': "#navbar-collapse-#{identifier}",'data-toggle': 'collapse', type: 'button'}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.navbar-brand{href: '/'}
+        Octoforce
+        .beta
+          beta
+    .collapse.navbar-collapse{id: "navbar-collapse-#{identifier}"}
+      %ul.navbar-nav.nav
+        - nav_items = [['Queue', queue_url], ['Analytics', analytics_url], ['Schedules', schedules_url], ['Library', library_url], ['Feeds', feeds_url], ['Accounts', identities_url]]
+        - nav_items.each do |item|
+          %li{class: ('active' if item[1].match(request.path))}
+            = link_to item[0], item[1]
+      %ul.navbar-nav.nav.navbar-right.small
+        - nav_items = [['Profile', edit_user_registration_url], ['Logout', destroy_user_session_path]]
+        - nav_items.each do |item|
+          %li{class: ('active' if item[1].match(request.path))}
+            = link_to item[0], item[1]
+        - if current_user != true_user
+          = link_to 'Back to Admin', stop_impersonating_admin_users_path
