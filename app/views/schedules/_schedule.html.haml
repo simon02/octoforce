@@ -42,4 +42,4 @@
         .modal-title.large
           Add a new timeslot
       .modal-body
-        = render partial: 'schedules/add_timeslot', locals: { schedule: schedule, timeslot: Timeslot.new, id: "dialog_timeslot_#{schedule.id}" }
+        = render partial: 'timeslots/form', locals: { schedule: schedule, timeslot: Timeslot.new, id: "dialog_timeslot_#{schedule.id}" }

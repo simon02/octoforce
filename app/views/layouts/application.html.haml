@@ -14,5 +14,17 @@
 
       = render 'footer'
 
+    #modal_holder
+      .modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "modal_placeholder", 'data-show': 'false'}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
+                %span{'aria-hidden': true}
+                  &times;
+              .modal-title.large
+            .modal-body
+              %p Loading data
+
     -# Javascript at the bottom for fast page loading
     = render 'javascripts'

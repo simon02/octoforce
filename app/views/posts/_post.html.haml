@@ -11,8 +11,7 @@
       %span.pull-left.x-small
         = link_to "delete", post_path(post), { method: "delete", remote: true, class: 'text-muted' }
         = " | "
-        %a{href: '#', class: 'text-muted', data: { toggle: 'modal', target: "#dialog_post_#{post.id}"}}
-          edit
+        = link_to 'edit', edit_post_path(post), remote: true, data: { disable_with: 'loading...' }, class: 'text-muted'
       .pull-right.x-small.text-muted
         %span
           added to
@@ -20,15 +19,3 @@
           %abbr{title: "#{calculate_local_time(post.created_at).strftime("%l:%M %P - %d/%m/%y")}", data: {toggle: 'tooltip'}}
             = timeago post.created_at
       .clearfix
-
-  .modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_post_#{post.id}", 'data-show': 'false'}
-    .modal-dialog
-      .modal-content
-        .modal-header
-          %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
-            %span{'aria-hidden': true}
-              &times;
-          .modal-title.large
-            Edit post
-        .modal-body
-          = render partial: 'posts/form', locals: { categories: current_user.categories, post: post, select_category: true }

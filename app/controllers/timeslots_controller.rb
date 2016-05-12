@@ -1,7 +1,7 @@
 class TimeslotsController < ApplicationController
 
   def new
-    @timeslot = Timeslot.build
+    @timeslot = Timeslot.new timeslot_params
   end
 
   def create
@@ -12,6 +12,7 @@ class TimeslotsController < ApplicationController
     @timeslot = Timeslot.create_with_timestamp timeslot_params
 
     QueueWorker.perform_async(@timeslot.category.id)
+    @title = 'Add a new timeslot'
 
     respond_to do |format|
       format.html { redirect_to schedules_path(@slot.schedule) }

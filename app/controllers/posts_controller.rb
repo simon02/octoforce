@@ -6,7 +6,9 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @title = 'Edit this post'
     @post = Post.find(params[:id])
+    @categories = current_user.categories.includes(:posts)
   end
 
   def create
