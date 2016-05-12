@@ -43,6 +43,12 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def paging ar_relation, count, offset
+    count = count.to_i
+    offset = offset.to_i
+    [ar_relation.offset(offset).limit(count), count, offset + count]
+  end
+
   def init_intercom
     Intercom::Client.new(app_id: ENV["INTERCOM_APP_ID"], api_key: ENV["INTERCOM_API_KEY"])
   end

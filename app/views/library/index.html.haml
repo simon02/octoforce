@@ -22,6 +22,4 @@
 
     .col-md-9.main-content
       = render partial: 'shared/filter_bar'
-      - @sorted_posts.each do |post|
-        .scheduled-update.m20{id: "post_#{post.id}"}
-          = render partial: 'posts/post', locals: { post: post }
+      = render partial: 'library/posts', locals: { posts: @sorted_posts, count: @count, offset: @offset, filters: @filters }
