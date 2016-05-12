@@ -34,7 +34,7 @@
   .row
     .col-md-12
   .row
-    .col-md-10.col-md-offset-1
+    .col-md-12
       %h1.page-title
         Social Media Accounts
       %h4.page-subtitle
@@ -45,15 +45,14 @@
         on Octoforce.
       %hr/
       .row
-        - if !@identities.empty?
+        - if @identities.empty?
           .panel-row{style: 'padding-top: 25px; padding-bottom: 25px'}
-            .xx-large.center
-              %i.fa.fa-rss.fa-4x.icon-fade
-            .x-large.center.m45
-              You currently have no connected RSS feeds -
-              %br
-              %a{href: '#', data: { toggle: 'modal', target: "#dialog_feed"}}
-                add your first one.
+            .xx-large.center.m10
+              %i.fa.fa-frown-o.fa-4x.icon-fade
+            %p.x-large.center.m5
+              No Social Media Accounts Found.
+            %p.x-large.center
+              Add your first one below.
         - @identities.each do |identity|
           .col-md-4.col-sm-6.m20
             .card.bordered

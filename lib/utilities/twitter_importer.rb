@@ -10,7 +10,7 @@ class TwitterImporter
     @min_favorites = (options[:min_favorites] || 1).to_i
     @min_retweets = (options[:min_retweets] || 1).to_i
     @single_condition = (options[:single_condition] || true).to_s.match(/(true|1|yes|t)/i)
-    @skip_octoforce = (options[:skip_octoforce] || true).to_s.match(/(true|1|yes|t)/i)
+    @skip_octoforce = (options[:skip_octoforce] || false).to_s.match(/(true|1|yes|t)/i)
     count = (options[:count] || 200).to_i
 
     (1 + count / 200).times do |c|

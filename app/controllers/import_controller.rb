@@ -1,15 +1,19 @@
 class ImportController < ApplicationController
   skip_before_filter :onboarding
+  layout :check_onboarding
 
   def twitter_setup
   end
 
   def twitter
     identity = Identity.find_by id: params['identity_id'], user: current_user
-    redirect_to twitter_setup, notice: "Could not find that social media account" unless identity
-    category = Category.create name: "Import #{identity.subname} #{Time.zone.now.strftime("%Y%m%d%H%M")}", user: current_user
-    TwitterImporter.new.import identity, category, twitter_import_params
-    redirect_to import_show_twitter_path(category.id)
+    if identity
+      category = Category.find_or_create_by name: "Import #{identity.subname} #{Time.zone.now.strftime("%Y%m%d%H%M")}", user: current_user
+      TwitterImporter.new.import identity, category, twitter_import_params
+      redirect_to import_show_twitter_path(category.id)
+    else
+      redirect_to import_twitter_path, notice: "Could not find that social media account"
+    end
   end
 
   def show_twitter
@@ -34,7 +38,8 @@ class ImportController < ApplicationController
   def csv_import
     csv = Csv.create user: current_user, file: open(params['csv_file_path'])
     CsvImporterWorker.perform_async current_user.id, csv.id, csv_import_params
-    redirect_to import_csv_path, notice: "Your CSV file is currently being processed. Refresh this page to view its status."
+    # redirect_to import_csv_path, notice: "Your CSV file is currently being processed. Refresh this page to view its status."
+    onboarding(notice: "Your CSV file is currently being processed. Refresh this page to view its status.") { redirect_to import_csv_path, notice: "Your CSV file is currently being processed. Feel free to add more content." }
   end
 
   def import
@@ -50,7 +55,7 @@ class ImportController < ApplicationController
     updates.reverse.each do |u|
       count += u.create_post ? 1 : 0
     end
-    redirect_with_param library_path, notice: "Saved #{count} new updates to your library."
+    onboarding(notice: "Saved #{count} new updates to your library.") { |options| redirect_with_param library_path, options }
   end
 
   private
@@ -60,7 +65,7 @@ class ImportController < ApplicationController
   end
 
   def twitter_import_params
-    params.permit(:min_favorites, :min_retweets, :single_condition, :skip_octoforce)
+    params.permit(:count, :min_favorites, :min_retweets, :single_condition, :skip_octoforce)
   end
 
   def csv_import_params
@@ -70,6 +75,10 @@ class ImportController < ApplicationController
     else
       permitted_params
     end
+  end
+
+  def check_onboarding
+    current_user.onboarding_active ? 'onboarding' : 'application'
   end
 
 end

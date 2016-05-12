@@ -17,10 +17,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def onboarding
+  def onboarding options = {}, &block
     return if true_user != current_user
     if current_user && current_user.onboarding_active
-      redirect_to :"welcome_step#{current_user.onboarding_step || 0}"
+      redirect_to :"welcome_step#{current_user.onboarding_step || 0}", options
+    elsif block
+      block.call options
     end
   end
 
