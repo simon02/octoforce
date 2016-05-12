@@ -1,53 +1,73 @@
 - content_for :step_info do
+  .container
+    .row
+      .col-md-12
+        .dialog
+          - if @identities.empty?
+            %h1
+              %strong Step 1:
+              Connect a Social Media Account
+            .actions.pull-right
+            .description
+              %p
+                You need to connect at least one social media account to Octoforce in order to start experiencing the juicy bits.
+            = link_to welcome_step2_path, class: 'small hidden-action' do
+              I'll do this later
+              %i.fa.fa-angle-right
+          - else
+            %h1
+              %strong Step 1:
+              Welcome Back!
+            .actions.pull-right
+            .description
+              %p
+                You can add as many social media accounts as you want, so feel free to go nuts.
+            .bottom
+              .pull-right
+                = link_to welcome_step2_path, class: 'btn btn-primary' do
+                  Next Step: Adding Content
+                  %i.fa.fa-angle-double-right
+              %p
+                Want to do the rest later?
+              .clearfix
+.container
   .row
     .col-md-12
-      .dialog
-        - if @identities.empty?
-          %h1
-            %strong Step 1:
-            Connect a Social Media Account
-          .actions.pull-right
-          .description
-            %p
-              You need to connect at least one social media account to Octoforce in order to start experiencing the juicy bits.
-          = link_to welcome_step2_path, class: 'small hidden-action' do
-            I'll do this later
-            %i.fa.fa-angle-right
-        - else
-          %h1
-            %strong Step 1:
-            Welcome Back!
-          .actions.pull-right
-          .description
-            %p
-              You can add as many social media accounts as you want, so feel free to go nuts.
-          .bottom
-            .pull-right
-              = link_to welcome_step2_path, class: 'btn btn-primary' do
-                Next Step: Adding Content
-                %i.fa.fa-angle-double-right
-            %p
-              Want to do the rest later?
-            .clearfix
-
-.row
-  .col-md-12
-    - if @identities.count > 0
-      .panel
-        .panel-heading
-          .title
-            Connected Social Networks
-        .panel-body
-          - @identities.each do |identity|
-            .panel-row.update
-              %img.profile-image{src: "#{identity.image}"}
+  .row
+    .col-md-10.col-md-offset-1
+      %h1.page-title
+        Social Media Accounts
+      %h4.page-subtitle
+        You currently have
+        %strong
+          = @identities.count
+          accounts
+        on Octoforce.
+      %hr/
+      .row
+        - if !@identities.empty?
+          .panel-row{style: 'padding-top: 25px; padding-bottom: 25px'}
+            .xx-large.center
+              %i.fa.fa-rss.fa-4x.icon-fade
+            .x-large.center.m45
+              You currently have no connected RSS feeds -
+              %br
+              %a{href: '#', data: { toggle: 'modal', target: "#dialog_feed"}}
+                add your first one.
+        - @identities.each do |identity|
+          .col-md-4.col-sm-6.m20
+            .card.bordered
+              .profile-image
+                %img.rounded{src: "#{identity.image}"}
               .next-to-image
-                %strong.large= identity.subname || identity.name
-                .subtle= identity.provider
-              .clearfix
-.row
-  .col-md-12
-    = render partial: 'identities/add'
+                %strong= identity.subname || identity.name
+                .text-muted.small= identity.provider
+                %small= link_to 'remove', identity_path(identity), method: :delete, data: { confirm: 'This will also remove the connected schedule. Are you sure you want to proceed?' }
+      %hr/
+
+
+      = render partial: 'identities/add'
+
 
 - if current_user.email.nil?
   .modal.fade{tabindex: 1, role: 'dialog', 'data-show': 'true', 'data-toggle': 'modal', 'data-backdrop': 'static', 'data-keyboard': 'false'}

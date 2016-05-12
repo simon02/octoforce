@@ -1,70 +1,39 @@
 - content_for :step_info do
-  .row
-    .col-md-12
-      .dialog
-        - if @posts.empty?
-          %h1
-            %strong Step 2:
-            Add Your First Tweet to Your Library
-          .actions.pull-right
-          .description
-            %p
-              This is your time to shine!
-            %p
-              Get creative below and carve an All-time Classic Tweet&#8482; or dig in your Twitter analytics and copy paste one of your best performing updates.
+  .container
+    .row
+      .col-md-12
+        .dialog
+          - if @posts.empty?
+            %h1
+              %strong Step 2:
+              Add Your First Tweet to Your Library
+            .actions.pull-right
+            .description
+              %p
+                This is your time to shine!
+              %p
+                Get creative below and carve an All-time Classic Tweet&#8482; or dig in your Twitter analytics and copy paste one of your best performing updates.
 
-          = link_to welcome_step3_path, class: 'small hidden-action' do
-            I'll do this later
-            %i.fa.fa-angle-right
-        - else
-          %h1
-            %strong Step 2:
-            That is Some Marvelous Writing!
-          .actions.pull-right
-          .description
-            %p
-              This content library forms the core of your social media console.
-            %p
-              Having a nice backlog of updates will make sure you never run out of interesting things to share with your lovely crowd so feel free to add as many tweets as you want.
-          .bottom
-            .pull-right
-              = link_to welcome_step3_path, class: 'btn btn-primary' do
-                Next Step: Scheduling
-                %i.fa.fa-angle-double-right
-            %p
-              Temporarily out of grand ideas?
-            .clearfix
+            = link_to welcome_step3_path, class: 'small hidden-action' do
+              I'll do this later
+              %i.fa.fa-angle-right
+          - else
+            %h1
+              %strong Step 2:
+              That is Some Marvelous Writing!
+            .actions.pull-right
+            .description
+              %p
+                This content library forms the core of your social media console.
+              %p
+                Having a nice backlog of updates will make sure you never run out of interesting things to share with your lovely crowd so feel free to add as many tweets as you want.
+            .bottom
+              .pull-right
+                = link_to welcome_step3_path, class: 'btn btn-primary' do
+                  Next Step: Scheduling
+                  %i.fa.fa-angle-double-right
+              %p
+                Temporarily out of grand ideas?
+              .clearfix
 
-.container
-  .row
-    .col-md-12
-      .panel.m20
-        .panel-heading
-          .title
-            Add Content to Your Library
-        .panel-body
-          .panel-row
-            = render partial: 'posts/form', locals: { categories: @categories, select_category: true }
-
-      .x-large.m20.center
-        OR
-      .panel
-        .panel-heading
-          .title
-            Reschedule one of your popular tweets
-          .subtitle
-            Since this is a rescheduling service, we checked your most recent tweets and selected the ones that got the biggest engagement. Select your evergreen tweets and easily add them to your library so they can be posted again in the future.
-        .panel-body
-          - @updates.each do |update|
-            .panel-row
-              .small.text-muted
-                = "published #{time_ago_in_words update.published_at} ago"
-              .large
-                = raw auto_link show update.text
-              .row.large
-                .col-xs-2.text-center{class: "text-#{update.shares > 0 ? 'primary' : 'muted' }", data: { title: 'number of times this post was retweeted', toggle: 'tooltip'}}
-                  %i.fa.fa-retweet
-                  = update.shares
-                .col-xs-2.text-center{class: "text-#{update.likes > 0 ? 'primary' : 'muted' }", data: { title: 'number of times this post was liked', toggle: 'tooltip'}}
-                  %i.fa.fa-heart
-                  = update.likes
+= render partial: 'library/add_content', locals: { categories: @categories }

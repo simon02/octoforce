@@ -1,5 +1,9 @@
 class LibraryController < ApplicationController
 
+  def add_content
+    @categories = current_user.categories.includes(:posts)
+  end
+
   def index
     @sorted_posts = current_user.posts.filter(filtering_params).order(created_at: :desc)
     @categories = current_user.categories.includes(:posts)

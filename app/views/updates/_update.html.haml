@@ -4,7 +4,7 @@
       %i{'class': "fa fa-#{update.identity.provider} #{update.identity.provider}"}
       %img{'src': update.identity.image}
     .time-ago
-      = timeago update.scheduled_at
+      = timeago calculate_local_time(update.scheduled_at)
     .account
       %strong= update.identity.name
       %span.text-muted= update.identity.subname

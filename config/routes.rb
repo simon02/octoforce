@@ -48,9 +48,17 @@ Rails.application.routes.draw do
   resources :timeslots, only: [:new, :create, :edit, :destroy]
   # the assets route is reserved for files in /public !
   resources :assets, path: 'files', only: [:create, :destroy]
-  get '/import/twitter' => 'import#twitter'
+
+  get '/import/twitter' => 'import#twitter_setup'
+  post '/import/twitter' => 'import#twitter'
+  get '/import/twitter/:id' => 'import#show_twitter', as: 'import_show_twitter'
+  post '/import' => 'import#import'
+  get '/import/csv' => 'import#csv_setup'
+  post '/import/csv' => 'import#csv_import'
+  post '/import/csv/preview' => 'import#csv_preview'
 
   get '/library' => 'library#index'
+  get '/add_content' => 'library#add_content', as: 'add_content'
 
   get '/queue' => 'queue#index'
   get '/queue/reschedule' => 'queue#reschedule'

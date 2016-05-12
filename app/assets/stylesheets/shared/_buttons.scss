@@ -23,6 +23,15 @@
 //   @include button-variant($btn-primary-inverse-color, $btn-primary-inverse-bg, $btn-primary-inverse-border);
 // }
 
+.btn-highlight {
+  @include button-variant(white, #d47f02, darken(#d47f02, 8%));
+}
+
+.btn-multiline {
+  white-space: normal;
+  height: auto;
+}
+
 .btn-mini {
   font-size: 12px;
   padding: 0px 8px;

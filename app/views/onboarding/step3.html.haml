@@ -1,40 +1,41 @@
 - content_for :step_info do
-  .row
-    .col-md-12
-      .dialog
-        - if @schedules.to_a.sum { |s| s.timeslots.count } == 0
-          %h1
-            %strong Step 3:
-            When Do You Want to Post?
-          .actions.pull-right
-          .description
-            %p
-              Tell us when you want to post what type of content.
-            %p
-              Do you want to tweet something from 'Quotes' every Monday at 10am? We got ya. Share something from 'Fun Stuff' every Friday around 5pm? Consider it done.
-            %p
-              Add your timeslots and we will run with it.
-          = link_to welcome_step4_path, class: 'small hidden-action' do
-            I'll do this later
-            %i.fa.fa-angle-right
-        - else
-          %h1
-            %strong Step 3:
-            Excellent Choice!
-          .actions.pull-right
-          .description
-            %p
-              That's starting to look like a schedule, but there is still plenty of empty space.
-            %p
-              Add in some more blanks to increase your engagement and to get a more consistent posting schedule.
-          .bottom
-            .pull-right
-              = link_to welcome_step4_path, class: 'btn btn-primary' do
-                Next Step: View Your Queue
-                %i.fa.fa-angle-double-right
-            %p
-              Think your schedule is looking good (enough for now)?
-            .clearfix
+  .container
+    .row
+      .col-md-12
+        .dialog
+          - if @schedules.to_a.sum { |s| s.timeslots.count } == 0
+            %h1
+              %strong Step 3:
+              When Do You Want to Post?
+            .actions.pull-right
+            .description
+              %p
+                Tell us when you want to post what type of content.
+              %p
+                Do you want to tweet something from 'Quotes' every Monday at 10am? We got ya. Share something from 'Fun Stuff' every Friday around 5pm? Consider it done.
+              %p
+                Add your timeslots and we will run with it.
+            = link_to welcome_step4_path, class: 'small hidden-action' do
+              I'll do this later
+              %i.fa.fa-angle-right
+          - else
+            %h1
+              %strong Step 3:
+              Excellent Choice!
+            .actions.pull-right
+            .description
+              %p
+                That's starting to look like a schedule, but there is still plenty of empty space.
+              %p
+                Add in some more blanks to increase your engagement and to get a more consistent posting schedule.
+            .bottom
+              .pull-right
+                = link_to welcome_step4_path, class: 'btn btn-primary' do
+                  Next Step: View Your Queue
+                  %i.fa.fa-angle-double-right
+              %p
+                Think your schedule is looking good (enough for now)?
+              .clearfix
 
 .container
   .row

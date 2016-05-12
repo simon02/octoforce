@@ -1,0 +1,30 @@
+.container
+  .row
+    .col-md-12
+      %h1.page-title
+        Add New Content to Your Library
+      %h4.page-subtitle
+        Your library is the backbone of this operation. Make sure to add enough fresh content so people don't see you as being spammy.
+      %hr/
+    .col-md-8
+      = render partial: 'posts/form', locals: { categories: categories, select_category: true }
+
+    .col-md-4
+      = link_to import_csv_path, class: "btn btn-multiline btn-default m30 form-control" do
+        %p.x-large
+          %i.fa.fa-file-o
+          Import a CSV file
+        %p.text-left
+          You already keep track of your tweets and social updates in a spreadsheet? Sweet!
+        %p.text-left
+          Add all of them using our csv importer.
+      = link_to import_twitter_path, class: "btn btn-multiline btn-default m30 form-control" do
+        %p.x-large
+          %i.fa.fa-twitter
+          Import from Twitter
+        %p.text-left
+          You have already written some awesome content in the past?
+        %p.text-left
+          We make it easy to find your best tweets and quickly add those to your library.
+        %p.text-left
+          %em A great first step to get a headstart!

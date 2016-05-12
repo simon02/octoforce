@@ -1,21 +1,22 @@
 .tips-header
-  .row
-    .col-md-12
-      .dialog
-        %h1
-          %strong Step 4:
-          You Are All Set!
-        .actions.pull-right
-        .description
-          %p
-            This is your queue. It shows all scheduled social media updates that will be sent out in the next 2 weeks.
-          %p
-            You can easily filter out updates for specific social media accounts on the left. Same goes for categories.
-          %p
-            This is the end of this small onboarding. Feel free to further explore Octoforce.
+  .container
+    .row
+      .col-md-12
+        .dialog{style: 'margin-bottom: 0'}
+          %h1
+            %strong Step 4:
+            You Are All Set!
+          .actions.pull-right
+          .description
+            %p
+              This is your queue. It shows all scheduled social media updates that will be sent out in the next 2 weeks.
+            %p
+              You can easily filter out updates for specific social media accounts on the left. Same goes for categories.
+            %p
+              This is the end of this small onboarding. Feel free to further explore Octoforce.
 
 .container
-  = render partial: 'queue/queue', locals: { updates: @updates }
+  = render partial: 'queue/queue', locals: { updates: @updates, categories: @categories, identities: @identities }
 
 - content_for :javascripts do
   / <!-- Qeryz code for app.octoforce.com -->

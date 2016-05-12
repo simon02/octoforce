@@ -23,9 +23,16 @@ class OnboardingController < ApplicationController
 
   def step4
     current_user.update onboarding_active: false
-    @identities = current_user.identities
-    @categories = current_user.categories
-    @updates = current_user.updates.scheduled.sorted.group_by { |u| u.scheduled_at.to_date }
+    @filtering_params = filtering_params
+    @updates = current_user.updates.published(false).includes(:identity, :category).filter(@filtering_params).sorted.group_by { |u| u.scheduled_at.to_date }
+    @identities = current_user.identities.includes(:updates)
+    @categories = current_user.categories.includes(:updates)
+  end
+
+  private
+
+  def filtering_params
+    params.slice(:category, :identity)
   end
 
 end

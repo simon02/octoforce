@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
@@ -17,6 +18,8 @@
 //= require jquery.timeago
 //= require jquery-fileupload/basic-plus
 //= require file_upload
+
+//= require jquery.highlight
 
 //= require schedules
 //= require queue

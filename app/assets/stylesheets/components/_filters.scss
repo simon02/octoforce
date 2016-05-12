@@ -23,6 +23,11 @@
         background-color: #f0f0f0;
         text-decoration: none;
       }
+      &:after {
+        display: block;
+        content: '';
+        clear: both;
+      }
     }
   }
   .amount {
@@ -45,16 +50,17 @@
     position: relative;
     img {
       @include border-radius(3px);
-      position: absolute;
+      float: left;
       width: 32px;
     }
     .name {
-      margin-left: 40px;
+      margin-left: 8px;
       font-weight: 500;
       font-size: 14px;
+      float: left;
+      width: calc(100% - 80px);
     }
     .provider {
-      margin-left: 40px;
       margin-top: -2px;
       color: #757575;
       font-size: 11px;
@@ -80,8 +86,9 @@ ul.categories {
       margin-left: 10px;
     }
     .name {
-      margin-left: 14px;
-      display: inline-block;
+      margin-left: 18px;
+      float: left;
+      width: calc(100% - 80px);
     }
     .amount {
       float: right;

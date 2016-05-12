@@ -5,7 +5,6 @@ class QueueController < ApplicationController
     @updates = current_user.updates.published(false).includes(:identity, :category).filter(@filtering_params).sorted.group_by { |u| u.scheduled_at.to_date }
     @identities = current_user.identities.includes(:updates)
     @categories = current_user.categories.includes(:updates)
-    @new_category = Category.new
   end
 
   def reschedule

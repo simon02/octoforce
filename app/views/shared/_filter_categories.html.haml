@@ -4,8 +4,10 @@
       = render partial: 'shared/category', locals: { category: category }
 
   %li.category.hidden#add_category_form
-    = form_for Category.new, html: { class: 'form-inline' } do |f|
+    = form_for Category.new, html: { class: 'form-inline', style: 'padding: 5px' } do |f|
+      = hidden_field_tag 'redirect', request.path
       .color-code
-      .name{style: 'max-width: 50%'}
+      .name{style: 'width: calc(100% - 88px)'}
         = f.text_field :name, class: 'form-control input-sm', style: 'width: 100%'
-      .pull-right= f.submit 'add', class: 'form-control btn btn-primary btn-sm'
+      .pull-right
+        = f.submit 'add', class: 'form-control btn btn-primary btn-sm', style: 'height: 30px'

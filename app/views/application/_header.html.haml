@@ -13,14 +13,18 @@
           beta
     .collapse.navbar-collapse{id: "navbar-collapse-#{identifier}"}
       %ul.navbar-nav.nav
-        - nav_items = [['Queue', queue_url], ['Analytics', analytics_url], ['Schedules', schedules_url], ['Library', library_url], ['Feeds', feeds_url], ['Accounts', identities_url]]
+        - nav_items = [['Queue', queue_path], ['Analytics', analytics_path], ['Schedules', schedules_path], ['Library', library_path], ['Feeds', feeds_path], ['Accounts', identities_path]]
         - nav_items.each do |item|
-          %li{class: ('active' if item[1].match(request.path))}
+          %li{class: ('active' if request.path.match(item[1][/\A\/?[^\/]+/]))}
             = link_to item[0], item[1]
+        %li
+          = link_to add_content_path, class: 'btn btn-primary' do
+            %i.fa.fa-plus
+            Add Content
       %ul.navbar-nav.nav.navbar-right.small
-        - nav_items = [['Profile', edit_user_registration_url], ['Logout', destroy_user_session_path]]
+        - nav_items = [['Profile', edit_user_registration_path], ['Logout', destroy_user_session_path]]
         - nav_items.each do |item|
-          %li{class: ('active' if item[1].match(request.path))}
+          %li{class: ('active' if request.path.match(item[1]))}
             = link_to item[0], item[1]
         - if current_user != true_user
           = link_to 'Back to Admin', stop_impersonating_admin_users_path

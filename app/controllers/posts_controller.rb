@@ -2,6 +2,9 @@ class PostsController < ApplicationController
   load_resource :category
   skip_before_filter :onboarding, only: [:create]
 
+  def new
+  end
+
   def edit
     @post = Post.find(params[:id])
   end
