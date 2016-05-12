@@ -45,7 +45,7 @@ class ImportController < ApplicationController
   def import
     updates = []
     import_params.each do |u|
-      update = Update.find_by_id u['id']
+      update = ImportedUpdate.find_by_id u['id']
       if update
         update.update category_id: u['category_id']
         updates << update
