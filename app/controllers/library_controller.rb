@@ -5,7 +5,7 @@ class LibraryController < ApplicationController
   end
 
   def index
-    @sorted_posts = current_user.posts.filter(filtering_params).order(created_at: :desc)
+    @sorted_posts = current_user.posts.includes(:asset).filter(filtering_params).order(created_at: :desc)
     @categories = current_user.categories.includes(:posts)
   end
 

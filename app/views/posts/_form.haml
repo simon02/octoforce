@@ -8,7 +8,7 @@
       .form-group
         = f.label :category_id do
           Choose a category:
-        = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }, post.category_id), {}, class: 'form-control'
+        = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }, post.category_id), {}, class: 'form-control'
     - else
       = f.hidden_field :category_id
     .form-group
