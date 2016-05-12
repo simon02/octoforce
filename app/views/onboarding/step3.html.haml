@@ -15,6 +15,9 @@
                 Do you want to tweet something from 'Quotes' every Monday at 10am? We got ya. Share something from 'Fun Stuff' every Friday around 5pm? Consider it done.
               %p
                 Add your timeslots and we will run with it.
+              %p.small
+                Tip: make sure add timeslots for these categories:
+                = raw @categories.map { |c| [c.posts.size, "<strong>#{c.name}</strong>"] }.keep_if { |size, name| size > 0 }.map(&:last).join ', '
             = link_to welcome_step4_path, class: 'small hidden-action' do
               I'll do this later
               %i.fa.fa-angle-right
@@ -28,6 +31,9 @@
                 That's starting to look like a schedule, but there is still plenty of empty space.
               %p
                 Add in some more blanks to increase your engagement and to get a more consistent posting schedule.
+              %p.small
+                Tip: make sure add timeslots for these categories:
+                = raw @categories.map { |c| [c.posts.size, "<strong>#{c.name}</strong>"] }.keep_if { |size, name| size > 0 }.map(&:last).join ', '
             .bottom
               .pull-right
                 = link_to welcome_step4_path, class: 'btn btn-primary' do

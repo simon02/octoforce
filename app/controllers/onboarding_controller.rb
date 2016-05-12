@@ -19,6 +19,7 @@ class OnboardingController < ApplicationController
   def step3
     current_user.update onboarding_step: 3
     @schedules = current_user.schedules
+    @categories = current_user.categories.includes(:posts)
   end
 
   def step4
