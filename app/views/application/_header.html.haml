@@ -22,9 +22,9 @@
             %i.fa.fa-plus
             Add Content
       %ul.navbar-nav.nav.navbar-right.small
-        - nav_items = [['Profile', edit_user_registration_path], ['Logout', destroy_user_session_path]]
-        - nav_items.each do |item|
-          %li{class: ('active' if request.path.match(item[1]))}
-            = link_to item[0], item[1]
+        %li{class: ('active' if request.path.match(edit_user_registration_path))}
+          = link_to 'Profile', edit_user_registration_path
+        %li
+          = link_to 'Sign out', destroy_user_session_path, method: :delete
         - if current_user != true_user
           = link_to 'Back to Admin', stop_impersonating_admin_users_path
