@@ -1,6 +1,7 @@
 %img{src: "#{identity.image}"}
-.name= identity.subname || identity.name
-.provider= identity.provider
+.name
+  = identity.subname || identity.name
+  .provider= identity.provider
 - if defined? calculate_identity_amount
   .amount{data: {toggle: 'tooltip', title: identity_amount_tooltip || '', placement: 'auto'}}
     = calculate_identity_amount identity

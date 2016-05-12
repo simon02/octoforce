@@ -20,7 +20,7 @@ class CategoriesController < ApplicationController
       intercom_event 'created-category', number_of_categories: current_user.categories.count
     end
 
-    redirect_to category_url(category)
+    redirect_with_param library_path, notice: "Category '#{category.name}' has been created."
   end
 
   private

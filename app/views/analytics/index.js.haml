@@ -1,1 +1,2 @@
 $("#load_more").replaceWith("#{j render(partial: 'analytics/updates', locals: { updates: @updates, offset: @offset, count: @count, filters: @filters })}");
+$("time.timeago").timeago();

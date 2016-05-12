@@ -12,18 +12,28 @@ class OnboardingController < ApplicationController
     current_user.update onboarding_step: 2
     @posts = current_user.posts
     @categories = current_user.categories
+    c = current_user.categories.find_by name: 'twitter_import'
+    @updates = c ? c.updates : [];
   end
 
   def step3
     current_user.update onboarding_step: 3
     @schedules = current_user.schedules
+    @categories = current_user.categories.includes(:posts)
   end
 
   def step4
     current_user.update onboarding_active: false
-    @identities = current_user.identities
-    @categories = current_user.categories
-    @updates = current_user.updates.scheduled.sorted.group_by { |u| u.scheduled_at.to_date }
+    @filtering_params = filtering_params
+    @updates = current_user.updates.published(false).includes(:identity, :category).filter(@filtering_params).sorted.group_by { |u| u.scheduled_at.to_date }
+    @identities = current_user.identities.includes(:updates)
+    @categories = current_user.categories.includes(:updates)
+  end
+
+  private
+
+  def filtering_params
+    params.slice(:category, :identity)
   end
 
 end

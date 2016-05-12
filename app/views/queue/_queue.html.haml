@@ -1,5 +1,19 @@
 .row
-  .col-md-3
+  .col-md-3.sidebar-left
+  .col-md-9.main-content
+    %h1.page-title
+      Your Queue
+    %h4.page-subtitle
+      There are
+      %strong
+        = updates.size
+        posts
+      scheduled for the next
+      %strong
+        2 weeks
+    %hr/
+.row
+  .col-sm-3.sidebar-left
     .filter.m20
       - if !identities.to_a.empty?
         .pull-right
@@ -19,17 +33,18 @@
       = render partial: 'shared/filter_categories', locals: { categories: categories }
 
 
-  .col-md-9
+  .col-sm-9.main-content
     - if identities.to_a.empty?
       = render partial: 'identities/add'
 
     - else
-
-      .m10= link_to "Reschedule queue", queue_reschedule_path
-
-      .m10
-        = render partial: 'shared/filter_bar'
+      = render partial: 'shared/filter_bar'
 
       - date = nil
-      - @updates.each do |day, updates|
-        = render partial: 'queue/updates_for_day', locals: { updates: updates, day: day }
+      - @updates.each do |update|
+        - if date != update.scheduled_at.to_date
+          - date = update.scheduled_at.to_date
+          %p.large.m10{style: 'margin-left: 15px'}
+            = raw calculate_local_time(date.to_time).strftime("%A <span class='text-muted'>%-d %B</span>")
+        .scheduled-update.m20
+          = render partial: 'updates/update', locals: { update: update }

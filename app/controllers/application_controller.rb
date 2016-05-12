@@ -17,10 +17,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def onboarding
+  def onboarding options = {}, &block
     return if true_user != current_user
     if current_user && current_user.onboarding_active
-      redirect_to :"welcome_step#{current_user.onboarding_step || 0}"
+      redirect_to :"welcome_step#{current_user.onboarding_step || 0}", options
+    elsif block
+      block.call options
     end
   end
 
@@ -42,6 +44,12 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def paging ar_relation, count, offset
+    count = count.to_i
+    offset = offset.to_i
+    [ar_relation.offset(offset).limit(count), count, offset + count]
+  end
 
   def init_intercom
     Intercom::Client.new(app_id: ENV["INTERCOM_APP_ID"], api_key: ENV["INTERCOM_API_KEY"])

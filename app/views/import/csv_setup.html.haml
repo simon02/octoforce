@@ -1,0 +1,44 @@
+.container
+  %h1.page-title
+    Import from a CSV File
+  %h4.page-subtitle
+    Step 1: Select your CSV file. The file should contain a header indicating the column names. There should be at least a column for the text of the post and one with the name of the category. Optionally, you can also add a column with an url if you want to add images.
+  %hr/
+  = form_tag import_csv_preview_path, multipart: true, class: 'form-horizontal m60' do
+    .form-group
+      = label_tag 'csv_file', 'Select CSV file', class: 'control-label col-md-3'
+      .col-md-9
+        = file_field_tag "csv_file", accept: '.csv,text/comma-separated-values,text/csv,application/csv,text/anytext,text/plain,application/txt', required: true
+    .form-group
+      = label_tag 'col_sep', 'CSV separator', class: 'control-label col-md-3'
+      .col-md-9
+        = select_tag 'col_sep', options_for_select([[",",','],[';',';'],['single tab',"\t"],['double tab', "\t\t"],['single space', ' '],['double space', '  ']]), class: 'form-control'
+    .form-group
+      .col-md-9.col-md-offset-3
+        = submit_tag 'Next step', class: 'btn btn-primary', data: { disable_with: 'Loading file...' }
+  %h3.page-title.m20
+    Previously Imported CSV Files
+  - if @csvs.empty?
+    %h4.page-subtitle
+      Import Files and Carry On.
+  - else
+    %table.table
+      %tr
+        %th
+          Imported on
+        %th
+          Filename
+        %th
+          Processed
+        %th
+          Successful
+        %th
+          Done
+      - @csvs.each do |csv|
+        %tr{ class: "#{'warning' if !csv.finished}"}
+          %td
+            = timeago csv.created_at
+          %td= csv.file_file_name
+          %td= csv.processed
+          %td= csv.succeeded
+          %td= csv.finished ? 'yes' : 'no'

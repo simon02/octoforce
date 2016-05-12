@@ -13,9 +13,65 @@
   @extend .col-sm-offset-2;
 }
 
+@media (min-width: 1200px) {
+  .sidebar-left {
+    width: 260px;
+    padding-right: 10px;
+  }
+  .main-content {
+    width: 905px;
+  }
+}
+
+#flash .alert {
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
 .m5 { margin-bottom: 5px; }
 .m10 { margin-bottom: 10px; }
 .m20 { margin-bottom: 20px; }
 .m30 { margin-bottom: 30px; }
 .m45 { margin-bottom: 45px; }
 .m60 { margin-bottom: 60px; }
+
+
+body {
+  font-size: 15px;
+}
+.large {
+  font-size: 18px;
+}
+.x-large {
+  font-size: 22px;
+}
+.xx-large {
+  font-size: 28px;
+}
+.small {
+  font-size: 14px;
+}
+.x-small {
+  font-size: 12px;
+}
+.center {
+  text-align: center;
+}
+
+.page-title {
+  font-weight: 500;
+  color: $brand-primary;
+  margin-top: 20px;
+}
+.page-subtitle {
+  font-weight: 300;
+  color: #555;
+  line-height: 1.25em;
+  strong {
+    font-weight: 500;
+  }
+}
+.header-actions {
+  float: right;
+  margin-top: 28px;
+}

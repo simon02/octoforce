@@ -1,0 +1,82 @@
+.container
+  = form_tag import_url do
+    %table.m20{style: 'border-collapse:separate;border-spacing: 0 6px; width: 100%'}
+      %thead
+        %tr
+          %th.large.text-center{style: 'min-width: 30px'}
+          %th
+            Text
+          %th
+            Media
+          %th.text-center{style: 'min-width: 30px'}
+            %i.fa.fa-heart
+          %th.text-center{style: 'min-width: 30px'}
+            %i.fa.fa-retweet
+          %th{style: 'min-width: 90px'}
+            Date
+          %th{style: 'min-width: 140px'}
+            Category
+          %th.large.text-center{style: 'min-width: 30px'}
+      %tbody
+        %tr.large
+          %td.text-center
+            = check_box_tag 'select_all'
+          %td
+          %td
+          %td
+          %td
+          %td
+          %td
+            = select_tag 'category_all', options_for_select([['', nil]] + current_user.categories.map { |l| [l.name, l.id] }), class: 'form-control input-sm', data: { title: 'change the category of all selected updates', toggle: 'tooltip'}
+          %td.text-center{data: { title: 'remove all selected updates', toggle: 'tooltip'}}
+            %a#remove_all{:href => "#"}
+              %i.fa.fa-trash
+        - @updates.each do |update|
+          %tr
+            %td.large.text-center
+              = check_box_tag 'lala', 1, false, class: 'row-selector'
+              = hidden_field_tag 'updates[][id]', update.id
+            %td.large{style: 'padding: 4px 0'}
+              = raw auto_link show update.text
+            %td.text-center
+              - if update.has_media?
+                = link_to 'yes', update.media_url, target: '_blank'
+              - else
+                no
+            %td.text-center= update.likes
+            %td.text-center= update.shares
+            %td
+              = link_to timeago(calculate_local_time update.published_at), update.original
+            %td
+              = select_tag 'updates[][category_id]', options_for_select(current_user.categories.map { |l| [l.name, l.id] }, update.category_id), class: 'form-control input-sm'
+            %td.text-center
+              %a.remove-line{:href => "#"}
+                %i.fa.fa-trash
+
+    = submit_tag "Add all to Library", class: 'btn btn-primary btn-lg', data: { disable_with: 'Adding posts...' }
+    = link_to 'cancel', import_twitter_path
+
+- content_for :javascripts do
+  :javascript
+    $(function() {
+      $('#select_all').click(function() {
+        $(":checkbox").prop('checked', this.checked);
+      });
+      $('.remove-line').click(function() {
+        $(this).parents('tr').fadeOut(500, function() { $(this).remove(); });
+      });
+      $('#remove_all').click(function() {
+        $('.row-selector:checked').parents('tr').fadeOut(500, function() { $(this).remove(); });
+      });
+      $('#category_all').change(function() {
+        if ($(this).val() != null) {
+          $('.row-selector:checked').parents('tr').highlight();
+          $('.row-selector:checked').parents('tr').find('select').val($(this).val());
+        }
+      });
+      $('#category_all').blur(function(e) {
+        e.preventDefault();
+        $(this).val(null);
+        return false;
+      })
+    });

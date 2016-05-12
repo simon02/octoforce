@@ -4,16 +4,16 @@
       %i{'class': "fa fa-#{update.identity.provider} #{update.identity.provider}"}
       %img{'src': update.identity.image}
     .time-ago
-      = timeago update.scheduled_at
+      = timeago calculate_local_time(update.scheduled_at)
     .account
-      = update.identity.name
-      %span.subtle= update.identity.subname
-    .timestamp= calculate_local_time(update.scheduled_at).strftime("%l:%M %P - %d/%m/%y")
+      %strong= update.identity.name
+      %span.text-muted= update.identity.subname
+    .timestamp.text-muted= calculate_local_time(update.scheduled_at).strftime("%l:%M %P - %d/%m/%y")
   .body
     - if update.has_media?
       .pull-right{style: 'margin-left: 10px'}
         = link_to (image_tag update.media_url(:thumb)), update.media_url
-    .text.m30
+    .text.m10
       = raw auto_link show update.text
     .bottom
       .category-badge

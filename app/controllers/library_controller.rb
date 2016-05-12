@@ -1,8 +1,20 @@
 class LibraryController < ApplicationController
 
-  def index
-    @sorted_posts = current_user.posts.filter(filtering_params).sort_by { |post| [post.updates.scheduled.count.zero? ? 0 : -1, post.position] }
+  DEFAULT_RESULTS_PER_PAGE = 30
+
+  def add_content
     @categories = current_user.categories.includes(:posts)
+  end
+
+  def index
+    posts = current_user.posts.includes(:asset).filter(filtering_params).order(created_at: :desc)
+    @sorted_posts, @count, @offset = paging posts, params['count'] || DEFAULT_RESULTS_PER_PAGE, params['offset'] || 0
+    @categories = current_user.categories.includes(:posts)
+    @filters = filtering_params
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def filter

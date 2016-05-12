@@ -1,39 +1,24 @@
-- cache ["v1", post] do
-  .body.m10
+- cache ["v1", post, post.asset] do
+  .body
     - if post.has_media?
-      .pull-right{style: 'margin-left: 10px'}
+      .pull-right.m10{style: 'margin-left: 10px'}
         = link_to (image_tag post.media_url(:thumb)), post.media_url
-    .text.x-large.m10
+    .large.m10
       = raw auto_link show post.text
     .clearfix
   .footer
     - if !(preview ||= false)
-      %span.x-small{style: 'margin-right: 10px'}
-        = link_to "delete", post_path(post), { method: "delete", remote: true }
+      %span.pull-left.x-small
+        = link_to "delete", post_path(post), { method: "delete", remote: true, class: 'text-muted' }
         = " | "
-        %a{href: '#', data: { toggle: 'modal', target: "#dialog_post_#{post.id}"}}
+        %a{href: '#', class: 'text-muted', data: { toggle: 'modal', target: "#dialog_post_#{post.id}"}}
           edit
-      %span.category-badge
-        .color-code{style: "background-color: ##{post.category.color};"}
-        .name= post.category.name
-      .pull-right.x-small
+      .pull-right.x-small.text-muted
         %span
-          - if post.updates.scheduled.count > 0
-            - scheduled_at = calculate_local_time post.updates.scheduled.sorted.first.scheduled_at
-            scheduled for publication in
-            %abbr{'data-toggle': 'tooltip', title: "#{scheduled_at.strftime('%A %-d %B at %I:%M %P')}"}
-              = timeago scheduled_at
-            &#9679;
-          - elsif post.updates.published.count > 0
-            last published
-            = timeago calculate_local_time(post.updates.published.sorted.first.scheduled_at)
-            &#9679;
-        %span
-          added
-          - added = calculate_local_time(post.created_at).strftime("%l:%M %P - %d/%m/%y")
-          %abbr{title: "#{added}", data: {toggle: 'tooltip'}}
+          added to
+          = post.category.name
+          %abbr{title: "#{calculate_local_time(post.created_at).strftime("%l:%M %P - %d/%m/%y")}", data: {toggle: 'tooltip'}}
             = timeago post.created_at
-          ago
       .clearfix
 
   .modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_post_#{post.id}", 'data-show': 'false'}
