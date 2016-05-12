@@ -12,7 +12,10 @@ class ImportedUpdate < ActiveRecord::Base
       user: user,
       category: category,
       text: text
-    post.asset = open(media_url) if has_media?
+    if has_media?
+      post.asset = Asset.create user: user
+      AssetWorker.perform_async post.asset.id, media_url
+    end
     post.move_to_front
     post.save
   end

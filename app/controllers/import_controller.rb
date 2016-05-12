@@ -55,7 +55,7 @@ class ImportController < ApplicationController
     updates.reverse.each do |u|
       count += u.create_post ? 1 : 0
     end
-    onboarding(notice: "Saved #{count} new updates to your library.") { |options| redirect_with_param library_path, options }
+    onboarding(notice: "Saved #{count} posts to your library. Images are being uploaded.") { |options| redirect_with_param library_path, options }
   end
 
   private

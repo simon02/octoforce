@@ -53,7 +53,7 @@
               %a.remove-line{:href => "#"}
                 %i.fa.fa-trash
 
-    = submit_tag "Add all to Library", class: 'btn btn-primary btn-lg'
+    = submit_tag "Add all to Library", class: 'btn btn-primary btn-lg', data: { disable_with: 'Adding posts...' }
     = link_to 'cancel', import_twitter_path
 
 - content_for :javascripts do
