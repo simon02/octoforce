@@ -1,22 +1,23 @@
 .container
   .row
-    .col-md-3
-      .filter
-        .pull-right
-          %a.btn.btn-mini.btn-default#add_category{data: {toggle: 'tooltip', title: 'add a new category', placement: 'auto'}}
-            %i.fa.fa-plus
-
-        .title Select A Category
-
-        %ul.categories
-
-    .col-md-9
+    .col-md-9.col-md-offset-3
       %h1.page-title
-        Category
-        = @category.name
+        = "Category '#{@category.name}'"
       %h4.page-subtitle
         Reorder posts by dragging them around. Scheduling times are recalculated behind the scenes and can take a little while to update.
       %hr/
+  .row
+    .col-md-3
+      .filter
+        .title Reorder another Category
+
+        %ul.categories
+          - @categories.each do |category|
+            %li.category
+              = link_to category_path(category) do
+                = render partial: 'shared/category', locals: { category: category }
+
+    .col-md-9
       %div#sortable_list
         - @posts.each do |post|
           .draggable.scheduled-update.m20{id: "post_#{post.id}", data: { id: "#{post.id}" }}

@@ -7,7 +7,7 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @categories = current_user.categories
+    @categories = current_user.categories.includes(:posts)
     @category = Category.find_by id: params[:id]
     @posts = @category.posts.sort_by { |p| [-p.updates.published(false).size, p.position] }
     @new_post = Post.new
