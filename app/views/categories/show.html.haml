@@ -9,10 +9,74 @@
         .title Select A Category
 
         %ul.categories
-        = render partial: 'library/filter_category', locals: { categories: @categories, selected_category: @category, amount_proc: Proc.new { |cat| cat.posts.count } }
 
     .col-md-9
+      %h1.page-title
+        Category
+        = @category.name
+      %h4.page-subtitle
+        Reorder posts by dragging them around. Scheduling times are recalculated behind the scenes and can take a little while to update.
+      %hr/
+      %div#sortable_list
+        - @posts.each do |post|
+          .draggable.scheduled-update.m20{id: "post_#{post.id}", data: { id: "#{post.id}" }}
+            = render partial: 'categories/post', locals: { post: post, target: "#post_#{post.id}" }
 
-      = link_to 'go back to full library', library_path
+- content_for :stylesheets do
+  :css
+    .sortable-ghost {
+      border-width: 5px;
+      border-style: dashed;
+      position: relative;
+    }
+    .sortable-ghost:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: #fff;
+      opacity: 0.9;
+      content: '';
+    }
+    .draggable {
+      cursor: move;
+    }
 
-      = render partial: 'category', locals: { category: @category }
+- content_for :javascripts do
+  :javascript
+    Sortable.create(document.getElementById('sortable_list'), {
+      draggable: '.draggable',
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      onEnd: function(evt) {
+        reorderPosts();
+      }
+    });
+    $('.move-to-top').click(function(e) {
+      e.preventDefault();
+      target = $($(this).data('target'));
+      target.siblings().first().before(target);
+      reorderPosts();
+    });
+    $('.move-to-bottom').click(function(e) {
+      e.preventDefault();
+      target = $($(this).data('target'));
+      target.siblings().last().after(target);
+      reorderPosts();
+    });
+    var reorderPosts = function() {
+      var ids = $('.scheduled-update').map(function() {
+        return $(this).data('id');
+      });
+      $.post("#{category_reorder_path(@category)}", { ids: ids.toArray() }, function(data) {
+        console.log(data);
+        insertNewSchedulingTimes(data);
+      }, 'json');
+    };
+    var insertNewSchedulingTimes = function(data) {
+      $.each(data, function(key, value) {
+        $("#post_" + key + " .scheduling-time").html(value);
+      });
+      $("time.timeago").timeago()
+    };

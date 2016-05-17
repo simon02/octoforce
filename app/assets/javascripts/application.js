@@ -21,6 +21,8 @@
 
 //= require jquery.highlight
 
+//= require ordering
+
 //= require schedules
 //= require queue
 //= require library
