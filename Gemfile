@@ -78,6 +78,7 @@ end
 
 group :development do
   gem 'powder'
+  gem 'mailcatcher'
 end
 
 group :production do
