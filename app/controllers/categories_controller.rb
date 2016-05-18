@@ -52,6 +52,13 @@ class CategoriesController < ApplicationController
     redirect_with_param library_path, notice: "Category '#{category.name}' has been created."
   end
 
+  def destroy
+    category = Category.find params["id"]
+    name = category.name
+    category.destroy
+    redirect_to category_path(current_user.categories.first), notice: "Category '#{name}' has been removed"
+  end
+
   private
 
   def category_params
