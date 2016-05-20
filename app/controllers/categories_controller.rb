@@ -12,6 +12,7 @@ class CategoriesController < ApplicationController
     @posts = @category.posts.sort_by { |p| [-p.updates.published(false).size, p.position] }
     @new_post = Post.new
     @new_category = Category.new
+    authorize! :show, @category
   end
 
   def reorder
