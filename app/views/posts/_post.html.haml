@@ -9,9 +9,17 @@
   .footer
     - if !(preview ||= false)
       %span.pull-left.x-small
-        = link_to "delete", post_path(post), { method: "delete", remote: true, class: 'text-muted' }
+        = link_to post_path(post), { method: "delete", remote: true, class: 'text-muted' } do
+          %i.fa.fa-trash
+          delete
         = " | "
-        = link_to 'edit', edit_post_path(post), remote: true, data: { disable_with: 'loading...' }, class: 'text-muted'
+        = link_to edit_post_path(post), remote: true, data: { disable_with: 'loading...' }, class: 'text-muted' do
+          %i.fa.fa-pencil
+          edit
+        = ' | '
+        = link_to category_path(post.category), class: 'text-muted' do
+          %i.fa.fa-sort
+          reorder category
       .pull-right.x-small.text-muted
         %span
           added to

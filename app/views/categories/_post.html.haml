@@ -1,0 +1,26 @@
+- cache ["v2", post, post.asset] do
+  .scheduling-time
+    = render partial: "categories/scheduling_time", locals: { post: post }
+  .body
+    - if post.has_media?
+      .pull-right.m10{style: 'margin-left: 10px'}
+        = link_to (image_tag post.media_url(:thumb)), post.media_url
+    .large.m10
+      = raw auto_link show post.text
+    .clearfix
+  .footer
+    - if !(preview ||= false)
+      %span.pull-left.x-small
+        = link_to 'move to top', '#', class: 'text-muted move-to-top', data: { target: target }
+        = " | "
+        = link_to 'move to bottom', '#', class: 'text-muted move-to-bottom', data: { target: target }
+        = " | "
+        = link_to "delete", post_path(post), { method: "delete", remote: true, class: 'text-muted' }
+        = " | "
+        = link_to 'edit', edit_post_path(post), remote: true, data: { disable_with: 'loading...' }, class: 'text-muted'
+      .pull-right.x-small.text-muted
+        %span
+          added
+          %abbr{title: "#{calculate_local_time(post.created_at).strftime("%l:%M %P - %d/%m/%y")}", data: {toggle: 'tooltip'}}
+            = timeago post.created_at
+      .clearfix

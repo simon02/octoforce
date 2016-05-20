@@ -1,18 +1,85 @@
 .container
   .row
+    .col-md-9.col-md-offset-3
+      .actions.pull-right{style: 'margin-top: 20px'}
+        = link_to 'delete', category_path(@category), data: {confirm: 'Are you sure you want to remove this category? This will also remove all posts in this category.'}, method: 'delete', class: 'btn btn-default'
+      %h1.page-title
+        = "Category '#{@category.name}'"
+      %h4.page-subtitle
+        Reorder posts by dragging them around. Scheduling times are recalculated behind the scenes and can take a little while to update.
+      %hr/
+  .row
     .col-md-3
       .filter
-        .pull-right
-          %a.btn.btn-mini.btn-default#add_category{data: {toggle: 'tooltip', title: 'add a new category', placement: 'auto'}}
-            %i.fa.fa-plus
-
-        .title Select A Category
+        .title Reorder another Category
 
         %ul.categories
-        = render partial: 'library/filter_category', locals: { categories: @categories, selected_category: @category, amount_proc: Proc.new { |cat| cat.posts.count } }
+          - @categories.each do |category|
+            %li.category
+              = link_to category_path(category) do
+                = render partial: 'shared/category', locals: { category: category }
 
     .col-md-9
+      %div#sortable_list
+        - @posts.each do |post|
+          .draggable.scheduled-update.m20{id: "post_#{post.id}", data: { id: "#{post.id}" }}
+            = render partial: 'categories/post', locals: { post: post, target: "#post_#{post.id}" }
 
-      = link_to 'go back to full library', library_path
+- content_for :stylesheets do
+  :css
+    .sortable-ghost {
+      border-width: 5px;
+      border-style: dashed;
+      position: relative;
+    }
+    .sortable-ghost:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: #fff;
+      opacity: 0.9;
+      content: '';
+    }
+    .draggable {
+      cursor: move;
+    }
 
-      = render partial: 'category', locals: { category: @category }
+- content_for :javascripts do
+  :javascript
+    Sortable.create(document.getElementById('sortable_list'), {
+      draggable: '.draggable',
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      onEnd: function(evt) {
+        reorderPosts();
+      }
+    });
+    $('.move-to-top').click(function(e) {
+      e.preventDefault();
+      target = $($(this).data('target'));
+      target.siblings().first().before(target);
+      reorderPosts();
+    });
+    $('.move-to-bottom').click(function(e) {
+      e.preventDefault();
+      target = $($(this).data('target'));
+      target.siblings().last().after(target);
+      reorderPosts();
+    });
+    var reorderPosts = function() {
+      var ids = $('.scheduled-update').map(function() {
+        return $(this).data('id');
+      });
+      $.post("#{category_reorder_path(@category)}", { ids: ids.toArray() }, function(data) {
+        console.log(data);
+        insertNewSchedulingTimes(data);
+      }, 'json');
+    };
+    var insertNewSchedulingTimes = function(data) {
+      $.each(data, function(key, value) {
+        $("#post_" + key + " .scheduling-time").html(value);
+      });
+      $("time.timeago").timeago()
+    };

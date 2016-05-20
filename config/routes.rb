@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   end
   resources :categories do
     resources :posts, only: [:create]
+    post 'reorder'
     get '/posts/bulk' => 'posts#show_bulk'
     post '/posts/preview' => 'posts#bulk_preview'
     post '/posts/bulk' => 'posts#create_bulk'
@@ -62,6 +63,7 @@ Rails.application.routes.draw do
 
   get '/queue' => 'queue#index'
   get '/queue/reschedule' => 'queue#reschedule'
+  post '/queue/skip/:update_id' => 'queue#skip', as: 'skip_update'
   get '/analytics' => 'analytics#index'
 
   get '/:id' => "shortener/shortened_urls#show", constraints: { subdomain: 'shorten' }

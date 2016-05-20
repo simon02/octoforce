@@ -63,7 +63,7 @@ class Post < ActiveRecord::Base
   end
 
   def teardown
-    self.updates.scheduled.destroy_all
+    self.updates.published(false).destroy_all
   end
 
 end

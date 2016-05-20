@@ -20,6 +20,18 @@ class QueueController < ApplicationController
     redirect_to queue_url
   end
 
+  def skip
+    update = Update.find_by id: params["update_id"]
+    authorize! :skip, update
+    if update
+      post = update.post
+      update.unschedule
+      post.move_to_back
+      post.category.reschedule 2
+    end
+    redirect_to queue_path
+  end
+
   private
 
   def filtering_params
