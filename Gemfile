@@ -78,6 +78,7 @@ end
 
 group :development do
   gem 'powder'
+  gem 'mailcatcher'
 end
 
 group :production do
@@ -132,3 +133,4 @@ gem 'rollbar', '~> 2.8.3'
 gem 'dalli'
 gem 'connection_pool'
 gem 'smarter_csv'
+gem 'gibbon'
