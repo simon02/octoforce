@@ -7,7 +7,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address:              'smtp.gmail.com',
     port:                 587,
-    domain:               'example.com',
+    domain:               'octoforce.com',
     user_name:            ENV['GOOGLE_APPS_EMAIL'],
     password:             ENV['GOOGLE_APPS_PASSWORD'],
     authentication:       'plain',
