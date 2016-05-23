@@ -5,11 +5,10 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { :host => 'app.octoforce.com' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
+    address:              'in-v3.mailjet.com',
     port:                 587,
-    domain:               'octoforce.com',
-    user_name:            ENV['GOOGLE_APPS_EMAIL'],
-    password:             ENV['GOOGLE_APPS_PASSWORD'],
+    user_name:            ENV['EMAIL_PROVIDER_USERNAME'],
+    password:             ENV['EMAIL_PROVIDER_PASSWORD'],
     authentication:       'plain',
     enable_starttls_auto: true
   }
