@@ -19,7 +19,6 @@ class CategoriesController < ApplicationController
     category = Category.find_by id: params[:category_id]
     ids = params["ids"]
     if category && ids.size == category.posts.size
-      category.updates.destroy_all
       ids.each_with_index do |id, i|
         p = Post.find_by id: id.to_i
         p.position = i + 1
