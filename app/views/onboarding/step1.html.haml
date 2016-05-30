@@ -3,6 +3,27 @@
     .row
       .col-md-12
         .dialog
+          %ul.steps
+            %li.step.active
+              .number 1
+              .text
+                Connect a profile
+            %li.step.disabled
+              .number 2
+              .text Add a Post
+            %li.step
+              .number 3
+              .text Schedule Post
+            %li.step
+              .number 4
+              .text View Result
+            %li.step
+              .number 5
+              .text Add More
+            %li.step
+              .number 6
+              .text Explore
+
           - if @identities.empty?
             %h1
               %strong Step 1:

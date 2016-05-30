@@ -1,3 +1,38 @@
+.steps {
+  margin: 0;
+  padding: 0;
+  .step {
+    display: inline-block;
+    margin-right: 10px;
+    .number {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      @include border-radius(50px);
+      color: $brand-primary;
+      border: 3px solid $brand-primary;
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 44px;
+    }
+    .text {
+      display: inline-block;
+      color: $brand-primary;
+      font-size: 18px;
+    }
+    &.active .number {
+      background: $brand-primary;
+      color: white;
+    }
+    &.disabled .number {
+      background: lighten($brand-primary, 15%);
+      border-color: lighten($brand-primary, 15%);
+      color: white;
+    }
+  }
+}
+
 .icon-fade {
   background-color: #AAA;
   color: transparent;
