@@ -19,6 +19,9 @@ class CategoriesController < ApplicationController
     category = Category.find_by id: params[:category_id]
     ids = params["ids"]
     if category && ids.size == category.posts.size
+      # otherwise the category.reschedule will reset
+      # the position of the posts which have scheduled updates.
+      category.updates.scheduled.destroy_all
       ids.each_with_index do |id, i|
         p = Post.find_by id: id.to_i
         p.position = i + 1
