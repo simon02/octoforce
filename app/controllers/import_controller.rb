@@ -1,6 +1,5 @@
 class ImportController < ApplicationController
   skip_before_filter :onboarding
-  layout :check_onboarding
 
   def twitter_setup
   end
@@ -39,7 +38,12 @@ class ImportController < ApplicationController
     csv = Csv.create user: current_user, file: open(params['csv_file_path'])
     CsvImporterWorker.perform_async current_user.id, csv.id, csv_import_params
     # redirect_to import_csv_path, notice: "Your CSV file is currently being processed. Refresh this page to view its status."
-    onboarding(notice: "Your CSV file is currently being processed. Refresh this page to view its status.") { redirect_to import_csv_path, notice: "Your CSV file is currently being processed. Feel free to add more content." }
+
+    if current_user.onboarding_active && current_user.onboarding_step == 5
+      redirect_to welcome_step6
+    else
+      redirect_with_param import_csv_path, notice: "Your CSV file is currently being processed. Refresh this page to view its status."
+    end
   end
 
   def import
@@ -55,7 +59,11 @@ class ImportController < ApplicationController
     updates.reverse.each do |u|
       count += u.create_post ? 1 : 0
     end
-    onboarding(notice: "Saved #{count} posts to your library. Images are being uploaded.") { |options| redirect_with_param library_path, options }
+    if current_user.onboarding_active && current_user.onboarding_step == 5
+      redirect_to welcome_step6
+    else
+      redirect_with_param library_path, notice: "Saved #{count} posts to your library. Images are being uploaded."
+    end
   end
 
   private
@@ -75,10 +83,6 @@ class ImportController < ApplicationController
     else
       permitted_params
     end
-  end
-
-  def check_onboarding
-    current_user.onboarding_active ? 'onboarding' : 'application'
   end
 
 end

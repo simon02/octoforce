@@ -16,7 +16,7 @@
         %ul.categories
           - @categories.each do |category|
             %li.category
-              = link_to category_path(category) do
+              = link_to category_path(category), class: 'text-primary' do
                 = render partial: 'shared/category', locals: { category: category }
 
     .col-md-9

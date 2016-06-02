@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   impersonates :user
 
-  before_filter :authenticate, :onboarding
+  before_filter :authenticate
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def authenticate
@@ -18,7 +18,6 @@ class ApplicationController < ActionController::Base
   end
 
   def onboarding options = {}, &block
-    return if true_user != current_user
     if current_user && current_user.onboarding_active
       redirect_to :"welcome_step#{current_user.onboarding_step || 0}", options
     elsif block

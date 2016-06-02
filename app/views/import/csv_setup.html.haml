@@ -1,3 +1,21 @@
+- if current_user.onboarding_step == 5
+  - content_for :step_info do
+    .tips-header.bg-info
+      .container
+        .row
+          .col-md-12
+            .dialog
+              = render partial: 'onboarding/progress', locals: { amount: 500/6, text: 'step 5 of 6'}
+              .description
+                %p
+                  Make sure your file looks something like this:
+                %pre
+                  = preserve do
+                    text, category
+                    'the title of a blog post you would like to tweet out', Blog Posts
+                    'the title of another blog post', Blog Posts
+                    'a fun tweet quote which is also a bit inspiring', Image Quote
+
 .container
   %h1.page-title
     Import from a CSV File

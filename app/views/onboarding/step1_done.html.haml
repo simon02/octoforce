@@ -1,24 +1,30 @@
-- content_for :step_info, flush: true do
+- content_for :step_info do
   .tips-header.bg-info
     .container
       .row
         .col-md-12
           .dialog
             = render partial: 'onboarding/progress', locals: { amount: 100/6, text: 'step 1 of 6'}
+
             %h1
               %strong Step 1:
-              = t 'onboarding.step1.title'
-            .actions.pull-right
-            .description
-              %p
-                Octoforce is a social media scheduling tool with a focus on recycling your posts. In order to fully experience its awesomeness, you do need to connect at least one social media account.
-              %p
-                So let's do that first below!
-              %p.small
-                Right now, only Twitter is supported. Facebook & LinkedIn are coming.
-            = link_to welcome_step2_path, class: 'small hidden-action' do
-              I'll do this later
-              %i.fa.fa-angle-right
+              %del Connect a Social Media Account
+              .text-success
+                %i.fa.fa-check
+                DONE
+              .description
+                %p
+                  Alright - that looks great!
+                %p
+                  If you want, you can add many more accounts. There is no limit right now.
+              .bottom
+                .pull-right
+                  = link_to welcome_step2_path, class: 'btn btn-primary' do
+                    Go to Step 2: Adding your First Post
+                    %i.fa.fa-angle-double-right
+                %p
+                  I'm good for now. Let's post something!
+                .clearfix
 .container
   .row
     .col-md-12

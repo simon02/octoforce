@@ -23,11 +23,11 @@
     .clearfix
   .footer
     .pull-left.x-small
-      = link_to skip_update_path(update), method: 'POST' do
+      = link_to skip_update_path(update), method: 'POST', class: 'text-muted' do
         %i.fa.fa-forward
         skip
       = ' | '
-      = link_to category_path(update.category) do
+      = link_to category_path(update.category), class: 'text-muted' do
         %i.fa.fa-sort
         reorder category
     .clearfix

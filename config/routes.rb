@@ -22,15 +22,19 @@ Rails.application.routes.draw do
     post 'login' => 'devise/sessions#create', :as => :user_session
     delete 'logout' => 'devise/sessions#destroy', :as => :destroy_user_session
   end
-  root 'queue#index'
+  root 'onboarding#check'
   get '/setup' => 'setup#index'
 
   get '/welcome' => 'onboarding#step1'
   get '/welcome/step0' => 'onboarding#step1'
   get '/welcome/step1' => 'onboarding#step1'
+  get '/welcome/step1/done' => 'onboarding#step1_done'
   get '/welcome/step2' => 'onboarding#step2'
   get '/welcome/step3' => 'onboarding#step3'
+  post '/welcome/step3/publish' => 'onboarding#step3_publish', as: 'onboarding_schedule_post'
   get '/welcome/step4' => 'onboarding#step4'
+  get '/welcome/step5' => 'onboarding#step5'
+  get '/welcome/step6' => 'onboarding#step6'
 
   resources :schedules, only: :index do
     post '/add_timeslot' => 'schedules#add_timeslot'

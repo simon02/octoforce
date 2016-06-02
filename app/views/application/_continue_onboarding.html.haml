@@ -1,0 +1,9 @@
+- if defined? current_user && current_user.onboarding_active
+  .tips-header.bg-info
+    .container
+      .dialog
+        go back to
+        = link_to :"welcome_step#{current_user.onboarding_step}" do
+          = "step #{current_user.onboarding_step}:"
+          = t "onboarding.step#{current_user.onboarding_step}.title"
+          %i.fa.fa-angle-right

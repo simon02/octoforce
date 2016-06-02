@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_many :identities, dependent: :destroy
   has_many :categories, dependent: :destroy
   has_many :schedules, dependent: :destroy
+  has_many :timeslots, through: :schedules
   has_many :updates, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :assets, dependent: :destroy
