@@ -40,7 +40,7 @@ class ImportController < ApplicationController
     # redirect_to import_csv_path, notice: "Your CSV file is currently being processed. Refresh this page to view its status."
 
     if current_user.onboarding_active && current_user.onboarding_step == 5
-      redirect_to welcome_step6
+      redirect_to welcome_step6_path
     else
       redirect_with_param import_csv_path, notice: "Your CSV file is currently being processed. Refresh this page to view its status."
     end
@@ -60,7 +60,7 @@ class ImportController < ApplicationController
       count += u.create_post ? 1 : 0
     end
     if current_user.onboarding_active && current_user.onboarding_step == 5
-      redirect_to welcome_step6
+      redirect_to welcome_step6_path
     else
       redirect_with_param library_path, notice: "Saved #{count} posts to your library. Images are being uploaded."
     end
