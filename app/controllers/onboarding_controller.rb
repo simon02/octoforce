@@ -54,8 +54,7 @@ class OnboardingController < ApplicationController
   end
 
   def step6
-    current_user.update onboarding_step: 6
-    # current_user.update onboarding_active: false
+    current_user.update onboarding_step: 6, onboarding_active: false
   end
 
   private
