@@ -39,7 +39,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in @user
       set_flash_message(:success, created ? :success : :authenticated, kind: provider.capitalize) if is_navigational_format?
       if @user.onboarding_active
-        redirect_to :welcome_step1_done
+        redirect_to :welcome_step2
       else
         redirect_to identities_url
       end
