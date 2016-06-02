@@ -1,7 +1,8 @@
 - post ||= Post.new
 - cache ["v1",post, categories] do
   = form_for post, multipart: true, html: { class: 'jquery-upload-form post-edit' } do |f|
-    = hidden_field_tag :redirect, request.fullpath
+    - if defined? redirect
+      = hidden_field_tag :redirect, redirect
     = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
     - if select_category ||= false
       .form-group
@@ -29,7 +30,7 @@
     .form-group.can-hide
       .btn.btn-default.fileinput-button.pull-left
         %i.fa.fa-camera
-        %span.text add an image or video
+        %span.text add an image
         = file_field_tag "asset[media]"
       .pull-right
         - if post.new_record?

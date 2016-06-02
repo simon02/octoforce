@@ -29,6 +29,7 @@
             = " | "
             %a{href: '#', data: { toggle: 'modal', target: "#dialog_feed_#{feed.id}"}}
               edit
+          %hr/
 
         .modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_feed_#{feed.id}", 'data-show': 'false'}
           .modal-dialog

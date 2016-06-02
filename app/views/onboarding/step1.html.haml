@@ -1,35 +1,24 @@
-- content_for :step_info do
-  .container
-    .row
-      .col-md-12
-        .dialog
-          - if @identities.empty?
+- content_for :step_info, flush: true do
+  .tips-header.bg-info
+    .container
+      .row
+        .col-md-12
+          .dialog
+            = render partial: 'onboarding/progress', locals: { amount: 100/6, text: 'step 1 of 6'}
             %h1
               %strong Step 1:
-              Connect a Social Media Account
+              = t 'onboarding.step1.title'
             .actions.pull-right
             .description
               %p
-                You need to connect at least one social media account to Octoforce in order to start experiencing the juicy bits.
+                Octoforce is a social media scheduling tool with a focus on recycling your posts. In order to fully experience its awesomeness, you do need to connect at least one social media account.
+              %p
+                So let's do that first below!
+              %p.small
+                Right now, only Twitter is supported. Facebook & LinkedIn are coming.
             = link_to welcome_step2_path, class: 'small hidden-action' do
               I'll do this later
               %i.fa.fa-angle-right
-          - else
-            %h1
-              %strong Step 1:
-              Welcome Back!
-            .actions.pull-right
-            .description
-              %p
-                You can add as many social media accounts as you want, so feel free to go nuts.
-            .bottom
-              .pull-right
-                = link_to welcome_step2_path, class: 'btn btn-primary' do
-                  Next Step: Adding Content
-                  %i.fa.fa-angle-double-right
-              %p
-                Want to do the rest later?
-              .clearfix
 .container
   .row
     .col-md-12
@@ -37,35 +26,12 @@
     .col-md-12
       %h1.page-title
         Social Media Accounts
-      %h4.page-subtitle
-        You currently have
-        %strong
-          = @identities.count
-          accounts
-        on Octoforce.
       %hr/
-      .row
-        - if @identities.empty?
-          .panel-row{style: 'padding-top: 25px; padding-bottom: 25px'}
-            .xx-large.center.m10
-              %i.fa.fa-frown-o.fa-4x.icon-fade
-            %p.x-large.center.m5
-              No Social Media Accounts Found.
-            %p.x-large.center
-              Add your first one below.
-        - @identities.each do |identity|
-          .col-md-4.col-sm-6.m20
-            .card.bordered
-              .profile-image
-                %img.rounded{src: "#{identity.image}"}
-              .next-to-image
-                %strong= identity.subname || identity.name
-                .text-muted.small= identity.provider
-                %small= link_to 'remove', identity_path(identity), method: :delete, data: { confirm: 'This will also remove the connected schedule. Are you sure you want to proceed?' }
-      %hr/
+      .x-large.center.text-center
+        .m10
+          %i.fa.fa-4x.fa-twitter.color-twitter
+        = link_to 'connect your twitter account', omniauth_authorize_path('user', 'twitter', force_login: true), class: 'btn btn-twitter btn-lg'
 
-
-      = render partial: 'identities/add'
 
 
 - if current_user.email.nil?

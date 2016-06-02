@@ -1,3 +1,16 @@
+- if current_user.onboarding_step == 5
+  - content_for :step_info do
+    .tips-header.bg-info
+      .container
+        .row
+          .col-md-12
+            .dialog
+              = render partial: 'onboarding/progress', locals: { amount: 500/6, text: 'step 5 of 6'}
+              .description
+                %p Depending on the number of tweets and the criteria you selected, this may be a very long or a very short list. If you are unhappy with the results right now, you can click cancel and select some different options.
+                %p It is better to have a bit too many tweets here right now, so you can manually delete the ones you don't like (click the trash can next to any tweet to remove it).
+                %p.small.m5 Please take the time to categorize them properly, it will make things a lot easier for yourself.
+
 .container
   %h1.page-title
     Import from Twitter

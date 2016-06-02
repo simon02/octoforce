@@ -21,3 +21,16 @@
 
 en:
   hello: "Hello world"
+  onboarding:
+    step1:
+      title: Connect a Social Media Account
+    step2:
+      title: Add Your First Post to Your Library
+    step3:
+      title: Great! Now Let's Schedule that First Post
+    step4:
+      title: View Your Progress So Far
+    step5:
+      title: 2 New Ways to Add More Content
+    step6:
+      title: Explore Octoforce on Your Own

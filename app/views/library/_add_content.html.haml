@@ -7,7 +7,7 @@
         Your library is the backbone of this operation. Make sure to add enough fresh content so people don't see you as being spammy.
       %hr/
     .col-md-8
-      = render partial: 'posts/form', locals: { categories: categories, select_category: true }
+      = render partial: 'posts/form', locals: { categories: categories, select_category: true, redirect: request.fullpath }
 
     .col-md-4
       = link_to import_csv_path, class: "btn btn-multiline btn-default m30 form-control" do

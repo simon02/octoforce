@@ -1,6 +1,4 @@
 class RegistrationsController < Devise::RegistrationsController
-  skip_before_filter :onboarding
-  layout :check_onboarding
 
   def update_resource(resource, params)
     if resource.encrypted_password.blank? # || params[:password].blank?
@@ -16,12 +14,6 @@ class RegistrationsController < Devise::RegistrationsController
     else
       resource.update_with_password(params)
     end
-  end
-
-  private
-
-  def check_onboarding
-    current_user ? current_user.onboarding_active ? 'onboarding' : 'application' : 'devise'
   end
 
 end

@@ -1,3 +1,12 @@
+- if current_user.onboarding_step == 5
+  - content_for :step_info do
+    .tips-header.bg-info
+      .container
+        .row
+          .col-md-12
+            .dialog
+              = render partial: 'onboarding/progress', locals: { amount: 500/6, text: 'step 5 of 6'}
+
 .container
   %h1.page-title
     Import from Twitter

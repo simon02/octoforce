@@ -6,6 +6,10 @@
     = render 'chromeframe'
     = render 'header'
     .page-wrapper
+      - if content_for? :step_info
+        = yield :step_info
+      - else
+        = render 'continue_onboarding'
       = render 'flashes'
 
       = yield

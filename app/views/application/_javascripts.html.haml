@@ -2,7 +2,7 @@
 = javascript_include_tag 'application'
 
 -#  Append your own using content_for :javascripts
-= yield :javascripts
+= content_for :javascripts
 
 -# Google Analytics
 - if !ENV['GOOGLE_ANALYTICS_SITE_ID'].blank?
