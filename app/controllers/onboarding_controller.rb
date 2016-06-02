@@ -34,7 +34,8 @@ class OnboardingController < ApplicationController
   end
 
   def step3_publish
-    Timeslot.create_with_timestamp timeslot_params
+    slot = Timeslot.create_with_timestamp timeslot_params
+    slot.category.reschedule 2
     redirect_to action: 'step4'
   end
 
