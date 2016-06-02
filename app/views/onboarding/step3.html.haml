@@ -42,6 +42,7 @@
       = form_for @slot, url: onboarding_schedule_post_path, remote: true, html: { class: 'form-horizontal', id: "#{defined? id ? id : 'add_timeslot'}" } do |f|
         = f.hidden_field :category_id
         = f.hidden_field :schedule_id
+        = hidden_field_tag :redirect, welcome_step4_path
         .form-group
           = f.label :day, class: 'col-sm-2 control-label'
           .col-sm-10
@@ -53,9 +54,3 @@
         .form-group
           .col-sm-10.col-sm-offset-2
             = f.submit "Schedule that post", class: 'btn btn-primary', data: { disable_with: 'Scheduling...' }
-
-- content_for :javascripts do
-  :javascript
-    $(function() {
-
-    });
