@@ -30,7 +30,7 @@
       %h2.m20
         Quick & Easy
       = form_for @slot, url: onboarding_schedule_post_path do |f|
-        = f.hidden_field :offset, value: (Time.now + 15.minutes).strftime("%I:%M %P")
+        = f.hidden_field :offset, value: calculate_local_time(Time.now + 15.minutes).strftime("%I:%M %P")
         = f.hidden_field :day
         = f.hidden_field :category_id
         = f.hidden_field :schedule_id
