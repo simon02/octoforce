@@ -47,7 +47,7 @@
           %td
             = select_tag 'category_all', options_for_select([['', nil]] + current_user.categories.map { |l| [l.name, l.id] }), class: 'form-control input-sm', data: { title: 'change the category of all selected updates', toggle: 'tooltip'}
           %td.text-center{data: { title: 'remove all selected updates', toggle: 'tooltip'}}
-            %a#remove_all{:href => "#"}
+            %a#remove_all{:href => "#!"}
               %i.fa.fa-trash
         - @updates.each do |update|
           %tr
@@ -68,7 +68,7 @@
             %td
               = select_tag 'updates[][category_id]', options_for_select(current_user.categories.map { |l| [l.name, l.id] }, update.category_id), class: 'form-control input-sm'
             %td.text-center
-              %a.remove-line{:href => "#"}
+              %a.remove-line{:href => "#!"}
                 %i.fa.fa-trash
 
     = submit_tag "Add all to Library", class: 'btn btn-primary btn-lg', data: { disable_with: 'Adding posts...' }
