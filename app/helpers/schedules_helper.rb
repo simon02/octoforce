@@ -7,7 +7,8 @@ module SchedulesHelper
   end
 
   def category_options
-    current_user.categories.sort_by { |l| -l.posts.count }.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }
+    categories = current_user.categories.sort_by { |l| -l.posts.count }.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }
+    [["Random Category (#{current_user.posts.count})", Category::RANDOM_CATEGORY_ID]] + categories
   end
 
   def block_time block, format

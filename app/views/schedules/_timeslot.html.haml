@@ -1,4 +1,5 @@
-.timeslot{id: "timeslot_#{slot.id}", style: "background-color: #{lighten_color slot.category.color, 0.4}; border-color: ##{slot.category.color}"}
+- color = slot.category_id == Category::RANDOM_CATEGORY_ID ? '808080' : slot.category.color
+.timeslot{id: "timeslot_#{slot.id}", style: "background-color: #{lighten_color color, 0.4}; border-color: ##{color}"}
   .pull-right.actions
     .x-small
       = link_to slot, method: :delete, remote: true do
@@ -6,4 +7,7 @@
   .timestamp
     = offset_to_time(slot.offset, "%I:%M %P")
   .category
-    = link_to(slot.category.name, category_path(slot.category), class: 'text-primary') if slot.category
+    - if slot.category_id == Category::RANDOM_CATEGORY_ID
+      Random
+    - else
+      = link_to(slot.category.name, category_path(slot.category), class: 'text-primary') if slot.category

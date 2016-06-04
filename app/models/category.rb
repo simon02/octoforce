@@ -10,6 +10,8 @@ class Category < ActiveRecord::Base
     category.color ||= @generator.create_hex
   end
 
+  RANDOM_CATEGORY_ID = -1
+
   def move_to_front post
     post.update position: (self.first_position - 1)
     post.update category: self if post.category.nil?
