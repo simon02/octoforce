@@ -1,9 +1,9 @@
-- cache ["v1", post] do
-  .body.m10
+- cache ["v1", post, post.asset] do
+  .body
     - if post.has_media?
-      .pull-right{style: 'margin-left: 10px'}
+      .pull-right.m10{style: 'margin-left: 10px'}
         = link_to (image_tag post.media_url(:thumb)), post.media_url
-    .text.x-large.m10
+    .large.m10
       = raw auto_link show post.text
     .clearfix
   - if post.link
@@ -13,47 +13,35 @@
           .thumb
         .col-xs-8
       - else
-        .col-md-12
-      = link_to post.link.title, post.link.url
+        .col-xs-12
+          %p.text-muted.x-small.m5
+            %i.fa.fa-facebook.color-facebook
+            only for facebook
+          %p.m5{style: 'margin-top: 0'}
+            = post.link.title
+          %p.text-muted.x-small.m5
+            = post.link.url.to_s
+          %p.small.m0
+            = post.link.description
       .clearfix
   .footer
     - if !(preview ||= false)
-      %span.x-small{style: 'margin-right: 10px'}
-        = link_to "delete", post_path(post), { method: "delete", remote: true }
+      %span.pull-left.x-small
+        = link_to post_path(post), { method: "delete", remote: true, class: 'text-muted' } do
+          %i.fa.fa-trash
+          delete
         = " | "
-        %a{href: '#', data: { toggle: 'modal', target: "#dialog_post_#{post.id}"}}
+        = link_to edit_post_path(post), remote: true, data: { disable_with: 'loading...' }, class: 'text-muted' do
+          %i.fa.fa-pencil
           edit
-      %span.category-badge
-        .color-code{style: "background-color: ##{post.category.color};"}
-        .name= post.category.name
-      .pull-right.x-small
+        = ' | '
+        = link_to category_path(post.category), class: 'text-muted' do
+          %i.fa.fa-sort
+          reorder category
+      .pull-right.x-small.text-muted
         %span
-          - if post.updates.scheduled.count > 0
-            - scheduled_at = calculate_local_time post.updates.scheduled.sorted.first.scheduled_at
-            scheduled for publication in
-            %abbr{'data-toggle': 'tooltip', title: "#{scheduled_at.strftime('%A %-d %B at %I:%M %P')}"}
-              = timeago scheduled_at
-            &#9679;
-          - elsif post.updates.published.count > 0
-            last published
-            = timeago calculate_local_time(post.updates.published.sorted.first.scheduled_at)
-            &#9679;
-        %span
-          added
-          - added = calculate_local_time(post.created_at).strftime("%l:%M %P - %d/%m/%y")
-          %abbr{title: "#{added}", data: {toggle: 'tooltip'}}
+          added to
+          = post.category.name
+          %abbr{title: "#{calculate_local_time(post.created_at).strftime("%l:%M %P - %d/%m/%y")}", data: {toggle: 'tooltip'}}
             = timeago post.created_at
-          ago
       .clearfix
-
-  .modal.fade{tabindex: 1, role: 'dialog', 'aria-hidden': "true", id: "dialog_post_#{post.id}", 'data-show': 'false'}
-    .modal-dialog
-      .modal-content
-        .modal-header
-          %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
-            %span{'aria-hidden': true}
-              &times;
-          .modal-title.large
-            Edit post
-        .modal-body
-          = render partial: 'posts/form', locals: { categories: current_user.categories, post: post, select_category: true }

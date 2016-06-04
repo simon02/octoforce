@@ -6,4 +6,4 @@
   .timestamp
     = offset_to_time(slot.offset, "%I:%M %P")
   .category
-    = link_to(slot.category.name, category_path(slot.category)) if slot.category
+    = link_to(slot.category.name, category_path(slot.category), class: 'text-primary') if slot.category

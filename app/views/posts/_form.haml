@@ -1,12 +1,14 @@
 - post ||= Post.new
-= form_for post, multipart: true, html: { class: 'jquery-upload-form' } do |f|
-  = hidden_field_tag :redirect, request.fullpath
+= form_for post, multipart: true, html: { class: 'jquery-upload-form post-edit' } do |f|
+  = hidden_field_tag :redirect
   = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
   - if select_category ||= false
     .form-group
       = f.label :category_id do
         Choose a category:
-      = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }, post.category_id), {}, class: 'form-control'
+      = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }, post.category_id), {}, class: 'form-control pull-left', style: "width: calc(100% - 130px)"
+      = link_to 'add category', '#!', class: 'btn btn-default form-control pull-left', style: "width: 120px; margin-left: 10px"
+      .clearfix
   - else
     = f.hidden_field :category_id
   .form-group
@@ -16,14 +18,13 @@
         %span.twitter-counter{id: "text_counter_#{post.id}"}
           140
     = f.label :text, "Text", class: 'can-hide'
-    = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter link_extractor text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
+    = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter link-extractor text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
   .form-group
-    .row#link_extraction.hide.with-preview
-      .col-md-12
-        .text-center
-          %p
-            loading link content...
-          %i.fa.fa-spinner.fa-pulse.fa-3x
+    #link_extraction.hide.with-preview
+      .text-center
+        %p
+          loading link content...
+        %i.fa.fa-spinner.fa-pulse.fa-3x
   .form-group
     .assets#assets
       - if post.has_media?
@@ -33,7 +34,7 @@
   .form-group.can-hide
     .btn.btn-default.fileinput-button.pull-left
       %i.fa.fa-camera
-      %span.text Select a file
+      %span.text add an image
       = file_field_tag "asset[media]"
     .pull-right
       - if post.new_record?
@@ -41,3 +42,11 @@
       - else
         = submit_tag 'Update this Post', class: 'btn btn-primary pull-right', data: { disable_with: 'Updating...' }
     .clearfix
+
+- content_for :javascripts do
+  :javascript
+    $(function() {
+      initOnPageLoad();
+      $('.twitter-text-counter').trigger('keyup');
+      $('.post-edit #redirect').val(location.href);
+    });

@@ -1,35 +1,38 @@
-.tips-header
-  .row
-    .col-md-12
-      .dialog
-        %h1
-          %strong Step 4:
-          You Are All Set!
-        .actions.pull-right
-        .description
-          %p
-            This is your queue. It shows all scheduled social media updates that will be sent out in the next 2 weeks.
-          %p
-            You can easily filter out updates for specific social media accounts on the left. Same goes for categories.
-          %p
-            This is the end of this small onboarding. Feel free to further explore Octoforce.
+- content_for :step_info do
+  .tips-header.bg-info
+    .container
+      .row
+        .col-md-12
+          .dialog{style: 'margin-bottom: 0'}
+            .progress
+              .progress-bar.progress-bar-success.progress-bar-striped{style: 'width: 67%;', role: 'progressbar', aria: { valuenow: 67, min: 0, max: 100}}
+                step 4 of 6
+            %h1
+              %strong Step 4:
+              = t 'onboarding.step4.title'
+            .actions.pull-right
+            .description
+              %p
+                Below you can see your queue. This is a complete overview of all the posts Octoforce has scheduled to go out in the next 2 weeks.
+              %p
+                You may notice that your post is actually showing up
+                %strong TWICE
+                here. That's because in the previous step, I made it look a little easier than it is. You may have thought you were scheduling just a single post, but that's not how it works. You actually told Octoforce:
+              %blockquote
+                = "Every #{Date::DAYNAMES[@timeslot.day]} at #{offset_to_time @timeslot.offset, "%I:%M %P"}, I want you to take the next post from category '#{@timeslot.category.name}' and publish it to #{@timeslot.schedule.identity.subname}. After publishing that post, I want you to keep it safe in my library. Only after all the other posts in that same category have been published, I want you to send it out again."
+              %p
+                = "As '#{@timeslot.category.name}' only contains a single post, it is scheduled twice. And after these 2 weeks, Octoforce will keep sending it out."
+              %p
+                = "In order to fix this, you need to add some more content to '#{@timeslot.category.name}'. The next step introduces 2 new possibilities that makes it easier and faster to add content in bulk."
+            .bottom
+              .pull-right
+                = link_to welcome_step5_path, class: 'btn btn-primary btn-lg' do
+                  Go to Step 5:
+                  = t 'onboarding.step5.title'
+                  %i.fa.fa-angle-right
+              %p
+                Show me those new moves!
+              .clearfix
 
 .container
-  = render partial: 'queue/queue', locals: { updates: @updates }
-
-- content_for :javascripts do
-  / <!-- Qeryz code for app.octoforce.com -->
-  %script{type: 'text/javascript', src: 'https://qeryz-seohacker.netdna-ssl.com/survey/js/qryz_v3.2.js'}
-  :javascript
-    var qRz = qRz || [];
-    (function() {
-      setTimeout(function(){
-        var qryz_plks = document.createElement('div');
-        qryz_plks.id = 'qryz_plks';
-        qryz_plks.className = 'qryz_plks';
-        document.body.appendChild(qryz_plks);
-        qryzInit2('2650');
-      },0);
-    })();
-    qRz.push(['QrzTrackLoggedIn', {'name': "#{current_user.id}",'email': "#{current_user.email}"}]);
-    qRz.push(['QrzTrackSubmit', '3185']);
+  = render partial: 'queue/queue', locals: { updates: @updates, categories: @categories, identities: @identities }

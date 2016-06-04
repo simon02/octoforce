@@ -1,0 +1,6 @@
+- if update = post.updates.published(false).first
+  .x-small.text-muted.m5
+    scheduled
+    = timeago calculate_local_time(update.scheduled_at)
+    for
+    = "#{update.identity.subname} (#{update.identity.provider})"

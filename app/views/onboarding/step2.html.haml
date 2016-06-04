@@ -1,47 +1,30 @@
 - content_for :step_info do
-  .row
-    .col-md-12
-      .dialog
-        - if @posts.empty?
-          %h1
-            %strong Step 2:
-            Add Your First Tweet to Your Library
-          .actions.pull-right
-          .description
-            %p
-              This is your time to shine!
-            %p
-              Get creative below and carve an All-time Classic Tweet&#8482; or dig in your Twitter analytics and copy paste one of your best performing updates.
-
-          = link_to welcome_step3_path, class: 'small hidden-action' do
-            I'll do this later
-            %i.fa.fa-angle-right
-        - else
-          %h1
-            %strong Step 2:
-            That is Some Marvelous Writing!
-          .actions.pull-right
-          .description
-            %p
-              This content library forms the core of your social media console.
-            %p
-              Having a nice backlog of updates will make sure you never run out of interesting things to share with your lovely crowd so feel free to add as many tweets as you want.
-          .bottom
-            .pull-right
-              = link_to welcome_step3_path, class: 'btn btn-primary' do
-                Next Step: Scheduling
-                %i.fa.fa-angle-double-right
-            %p
-              Temporarily out of grand ideas?
-            .clearfix
+  .tips-header.bg-info
+    .container
+      .row
+        .col-md-12
+          .dialog
+            = render partial: 'onboarding/progress', locals: { amount: 200/6, text: 'step 2 of 6'}
+            %h1
+              %strong Step 2:
+              = t 'onboarding.step2.title'
+            .actions.pull-right
+            .description
+              %p
+                What is a scheduling tool without content? Exactly, completely useless.
+              %p
+                In order to see what Octoforce can do, you need to write your very first post. Or copy-paste one of your previously written ones in here. After all, we are a very heavy cheerleader for recycling.
+              %p.small
+                Step 5 will introduce some other possibilities to get your existing content into Octoforce, but for now we will do it the old-school way: plain old typing.
 
 .container
   .row
     .col-md-12
-      .panel
-        .panel-heading
-          .title
-            Add Content to Your Library
-        .panel-body
-          .panel-row
-            = render partial: 'posts/form', locals: { categories: @categories, select_category: true }
+      %h1.page-title
+        Write Your Very First Post
+      %h4.page-subtitle
+        To make it easy, I already provided you with a simple example. Feel free to use this or type out your own.
+      .page-subtitle
+        Don't worry, nothing will be scheduled. That's the next step.
+      %hr/
+      = render partial: 'posts/form', locals: { categories: @categories, select_category: true, post: Post.new(text: 'Scheduling my very first post with @octoforce #socialmedia #automation #testing'), redirect: welcome_step3_path }

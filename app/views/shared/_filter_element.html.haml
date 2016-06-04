@@ -2,5 +2,5 @@
 - element_name = element.class.name.downcase
 - link_params ||= {}
 %li{ class: element_name, id: "#{element_name}_#{id}", data: { type: element_name, value: id} }
-  = link_to filter_link_params(element, id.to_s, params), class: "#{'selected' if selected}" do
+  = link_to filter_link_params(element, id.to_s, params), class: "#{'selected' if selected} text-primary" do
     = yield

@@ -1,3 +1,79 @@
+.scheduled-update {
+  border: 1px solid #ddd;
+  padding: 15px;
+  .profile {
+    position: absolute;
+    img {
+      @include border-radius(3px);
+    }
+    i.fa {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding: 3px;
+      color: white;
+      text-shadow: 0 0 2px rgba(0,0,0,.4);
+      @include border-radius(3px);
+      &.twitter {
+        background-color: #55acee;
+      }
+    }
+  }
+  .category {
+    position: absolute;
+    bottom: 0;
+  }
+  .account, .timestamp {
+    margin-left: 60px;
+  }
+  .account {
+    font-size: 105%;
+    line-height: 28px;
+  }
+  .timestamp {
+    color: #555;
+    font-size: 13px;
+  }
+  .time-ago {
+    float: right;
+    color: #555;
+    font-style: italic;
+    line-height: 28px;
+  }
+  .footer {
+    background: #fafafa;
+    margin: 0 -15px -15px -15px;
+    padding: 6px 15px;
+    border-top: 1px solid #f0f0f0;
+  }
+}
+
+.category-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  background-color: #f8f8f8;
+  position: relative;
+  .name {
+    border: 1px solid #ccc;
+    border-left: none;
+    padding: 1px 5px 1px 13px;
+    @include border-right-radius(3px);
+  }
+  .color-code {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 8px;
+    background-color: #aaa;
+    border: 1px solid rgba(0,0,0,.2);
+    border-right: none;
+    @include border-left-radius(3px)
+  }
+}
+
 .post-form {
   &.reduced {
     textarea {
@@ -16,7 +92,8 @@
   position: relative;
 }
 .with-preview {
-  padding: 15px 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
   background-color: rgb(244, 247, 249);
   background-color: rgba(244, 247, 249, 0.24);
   border-top: 1px solid #DFE3E6;
@@ -35,7 +112,8 @@
   }
   .close {
     position: absolute;
-    right: 15px;
+    top: -10px;
+    right: 10px;
     z-index: 12;
   }
   .thumb {

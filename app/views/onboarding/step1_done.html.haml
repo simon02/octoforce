@@ -1,0 +1,72 @@
+- content_for :step_info do
+  .tips-header.bg-info
+    .container
+      .row
+        .col-md-12
+          .dialog
+            = render partial: 'onboarding/progress', locals: { amount: 100/6, text: 'step 1 of 6'}
+
+            %h1
+              %strong Step 1:
+              %del Connect a Social Media Account
+              %span.text-success
+                DONE
+            .description
+              %p
+                Alright - that looks great!
+              %p
+                If you want, you can add many more accounts. There is no limit right now.
+            .bottom
+              .pull-right
+                = link_to welcome_step2_path, class: 'btn btn-primary' do
+                  Go to Step 2: Adding your First Post
+                  %i.fa.fa-angle-double-right
+              %p
+                I'm good for now. Let's post something!
+              .clearfix
+.container
+  .row
+    .col-md-12
+  .row
+    .col-md-10.col-md-offset-1
+      %h1.page-title
+        Social Media Accounts
+      %h4.page-subtitle
+        You currently have
+        %strong
+          = @identities.count
+          accounts
+        on Octoforce.
+      %hr/
+      .row
+        - @identities.each do |identity|
+          .col-md-4.col-sm-6.m20
+            .card.bordered
+              .profile-image
+                %img.rounded{src: "#{identity.image}"}
+              .next-to-image
+                %strong= identity.subname || identity.name
+                .text-muted.small= identity.provider
+                %small= link_to 'remove', identity_path(identity), method: :delete, data: { confirm: 'This will also remove the connected schedule. Are you sure you want to proceed?' }
+      %hr/
+
+
+      = render partial: 'add'
+
+
+
+
+- if current_user.email.nil?
+  .modal.fade{tabindex: 1, role: 'dialog', 'data-show': 'true', 'data-toggle': 'modal', 'data-backdrop': 'static', 'data-keyboard': 'false'}
+    .modal-dialog{style: 'max-width: 400px'}
+      .modal-content
+        .modal-header
+          %h3.modal-title
+            Complete your account
+        .modal-body
+          %p.large
+            Enter the email address where we can best reach you.
+          %p.m20
+            We'll send you some tips about octoforce and warn you if anything goes wrong.
+          = text_field_tag :email, nil, class: 'form-control m10', placeholder: 'enter email here', autofocus: 'autofocus'
+          = submit_tag "Let's get started!", class: 'form-control btn btn-primary'

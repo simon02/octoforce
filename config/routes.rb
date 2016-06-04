@@ -16,22 +16,32 @@ Rails.application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  devise_for :users, class_name: 'FormUser', :controllers => { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations', sessions: 'sessions' }
-  root 'queue#index'
+  devise_for :users, class_name: 'FormUser', :controllers => { omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations', sessions: 'sessions', invitations: 'invitations' }, :skip => [:sessions]
+  as :user do
+    get 'login' => 'devise/sessions#new', :as => :new_user_session
+    post 'login' => 'devise/sessions#create', :as => :user_session
+    delete 'logout' => 'devise/sessions#destroy', :as => :destroy_user_session
+  end
+  root 'onboarding#check'
   get '/setup' => 'setup#index'
 
   get '/welcome' => 'onboarding#step1'
   get '/welcome/step0' => 'onboarding#step1'
   get '/welcome/step1' => 'onboarding#step1'
+  get '/welcome/step1/done' => 'onboarding#step1_done'
   get '/welcome/step2' => 'onboarding#step2'
   get '/welcome/step3' => 'onboarding#step3'
+  post '/welcome/step3/publish' => 'onboarding#step3_publish', as: 'onboarding_schedule_post'
   get '/welcome/step4' => 'onboarding#step4'
+  get '/welcome/step5' => 'onboarding#step5'
+  get '/welcome/step6' => 'onboarding#step6'
 
   resources :schedules, only: :index do
     post '/add_timeslot' => 'schedules#add_timeslot'
   end
   resources :categories do
     resources :posts, only: [:create]
+    post 'reorder'
     get '/posts/bulk' => 'posts#show_bulk'
     post '/posts/preview' => 'posts#bulk_preview'
     post '/posts/bulk' => 'posts#create_bulk'
@@ -49,10 +59,20 @@ Rails.application.routes.draw do
   # the assets route is reserved for files in /public !
   resources :assets, path: 'files', only: [:create, :destroy]
 
+  get '/import/twitter' => 'import#twitter_setup'
+  post '/import/twitter' => 'import#twitter'
+  get '/import/twitter/:id' => 'import#show_twitter', as: 'import_show_twitter'
+  post '/import' => 'import#import'
+  get '/import/csv' => 'import#csv_setup'
+  post '/import/csv' => 'import#csv_import'
+  post '/import/csv/preview' => 'import#csv_preview'
+
   get '/library' => 'library#index'
+  get '/add_content' => 'library#add_content', as: 'add_content'
 
   get '/queue' => 'queue#index'
   get '/queue/reschedule' => 'queue#reschedule'
+  post '/queue/skip/:update_id' => 'queue#skip', as: 'skip_update'
   get '/analytics' => 'analytics#index'
 
   get '/:id' => "shortener/shortened_urls#show", constraints: { subdomain: 'shorten' }

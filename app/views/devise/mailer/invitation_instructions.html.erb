@@ -1,7 +1,7 @@
-<p><%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
-
-<p><%= t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></p>
-
-<p><%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token) %></p>
-
-<p><%= t("devise.mailer.invitation_instructions.ignore").html_safe %></p>
+<p>Hiyaa!</p>
+<p>Remember how you signed up to be informed about Octoforce, the social media rescheduling app that takes over the tedious day-to-day labor so you can focus on the conversation?</p>
+<p>There's an open spot on the Beta program with your name on it. Claim it now to be among the selected few who are testing Octoforce &amp; be the first to know about new features and updates. All for free.</p>
+<p>Simply <%= link_to "follow this link to set up a password", accept_invitation_url(@resource, :invitation_token => @token) %> and start filling up your library today.</p>
+<p>This offer does not last forever, so <%= link_to "get on it now", accept_invitation_url(@resource, :invitation_token => @token) %>!</p>
+<p>Cheers,<br>Team Octoforce</p>
+<p>ps. not sure what to make of this? Send us your questions - we love to help!</p>

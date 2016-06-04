@@ -1,0 +1,46 @@
+- if current_user.onboarding_step == 5
+  - content_for :step_info do
+    .tips-header.bg-info
+      .container
+        .row
+          .col-md-12
+            .dialog
+              = render partial: 'onboarding/progress', locals: { amount: 500/6, text: 'step 5 of 6'}
+
+.container
+  %h1.page-title
+    Import from Twitter
+  %h4.page-subtitle
+    Step 1: tell Octoforce where to look for tweets and your criterias for selection.
+  %hr/
+  = form_tag import_twitter_path, class: 'form-horizontal' do
+    .form-group
+      = label_tag 'identity_id', 'Select Twitter Account', class: 'col-md-3 control-label'
+      .col-md-9
+        = select_tag 'identity_id', options_for_select(current_user.identities.filter_by_provider('twitter').map { |i| ["#{i.subname} (#{i.provider})", i.id]}), class: 'form-control'
+    .form-group
+      = label_tag 'count', class: 'col-md-3 control-label' do
+        Number of tweets to retrieve
+        %i.fa.fa-question-circle{data: {toggle: 'tooltip', title: 'Tip: take at least 10 times the number of tweets you post per week.'}}
+      .col-md-9
+        = number_field_tag 'count', 200, class: 'form-control', min: 1, max: 3000
+    .form-group
+      = label_tag 'min_favorites', 'Minimum number of favorites', class: 'col-md-3 control-label'
+      .col-md-9
+        = number_field_tag 'min_favorites', 1, class: 'form-control', min: 0
+    .form-group
+      .col-md-9.col-md-offset-3
+        = select_tag 'single_condition', options_for_select([["OR (if minimum number of favorites or minimum number of retweets is found for a tweet, it will be imported)", true], ["AND (the number of favorites and retweets both need to be met before the tweet is imported)", false]]), class: 'form-control input-sm', min: 0
+    .form-group
+      = label_tag 'min_retweets', 'Minimum number of retweets', class: 'col-md-3 control-label'
+      .col-md-9
+        = number_field_tag 'min_retweets', 1, class: 'form-control', min: 0
+    .form-group
+      .col-md-9.col-md-offset-3
+        .checkbox
+          %label
+            = check_box_tag 'skip_octoforce', true, true, class: ''
+            skip updates published with octoforce
+    .form-group
+      .col-md-9.col-md-offset-3
+        = submit_tag 'Find Tweets', class: 'btn btn-primary', data: { disable_with: 'Searching tweets... This can take a few seconds' }

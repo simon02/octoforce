@@ -1,0 +1,3 @@
+$("#load_more").replaceWith("#{j render(partial: 'library/posts', locals: { posts: @sorted_posts, offset: @offset, count: @count, filters: @filters })}");
+initOnPageLoad();
+

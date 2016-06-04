@@ -1,0 +1,41 @@
+- if current_user.onboarding_step == 5
+  - content_for :step_info do
+    .tips-header.bg-info
+      .container
+        .row
+          .col-md-12
+            .dialog
+              = render partial: 'onboarding/progress', locals: { amount: 500/6, text: 'step 5 of 6'}
+
+.container.m20
+  %h1.page-title
+    Import from a CSV file
+  %h4.page-subtitle
+    Step 2: Map columns to Octoforce properties.
+  %hr/
+  = form_tag import_csv_path, multipart: true, html: {class: 'form-horizontal'} do
+    = hidden_field_tag 'csv_file_path', @csv_file_path
+    = hidden_field_tag 'col_sep', @col_sep
+    .row.small.m0
+      .col-sm-3
+        %strong
+          Column header from CSV
+      .col-sm-6
+        %strong
+          Example value
+      .col-sm-3
+        %strong
+          Octoforce property
+    %hr{style: 'margin-top: 5px'}/
+    - columns = %w(text category image_url)
+    - @example_data.first.each do |k,v|
+      .row.m20
+        .col-sm-3
+          %strong
+            = k
+        .col-sm-6.small
+          = v
+        .col-sm-3
+          = select_tag "key_mapping[#{k}]", options_for_select([["Don't import this property", nil]] + columns.map { |c| [c, c.to_sym] }, k.downcase), class: 'form-control'
+      %hr/
+    = submit_tag 'Start Import', data: { disable_with: 'Importing...' }, class: 'btn btn-primary'

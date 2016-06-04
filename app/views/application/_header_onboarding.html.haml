@@ -1,15 +1,21 @@
-%nav.navbar.navbar-default.navbar-static-side
-  .navbar-header
-    - identifier = rand(1000000000)
-    %button.navbar-toggle{'data-target': "#navbar-collapse-#{identifier}",'data-toggle': 'collapse', type: 'button'}
-      %span.sr-only Toggle navigation
-      %span.icon-bar
-      %span.icon-bar
-      %span.icon-bar
-    %a.navbar-brand{href: '/'}
-      Octoforce
-      .beta
-        beta
-  .collapse.navbar-collapse{id: "navbar-collapse-#{identifier}"}
-    = nav do
-      = link_to 'Sign out', destroy_user_session_path, method: :delete
+%nav.navbar.navbar-default
+  .container
+    .navbar-header
+      - identifier = rand(1000000000)
+      %button.navbar-toggle{'data-target': "#navbar-collapse-#{identifier}",'data-toggle': 'collapse', type: 'button'}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.navbar-brand{href: '/'}
+        Octoforce
+        .beta
+          beta
+    .collapse.navbar-collapse{id: "navbar-collapse-#{identifier}"}
+      %ul.navbar-nav.nav.navbar-right.small
+        %li{class: ('active' if request.path.match(edit_user_registration_path))}
+          = link_to 'Profile', edit_user_registration_path
+        %li
+          = link_to 'Sign out', destroy_user_session_path, method: :delete
+        - if current_user != true_user
+          = link_to 'Back to Admin', stop_impersonating_admin_users_path

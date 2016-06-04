@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   impersonates :user
 
-  before_filter :authenticate, :onboarding
+  before_filter :authenticate
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def authenticate
@@ -17,10 +17,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def onboarding
-    return if true_user != current_user
+  def onboarding options = {}, &block
     if current_user && current_user.onboarding_active
-      redirect_to :"welcome_step#{current_user.onboarding_step || 0}"
+      redirect_to :"welcome_step#{current_user.onboarding_step || 0}", options
+    elsif block
+      block.call options
     end
   end
 
@@ -43,6 +44,12 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def paging ar_relation, count, offset
+    count = count.to_i
+    offset = offset.to_i
+    [ar_relation.offset(offset).limit(count), count, offset + count]
+  end
+
   def init_intercom
     Intercom::Client.new(app_id: ENV["INTERCOM_APP_ID"], api_key: ENV["INTERCOM_API_KEY"])
   end
@@ -58,6 +65,15 @@ class ApplicationController < ActionController::Base
       path = "#{uri.path}?#{uri.query}"
     end
     redirect_to path, options
+  end
+
+  # execute a block with a different format (ex: an html partial while in an ajax request)
+  def with_format(format, &block)
+    old_formats = formats
+    self.formats = [format]
+    block.call
+    self.formats = old_formats
+    nil
   end
 
 end

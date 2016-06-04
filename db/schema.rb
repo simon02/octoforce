@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160503124327) do
+ActiveRecord::Schema.define(version: 20160512125223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,7 +70,23 @@ ActiveRecord::Schema.define(version: 20160503124327) do
     t.string   "color"
   end
 
+  add_index "categories", ["user_id", "name"], name: "index_categories_on_user_id_and_name", unique: true, using: :btree
   add_index "categories", ["user_id"], name: "index_categories_on_user_id", using: :btree
+
+  create_table "csvs", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+    t.integer  "processed",         default: 0
+    t.integer  "succeeded",         default: 0
+    t.boolean  "finished",          default: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
+
+  add_index "csvs", ["user_id"], name: "index_csvs_on_user_id", using: :btree
 
   create_table "feeds", force: :cascade do |t|
     t.integer  "category_id"
@@ -106,6 +122,25 @@ ActiveRecord::Schema.define(version: 20160503124327) do
   end
 
   add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
+
+  create_table "imported_updates", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "category_id"
+    t.integer  "identity_id"
+    t.string   "text"
+    t.integer  "likes",        default: 0
+    t.integer  "shares",       default: 0
+    t.integer  "comments",     default: 0
+    t.string   "media_url"
+    t.string   "author"
+    t.string   "original"
+    t.datetime "published_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "imported_updates", ["category_id"], name: "index_imported_updates_on_category_id", using: :btree
+  add_index "imported_updates", ["user_id"], name: "index_imported_updates_on_user_id", using: :btree
 
   create_table "links", force: :cascade do |t|
     t.integer  "post_id"
@@ -233,7 +268,7 @@ ActiveRecord::Schema.define(version: 20160503124327) do
     t.string   "timezone",                         default: "Europe/Brussels"
     t.integer  "onboarding_step",        limit: 2, default: 0
     t.boolean  "onboarding_active",                default: true
-    t.boolean  "shorten_links",                    default: true
+    t.boolean  "shorten_links",                    default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
@@ -244,9 +279,12 @@ ActiveRecord::Schema.define(version: 20160503124327) do
 
   add_foreign_key "assets", "users"
   add_foreign_key "categories", "users"
+  add_foreign_key "csvs", "users"
   add_foreign_key "feeds", "categories"
   add_foreign_key "feeds", "users"
   add_foreign_key "identities", "users"
+  add_foreign_key "imported_updates", "categories"
+  add_foreign_key "imported_updates", "users"
   add_foreign_key "posts", "assets"
   add_foreign_key "posts", "categories"
   add_foreign_key "posts", "users"

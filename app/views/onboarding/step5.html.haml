@@ -1,0 +1,26 @@
+- content_for :step_info, flush: true do
+  .tips-header.bg-info
+    .container
+      .row
+        .col-md-12
+          .dialog
+            = render partial: 'onboarding/progress', locals: { amount: 500/6, text: 'step 5 of 6'}
+            %h1
+              %strong Step 5:
+              = t 'onboarding.step5.title'
+            .actions.pull-right
+            .description
+              %p
+                In order to make the most out of Octoforce, you really need to fill up your library.
+              %p
+                I know, it's not the most exciting part. But to make it easier, you can find 2 new options below on the right. Both of those can save you a lot of time getting set up.
+              %p
+                If you are already keeping track of tweets in a spreadsheet (Excel, Google Drive...), good on you! You can quickly import all of them using the 'Import a CSV file' button. Head on over there for more information.
+              %p
+                If you have been active on Twitter for a while & you have been sending out some quality tweets before, you can import those into Octoforce. Click the 'Import from Twitter' button and Octoforce will look up your previous tweets. You can then categorize them & add them all in one fell swoop.
+
+            = link_to welcome_step3_path, class: 'small hidden-action' do
+              I like my library the way it is right now
+              %i.fa.fa-angle-right
+
+= render partial: 'library/add_content', locals: { categories: current_user.categories }

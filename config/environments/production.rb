@@ -1,5 +1,17 @@
 Rails.application.configure do
+  config.middleware.use Rack::Deflater
   # Settings specified here will take precedence over those in config/application.rb.
+
+  config.action_mailer.default_url_options = { :host => 'app.octoforce.com' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'in-v3.mailjet.com',
+    port:                 587,
+    user_name:            ENV['EMAIL_PROVIDER_USERNAME'],
+    password:             ENV['EMAIL_PROVIDER_PASSWORD'],
+    authentication:       'plain',
+    enable_starttls_auto: true
+  }
 
   # Code is not reloaded between requests.
   config.cache_classes = true

@@ -6,6 +6,7 @@ body.void {
   width: 500px;
   margin: auto;
   display: table;
+  background: $brand-primary;
   .login-wrapper {
     vertical-align: middle;
     display: table-cell;

@@ -1,0 +1,52 @@
+- content_for :step_info do
+  .tips-header.bg-info
+    .container
+      .row
+        .col-md-12
+          .dialog
+            .progress
+              .progress-bar.progress-bar-success.progress-bar-striped{style: 'width: 100%;', role: 'progressbar', aria: { valuenow: 100, min: 0, max: 100}}
+                step 6 of 6 - DONE
+            %h1
+              %strong Step 6:
+              = t 'onboarding.step6.title'
+            .actions.pull-right
+            .description
+              %p
+                %strong Congratulations are in order.
+              %p
+                You now know the basics of Octoforce & you are a huge step closer towards automating your social media presence.
+                There are of course quite a few things that we did not touch on.
+              %p
+                Below I list a number of actions you may want to look into deeper. You can also just use the menu up top.
+.container
+  .row
+    .col-md-12
+  .row
+    .col-md-12
+      %h1.page-title
+        Congratulations on completing this mini tour!
+      %h4.page-subtitle
+        Below are a number of links you may want to check out.
+      %hr/
+  .row
+    .col-md-10.col-md-offset-1
+      .m30
+        %h2 Check out your Scheduling Calendar
+        %p
+          Add extra timeslots in
+          = link_to "your scheduling calendar.", schedules_path
+          You should probably post multiple times per day, but you can start out slower if your library is still small.
+      .m30
+        %h2 Using RSS Feeds
+        %p
+          If you have your own blog, you definitely want to
+          = link_to 'add it to your feeds', feeds_path
+          so that new posts automatically are added to your library. You can also add any other feeds you find interesting.
+      .m30
+        %h2 Adding more Social Media Accounts
+        %p
+          You can
+          = link_to 'add extra social media profiles', identities_path
+          (currently only Twitter, but Facebook & LinkedIn are coming).
+

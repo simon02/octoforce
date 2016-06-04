@@ -1,5 +1,5 @@
 - updates.each do |update|
-  .panel-row.update
+  .scheduled-update.m20
     = render partial: 'analytics/update', locals: { update: update }
 - if updates.count == count
   - p = {count: count, offset: offset}

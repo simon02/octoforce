@@ -4,13 +4,14 @@
       %i{'class': "fa fa-#{update.identity.provider} #{update.identity.provider}"}
       %img{'src': update.identity.image}
     .account
-      = update.identity.name
-      %span.subtle= update.identity.subname
-    .timestamp
-      = link_to update.social_media_url, target: '_blank' do
+      %strong= update.identity.name
+      %span.text-muted= update.identity.subname
+    .timestamp.text-muted
+      = link_to update.social_media_url, target: '_blank', class: 'text-primary' do
         = timeago update.published_at
-      from
-      = link_to update.category.name, library_path(category: update.category)
+      - if update.category
+        from
+        = link_to update.category.name, library_path(category: update.category), class: 'text-primary'
   .body
     - if update.has_media?
       .pull-right{style: 'margin-left: 10px'}

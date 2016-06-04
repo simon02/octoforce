@@ -3,3 +3,4 @@ $("#schedule_#{@timeslot.schedule_id} #day_#{@timeslot.day}_block_#{@timeslot.of
 $("input[name='timeslot[offset]'").val('')
 $(".add-timeslot-form").addClass('hidden')
 $('.dialog-timeslot').modal('hide')
+$("#dialog_timeslot_#{@timeslot.schedule_id}").modal('hide')

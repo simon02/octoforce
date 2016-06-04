@@ -1,0 +1,41 @@
+/* a lot of the customisations are in _variables.scss */
+.navbar-header {
+  .navbar-brand, .navbar-brand:hover, .navbar-brand:focus {
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    position: relative;
+    .beta {
+      font-size: 14px;
+      color: #A3C1D6;
+      position: absolute;
+      top: 0;
+      right: 15px;
+      font-weight: 300;
+    }
+  }
+}
+@media (min-width: 768px) {
+  .navbar-header {
+    margin-right: 25px;
+  }
+  .nav li, .nav li.active {
+    padding: 10px 0;
+    a, a:focus, a:active, a:hover {
+      padding: 8px 12px;
+      line-height: 2rem;
+      margin: 0 4px;
+      @include border-radius(6px);
+    }
+  }
+}
+@media (max-width: 991px) {
+  .navbar-brand {
+    padding-right: 0 !important;
+  }
+  .nav li, .nav li.active {
+    a {
+      padding: 8px !important;
+    }
+  }
+}

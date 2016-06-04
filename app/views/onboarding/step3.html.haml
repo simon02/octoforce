@@ -1,43 +1,55 @@
 - content_for :step_info do
-  .row
-    .col-md-12
-      .dialog
-        - if @schedules.to_a.sum { |s| s.timeslots.count } == 0
-          %h1
-            %strong Step 3:
-            When Do You Want to Post?
-          .actions.pull-right
-          .description
-            %p
-              Tell us when you want to post what type of content.
-            %p
-              Do you want to tweet something from 'Quotes' every Monday at 10am? We got ya. Share something from 'Fun Stuff' every Friday around 5pm? Consider it done.
-            %p
-              Add your timeslots and we will run with it.
-          = link_to welcome_step4_path, class: 'small hidden-action' do
-            I'll do this later
-            %i.fa.fa-angle-right
-        - else
-          %h1
-            %strong Step 3:
-            Excellent Choice!
-          .actions.pull-right
-          .description
-            %p
-              That's starting to look like a schedule, but there is still plenty of empty space.
-            %p
-              Add in some more blanks to increase your engagement and to get a more consistent posting schedule.
-          .bottom
-            .pull-right
-              = link_to welcome_step4_path, class: 'btn btn-primary' do
-                Next Step: View Your Queue
-                %i.fa.fa-angle-double-right
-            %p
-              Think your schedule is looking good (enough for now)?
-            .clearfix
+  .tips-header.bg-info
+    .container
+      .row
+        .col-md-12
+          .dialog
+            .progress
+              .progress-bar.progress-bar-success.progress-bar-striped{style: 'width: 50%;', role: 'progressbar', aria: { valuenow: 50, min: 0, max: 100}}
+                step 3 of 6
+            %h1
+              %strong Step 3:
+              = t 'onboarding.step3.title'
+            .actions.pull-right
+            .description
+              %p
+                Your first post is currently sitting idle in your library, waiting in excitement to see the world. Make it work for you by scheduling it now.
+            = link_to welcome_step4_path, class: 'small hidden-action' do
+              I'll do this later
+              %i.fa.fa-angle-right
 
 .container
   .row
     .col-md-12
-      - @schedules.each do |schedule|
-        = render partial: 'schedules/schedule', locals: { schedule: schedule }
+      %h1.page-title
+        Choose Your Scheduling Time
+      %hr/
+  .row
+
+    .col-md-5.col-md-offset-1.center
+      %h2.m20
+        Quick & Easy
+      = form_for @slot, url: onboarding_schedule_post_path do |f|
+        = f.hidden_field :offset, value: calculate_local_time(Time.now + 15.minutes).strftime("%I:%M %P")
+        = f.hidden_field :day
+        = f.hidden_field :category_id
+        = f.hidden_field :schedule_id
+        = f.submit "Publish post in 15 minutes", class: 'btn btn-primary btn-lg', data: { disable_with: 'Scheduling...' }
+
+    .col-md-5
+      %h2.m20.center
+        Or choose a specific time
+      = form_for @slot, url: onboarding_schedule_post_path, html: { class: 'form-horizontal' } do |f|
+        = f.hidden_field :category_id
+        = f.hidden_field :schedule_id
+        .form-group
+          = f.label :day, class: 'col-sm-2 control-label'
+          .col-sm-10
+            = f.select :day, day_options, {}, { class: 'form-control' }
+        .form-group
+          = f.label :offset, 'Time', class: 'col-sm-2 control-label', required: 'required'
+          .col-sm-10
+            = f.text_field :offset, placeholder: "Type scheduling time, eg. 2:32pm or 14:32", class: 'form-control'
+        .form-group
+          .col-sm-10.col-sm-offset-2
+            = f.submit "Schedule that post", class: 'btn btn-primary', data: { disable_with: 'Scheduling...' }
