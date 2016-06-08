@@ -13,7 +13,7 @@ class Timeslot < ActiveRecord::Base
   end
 
   def schedule_next_update year, week
-    post = category.find_next_post
+    post = category.find_next_post(schedule.identity.provider)
     unless post
       return
     else

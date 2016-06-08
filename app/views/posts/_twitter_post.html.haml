@@ -1,0 +1,7 @@
+.text-muted.x-small.sm-banner.bg-twitter.text-center
+  %i.fa.fa-twitter
+- if post.has_media?
+  .pull-right.m10{style: 'margin-left: 10px'}
+    = link_to (image_tag post.media_url(:thumb)), post.media_url
+.large.m10
+  = raw auto_link show post.text

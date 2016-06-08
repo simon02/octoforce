@@ -1,6 +1,5 @@
 class PostsController < ApplicationController
   load_resource :category
-  skip_before_filter :onboarding, only: [:create]
 
   def new
   end
@@ -81,7 +80,21 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:text, :category_id, :asset_id, link_attributes: [:id, :url, :caption, :title, :description])
+    params.require(:post).permit(
+      :id,
+      :category_id,
+      :text,
+      :asset_id,
+      providers: [],
+      link_attributes: [
+        :id,
+        :url,
+        :caption,
+        :title,
+        :description,
+        :image_url
+      ]
+    )
   end
 
 end

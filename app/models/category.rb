@@ -29,8 +29,15 @@ class Category < ActiveRecord::Base
     posts.empty? ? 100 : posts.sorted.last.position
   end
 
-  def find_next_post
-    posts.sorted.first
+  def find_next_post provider
+    case provider
+    when Identity::TWITTER
+      posts.provider('twitter').sorted.first
+    when Identity::FACEBOOK_PROFILE, Identity::FACEBOOK_PAGE, Identity::FACEBOOK_GROUP
+      posts.provider('facebook').sorted.first
+    else
+      nil
+    end
   end
 
   def sorted_posts
@@ -84,7 +91,7 @@ class Category < ActiveRecord::Base
     else
       timeslots.each do |timeslot|
         scheduled_time = timeslot.calculate_scheduling_time_between start_time, end_time
-        timeslot.updates << find_next_post.schedule(scheduled_time, timeslot.schedule.identity) unless scheduled_time.nil?
+        timeslot.updates << find_next_post(timeslot.schedule.identity.provider).schedule(scheduled_time, timeslot.schedule.identity) unless scheduled_time.nil?
       end
     end
   end

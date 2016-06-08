@@ -6,7 +6,11 @@ class AjaxController < ApplicationController
     link ||= params[:link]
     # Could be prettier... and better
     link = "http://#{link}" unless link[/\Ahttps?:\/\//]
-    @resource = LinkThumbnailer.generate link, image_limit: 5
+    begin
+      @resource = LinkThumbnailer.generate link, image_limit: 5
+    rescue => e
+      render :no_content
+    end
   end
 
 end

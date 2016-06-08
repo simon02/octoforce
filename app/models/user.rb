@@ -23,6 +23,10 @@ class User < ActiveRecord::Base
     @bitly_client ||= Bitly.new(self.bitly_login, self.bitly_api_key)
   end
 
+  def providers
+    identities.pluck(:provider).map { |name| name.split('_').first }.uniq
+  end
+
   private
 
   def setup_user

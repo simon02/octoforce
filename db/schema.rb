@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512125223) do
+ActiveRecord::Schema.define(version: 20160607124618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(version: 20160512125223) do
     t.string   "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "image_url"
   end
 
   add_index "links", ["post_id"], name: "index_links_on_post_id", using: :btree
@@ -162,15 +163,15 @@ ActiveRecord::Schema.define(version: 20160512125223) do
   create_table "posts", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "category_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.datetime "last_scheduled"
     t.integer  "position"
     t.integer  "asset_id"
     t.string   "text"
+    t.string   "providers",      default: "--- []\n"
   end
 
-  add_index "posts", ["asset_id"], name: "index_posts_on_asset_id", using: :btree
   add_index "posts", ["category_id"], name: "index_posts_on_category_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
@@ -285,12 +286,10 @@ ActiveRecord::Schema.define(version: 20160512125223) do
   add_foreign_key "identities", "users"
   add_foreign_key "imported_updates", "categories"
   add_foreign_key "imported_updates", "users"
-  add_foreign_key "posts", "assets"
   add_foreign_key "posts", "categories"
   add_foreign_key "posts", "users"
   add_foreign_key "schedules", "identities"
   add_foreign_key "schedules", "users"
-  add_foreign_key "timeslots", "categories"
   add_foreign_key "timeslots", "schedules"
   add_foreign_key "updates", "assets"
   add_foreign_key "updates", "categories"

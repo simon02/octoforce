@@ -2,7 +2,7 @@
 %div{class: "#{update.category.name.gsub(' ','_').downcase}", id: "update_#{update.id}"}
   .header.m10
     .profile
-      %i{'class': "fa fa-#{update.identity.provider} #{update.identity.provider}"}
+      %i{'class': "fa fa-#{update.identity.provider} bg-#{update.identity.provider}"}
       %img{'src': update.identity.image}
     .time-ago
       = timeago calculate_local_time(update.scheduled_at)
@@ -16,6 +16,20 @@
         = link_to (image_tag update.media_url(:thumb)), update.media_url
     .text.large.m10
       = raw auto_link show update.text
+    - if update.link
+      .link-container.m10
+        .row
+          .col-md-3
+            .thumb
+              .image-container
+                = image_tag update.link.image_url
+          .col-md-9{style: 'padding: 10px 0'}
+            %p.m5.small
+              %strong= raw auto_link show update.link.title
+            %p.m10.small
+              = update.link.description
+            %p.m0.text-muted.x-small.text-uppercase
+              = link_to update.link.caption, update.link.url
     .bottom
       .category-badge
         .color-code{style: "background-color: ##{update.category.color};"}

@@ -1,29 +1,30 @@
-- cache ["v1", post, post.asset] do
+- cache ["v1", post] do
   .body
+    %p.text-muted.small.provider-icons
+      - post.providers.each do |provider|
+        %i.text-center.fa{class: "fa-#{provider} bg-#{provider}", style: 'width: 20px; line-height: 20px'}
     - if post.has_media?
-      .pull-right.m10{style: 'margin-left: 10px'}
+      .pull-right{style: 'margin-left: 10px'}
         = link_to (image_tag post.media_url(:thumb)), post.media_url
-    .large.m10
+    .text.large.m15
       = raw auto_link show post.text
+    - if post.link
+      .link-container.m15
+        .row
+          .col-md-12
+            %p.x-small.text-uppercase.text-muted.text-center
+              %i.fa.fa-facebook.color-facebook
+              facebook specific link content
+          .col-md-3
+            = image_tag post.link.image_url, style: 'max-width: 100%', class: 'm10'
+          .col-md-9
+            %p.m5.small
+              %strong= raw auto_link show post.link.title
+            %p.m10.small
+              = post.link.description
+            %p.m10.text-muted.x-small.text-uppercase
+              = link_to post.link.caption, post.link.url
     .clearfix
-  - if post.link
-    .row.with-preview
-      - if post.has_media?
-        .col-xs-4
-          .thumb
-        .col-xs-8
-      - else
-        .col-xs-12
-          %p.text-muted.x-small.m5
-            %i.fa.fa-facebook.color-facebook
-            only for facebook
-          %p.m5{style: 'margin-top: 0'}
-            = post.link.title
-          %p.text-muted.x-small.m5
-            = post.link.url.to_s
-          %p.small.m0
-            = post.link.description
-      .clearfix
   .footer
     - if !(preview ||= false)
       %span.pull-left.x-small

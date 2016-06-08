@@ -2,29 +2,39 @@
 = form_for post, multipart: true, html: { class: 'jquery-upload-form post-edit' } do |f|
   = hidden_field_tag :redirect
   = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
-  - if select_category ||= false
-    .form-group
-      = f.label :category_id do
-        Choose a category:
-      = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }, post.category_id), {}, class: 'form-control pull-left', style: "width: calc(100% - 130px)"
-      = link_to 'add category', '#!', class: 'btn btn-default form-control pull-left', style: "width: 120px; margin-left: 10px"
-      .clearfix
-  - else
-    = f.hidden_field :category_id
+  .form-group
+    = f.label :category_id do
+      Choose a category:
+    = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }, post.category_id), {}, class: 'form-control pull-left', style: "width: calc(100% - 130px)"
+    = link_to 'add category', '#!', class: 'btn btn-default form-control pull-left', id: 'add_content', style: "width: 120px; margin-left: 10px"
+    .clearfix
+  .form-group
+    - if post.potential_providers.count > 1
+      .btn-group{data: {toggle: 'buttons'}}
+        - post.potential_providers.each do |provider|
+          = label_tag '', class: "btn btn-default #{'active' if provider.in? post.providers}" do
+            = check_box_tag "post[providers][]", provider, provider.in?(post.providers), class: "publish-on-#{provider}"
+            = "use on #{provider}"
+    - else
+      = hidden_field_tag 'post[providers][]', post.potential_providers.join(',')
   .form-group
     .pull-right.can-hide
-      %span.subtle.small
+      %span.subtle.small#twitter_text_counter
         twitter text limit:
         %span.twitter-counter{id: "text_counter_#{post.id}"}
           140
     = f.label :text, "Text", class: 'can-hide'
     = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter link-extractor text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
   .form-group
-    #link_extraction.hide.with-preview
-      .text-center
-        %p
-          loading link content...
-        %i.fa.fa-spinner.fa-pulse.fa-3x
+    - if post.link
+      #link_extraction.with-preview.has-result
+        = render partial: 'posts/link_extraction', locals: { link: post.link }
+    - else
+      #link_extraction.hide.with-preview
+        .text-center
+          %p
+            loading link content...
+          %i.fa.fa-spinner.fa-pulse.fa-3x
   .form-group
     .assets#assets
       - if post.has_media?
@@ -43,10 +53,50 @@
         = submit_tag 'Update this Post', class: 'btn btn-primary pull-right', data: { disable_with: 'Updating...' }
     .clearfix
 
-- content_for :javascripts do
+
+.modal.fade#add_content_panel{tabindex: 1, role: 'dialog', 'aria-hidden': "true", 'data-show': 'false'}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
+          %span{'aria-hidden': true}
+            &times;
+        .modal-title.large
+          Add a New Category
+      .modal-body
+        = form_for Category.new, html: { class: 'form-horizontal' } do |f|
+          = hidden_field_tag :redirect
+          .form-group
+            = f.label :name, class: 'col-sm-2 control-label'
+            .col-sm-10
+              = f.text_field :name, class: 'form-control'
+          .form-group
+            .col-sm-10.col-sm-offset-2
+              = f.submit "Add Category", class: 'btn btn-primary', data: { disable_with: 'Adding...' }
+
+/ can we pretty this beast up?
+/ Problem is that content_for does not register when loading this page async
+/ While $ is not available if we just include the javascript if this partial is not loaded async...
+- if post.new_record?
+  - content_for :javascripts do
+    :javascript
+      $(function() {
+        initOnPageLoad();
+        $('input[id="redirect"]').val(location.href);
+        $('#add_content').click(function() {
+          $('#add_content_panel').modal('show');
+          $('#category_name').focus();
+        });
+        checkProviderFunctions();
+      });
+- else
   :javascript
     $(function() {
       initOnPageLoad();
-      $('.twitter-text-counter').trigger('keyup');
-      $('.post-edit #redirect').val(location.href);
+      $('input[id="redirect"]').val(location.href);
+      $('#add_content').click(function() {
+        $('#add_content_panel').modal('show');
+        $('#category_name').focus();
+      });
+      checkProviderFunctions();
     });

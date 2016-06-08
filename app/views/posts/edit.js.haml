@@ -1,1 +1,1 @@
-$("#modal_holder").html("#{ j render(layout: 'shared/modal', partial: 'posts/form', locals: { post: @post, categories: @categories, select_category: true }) }").find('.modal').modal('show');
+$("#modal_holder").html("#{ j render(layout: 'shared/modal', partial: 'posts/form', locals: { post: @post, categories: @categories, select_category: true }) }").find('.modal:first-child').modal('show');
