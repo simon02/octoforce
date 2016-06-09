@@ -7,8 +7,11 @@
       .form-group
         = f.label :category_id do
           Choose a category:
-        = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }, post.category_id), {}, class: 'form-control pull-left', style: "width: calc(100% - 130px)"
-        = link_to 'add category', '#!', class: 'btn btn-default form-control pull-left', style: "width: 120px; margin-left: 10px"
+        - if post.new_record?
+          = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }, post.category_id), {}, class: 'form-control pull-left', style: "width: calc(100% - 130px)"
+          = link_to 'add category', '#!', class: 'btn btn-default form-control pull-left', id: 'add_category', style: "width: 120px; margin-left: 10px"
+        - else
+          = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }, post.category_id), {}, class: 'form-control'
         .clearfix
     - else
       = f.hidden_field :category_id
@@ -38,9 +41,49 @@
           = submit_tag 'Update this Post', class: 'btn btn-primary pull-right', data: { disable_with: 'Updating...' }
       .clearfix
 
-:javascript
-  $(function() {
-    initOnPageLoad();
-    $('.twitter-text-counter').trigger('keyup');
-    $('.post-edit #redirect').val(location.href);
-  });
+.modal.fade#add_category_panel{tabindex: 1, role: 'dialog', 'aria-hidden': "true", 'data-show': 'false'}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{type: 'button', 'aria-label': 'Close', 'data-dismiss': 'modal'}
+          %span{'aria-hidden': true}
+            &times;
+        .modal-title.large
+          Add a New Category
+      .modal-body
+        = form_for Category.new, html: { class: 'form-horizontal' } do |f|
+          = hidden_field_tag :redirect
+          .form-group
+            = f.label :name, class: 'col-sm-2 control-label'
+            .col-sm-10
+              = f.text_field :name, class: 'form-control'
+          .form-group
+            .col-sm-10.col-sm-offset-2
+              = f.submit "Add Category", class: 'btn btn-primary', data: { disable_with: 'Adding...' }
+
+/ can we pretty this beast up?
+/ Problem is that content_for does not register when loading this page async
+/ While $ is not available if we just include the javascript if this partial is not loaded async...
+- if post.new_record?
+  - content_for :javascripts do
+    :javascript
+      $(function() {
+        initOnPageLoad();
+        $('.twitter-text-counter').trigger('keyup');
+        $('input[id="redirect"]').val(location.href)
+        $('#add_category').click(function() {
+          $('#add_category_panel').modal('show');
+          $('#category_name').focus();
+        });
+      });
+- else
+  :javascript
+    $(function() {
+      initOnPageLoad();
+      $('.twitter-text-counter').trigger('keyup');
+      $('input[id="redirect"]').val(location.href)
+      $('#add_category').click(function() {
+        $('#add_category_panel').modal('show');
+        $('#category_name').focus();
+      });
+    });
