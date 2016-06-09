@@ -1,4 +1,5 @@
 - cache ["v1", post, post.asset] do
+  .color-code{style: "background: #{lighten_color post.category.color, 0}"}
   .body
     - if post.has_media?
       .pull-right.m10{style: 'margin-left: 10px'}
@@ -7,23 +8,16 @@
       = raw auto_link show post.text
     .clearfix
   .footer
+    .category-badge
+      .name= post.category.name
     - if !(preview ||= false)
-      %span.pull-left.x-small
-        = link_to post_path(post), { method: "delete", remote: true, class: 'text-muted' } do
-          %i.fa.fa-trash
+      %span.pull-right.small.actions
+        = link_to post_path(post), { method: "delete", remote: true, class: 'text-muted action' } do
           delete
         = " | "
-        = link_to edit_post_path(post), remote: true, data: { disable_with: 'loading...' }, class: 'text-muted' do
-          %i.fa.fa-pencil
+        = link_to edit_post_path(post), remote: true, data: { disable_with: 'loading...' }, class: 'text-muted action' do
           edit
-        = ' | '
-        = link_to category_path(post.category), class: 'text-muted' do
-          %i.fa.fa-sort
+        = " | "
+        = link_to category_path(post.category), class: 'text-muted action' do
           reorder category
-      .pull-right.x-small.text-muted
-        %span
-          added to
-          = post.category.name
-          %abbr{title: "#{calculate_local_time(post.created_at).strftime("%l:%M %P - %d/%m/%y")}", data: {toggle: 'tooltip'}}
-            = timeago post.created_at
       .clearfix

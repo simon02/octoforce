@@ -1,6 +1,7 @@
 / # - cache ["v1", update, update.identity, update.category] do
 %div{class: "#{update.category.name.gsub(' ','_').downcase}", id: "update_#{update.id}"}
-  .header.m10
+  .color-code{style: "background: #{lighten_color update.category.color, 0}"}
+  .header.m15
     .profile
       %i{'class': "fa fa-#{update.identity.provider} #{update.identity.provider}"}
       %img{'src': update.identity.image}
@@ -8,26 +9,25 @@
       = timeago calculate_local_time(update.scheduled_at)
     .account
       %strong= update.identity.name
-      %span.text-muted= update.identity.subname
-    .timestamp.text-muted= calculate_local_time(update.scheduled_at).strftime("%l:%M %P - %d/%m/%y")
-  .body.m10
+      %span.text-muted.text-light= update.identity.subname
+    .timestamp.text-muted
+      %i.fa.fa-clock-o
+      = calculate_local_time(update.scheduled_at).strftime("%l:%M %P - %d/%m/%y")
+  .body.m15
     - if update.has_media?
       .pull-right{style: 'margin-left: 10px'}
         = link_to (image_tag update.media_url(:thumb)), update.media_url
-    .text.large.m10
+    .text.large
       = raw auto_link show update.text
-    .bottom
-      .category-badge
-        .color-code{style: "background-color: ##{update.category.color};"}
-        .name= update.category.name
     .clearfix
   .footer
-    .pull-left.x-small
-      = link_to skip_update_path(update), method: 'POST', class: 'text-muted' do
-        %i.fa.fa-forward
+    .category-badge
+      .name
+        = update.category.name
+    .pull-right.small.actions
+      = link_to skip_update_path(update), method: 'POST', class: 'text-muted action' do
         skip
       = ' | '
-      = link_to category_path(update.category), class: 'text-muted' do
-        %i.fa.fa-sort
+      = link_to category_path(update.category), class: 'text-muted action' do
         reorder category
     .clearfix
