@@ -70,7 +70,8 @@
       $(function() {
         initOnPageLoad();
         $('.twitter-text-counter').trigger('keyup');
-        $('input[id="redirect"]').val(location.href)
+        if ($('input[id="redirect"]').val() == '')
+          $('input[id="redirect"]').val(location.href)
         $('#add_category').click(function() {
           $('#add_category_panel').modal('show');
           $('#category_name').focus();
@@ -81,7 +82,8 @@
     $(function() {
       initOnPageLoad();
       $('.twitter-text-counter').trigger('keyup');
-      $('input[id="redirect"]').val(location.href)
+      if ($('input[id="redirect"]').val() == '')
+        $('input[id="redirect"]').val(location.href)
       $('#add_category').click(function() {
         $('#add_category_panel').modal('show');
         $('#category_name').focus();
