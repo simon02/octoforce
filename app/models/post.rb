@@ -1,12 +1,9 @@
 class Post < ActiveRecord::Base
   include Filterable
-  serialize :providers, Array
   belongs_to :user, touch: true
   belongs_to :category, touch: true
-  belongs_to :asset
   has_many :updates, dependent: :nullify
-  has_one :link
-  accepts_nested_attributes_for :link
+  has_many :social_media_posts, dependent: :destroy
   before_destroy :teardown, prepend: true
   before_save :check_position
   scope :sorted, -> { order(:position) }
@@ -27,22 +24,6 @@ class Post < ActiveRecord::Base
     # asset.media.url options
   end
 
-  def schedule at, identity
-    u = Update.new \
-      text: text,
-      asset: asset,
-      scheduled_at: at,
-      user: user,
-      category: category,
-      identity: identity
-    if identity.provider.in? [Identity::FACEBOOK_PROFILE, Identity::FACEBOOK_PAGE, Identity::FACEBOOK_GROUP]
-      u.link = link
-    end
-    updates << u
-    move_to_back
-    u
-  end
-
   def move_to_front
     category.move_to_front self
   end
@@ -51,8 +32,12 @@ class Post < ActiveRecord::Base
     category.move_to_back self
   end
 
-  def potential_providers
-    %w{twitter facebook}
+  def link
+    social_media_posts.map(&:link).first
+  end
+
+  def identity_ids
+    social_media_posts.map(&:identity_id)
   end
 
   private

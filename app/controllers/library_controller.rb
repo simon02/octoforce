@@ -4,7 +4,7 @@ class LibraryController < ApplicationController
 
   def add_content
     @categories = current_user.categories.includes(:posts)
-    @post = Post.new providers: current_user.providers
+    @post = Post.new
   end
 
   def index

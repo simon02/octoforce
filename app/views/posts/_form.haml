@@ -1,29 +1,30 @@
-- post ||= Post.new
+/ - post ||= Post.new
 = form_for post, multipart: true, html: { class: 'jquery-upload-form post-edit' } do |f|
   = hidden_field_tag :redirect
   = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
   .form-group
+    %div
+      = f.label 'nil' do
+        Select accounts:
+    = collection_check_boxes(:post, :identity_ids, identities, :id, :subname) do |b|
+      = b.label do
+        = image_tag b.object.image
+        %i.fa{class: "fa-#{b.object.provider}"}
+        = b.check_box + b.text
+  .form-group
     = f.label :category_id do
       Choose a category:
-    = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }, post.category_id), {}, class: 'form-control pull-left', style: "width: calc(100% - 130px)"
+    = collection_select :post, :category_id, categories, :id, :name_with_number, {prompt: ''}, class: 'form-control pull-left', style: 'width: calc(100% - 130px)', required: 'required'
     = link_to 'add category', '#!', class: 'btn btn-default form-control pull-left', id: 'add_content', style: "width: 120px; margin-left: 10px"
     .clearfix
-  .form-group
-    - if post.potential_providers.count > 1
-      .btn-group{data: {toggle: 'buttons'}}
-        - post.potential_providers.each do |provider|
-          = label_tag '', class: "btn btn-default #{'active' if provider.in? post.providers}" do
-            = check_box_tag "post[providers][]", provider, provider.in?(post.providers), class: "publish-on-#{provider}"
-            = "use on #{provider}"
-    - else
-      = hidden_field_tag 'post[providers][]', post.potential_providers.join(',')
   .form-group
     .pull-right.can-hide
       %span.subtle.small#twitter_text_counter
         twitter text limit:
         %span.twitter-counter{id: "text_counter_#{post.id}"}
           140
-    = f.label :text, "Text", class: 'can-hide'
+    = f.label :text do
+      Text:
     = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter link-extractor text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
   .form-group
     - if post.link
