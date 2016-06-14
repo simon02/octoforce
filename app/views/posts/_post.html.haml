@@ -1,8 +1,10 @@
 - cache ["v1", post] do
   .body
-    %p.text-muted.small.provider-icons
-      - post.providers.each do |provider|
-        %i.text-center.fa{class: "fa-#{provider} bg-#{provider}", style: 'width: 20px; line-height: 20px'}
+    %p.text-muted.x-small.m0
+      - post.social_media_posts.each do |smp|
+        %i.text-center.fa{class: "fa-#{smp.identity.provider}-square color-#{smp.identity.provider}"}
+        = smp.identity.subname
+    %hr{style: 'margin: 5px 0 12px'}/
     - if post.has_media?
       .pull-right{style: 'margin-left: 10px'}
         = link_to (image_tag post.media_url(:thumb)), post.media_url
@@ -11,19 +13,15 @@
     - if post.link
       .link-container.m15
         .row
-          .col-md-12
-            %p.x-small.text-uppercase.text-muted.text-center
-              %i.fa.fa-facebook.color-facebook
-              facebook specific link content
-          .col-md-3
+          .col-md-2
             = image_tag post.link.image_url, style: 'max-width: 100%', class: 'm10'
-          .col-md-9
+          .col-md-10
             %p.m5.small
               %strong= raw auto_link show post.link.title
-            %p.m10.small
+            %p.m5.x-small.text-muted
               = post.link.description
-            %p.m10.text-muted.x-small.text-uppercase
-              = link_to post.link.caption, post.link.url
+            %p.m0.text-muted.x-small.text-uppercase
+              = link_to post.link.caption, post.link.url, class: 'text-muted'
     .clearfix
   .footer
     - if !(preview ||= false)
@@ -32,7 +30,7 @@
           %i.fa.fa-trash
           delete
         = " | "
-        = link_to edit_post_path(post), remote: true, data: { disable_with: 'loading...' }, class: 'text-muted' do
+        = link_to edit_post_path(post), data: { disable_with: 'loading...' }, class: 'text-muted' do
           %i.fa.fa-pencil
           edit
         = ' | '

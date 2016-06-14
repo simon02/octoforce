@@ -143,7 +143,6 @@ ActiveRecord::Schema.define(version: 20160610092553) do
   add_index "imported_updates", ["user_id"], name: "index_imported_updates_on_user_id", using: :btree
 
   create_table "links", force: :cascade do |t|
-    t.integer  "post_id"
     t.string   "url"
     t.string   "title"
     t.string   "caption"
@@ -153,8 +152,6 @@ ActiveRecord::Schema.define(version: 20160610092553) do
     t.string   "image_url"
   end
 
-  add_index "links", ["post_id"], name: "index_links_on_post_id", using: :btree
-
   create_table "onboardings", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -163,12 +160,11 @@ ActiveRecord::Schema.define(version: 20160610092553) do
   create_table "posts", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "category_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.datetime "last_scheduled"
-    t.integer  "position"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "asset_id"
     t.string   "text"
+    t.integer  "link_id"
   end
 
   add_index "posts", ["category_id"], name: "index_posts_on_category_id", using: :btree
@@ -204,9 +200,6 @@ ActiveRecord::Schema.define(version: 20160610092553) do
   create_table "social_media_posts", force: :cascade do |t|
     t.integer  "post_id"
     t.integer  "identity_id"
-    t.integer  "asset_id"
-    t.integer  "link_id"
-    t.text     "text"
     t.integer  "position"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false

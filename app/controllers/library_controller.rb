@@ -5,6 +5,7 @@ class LibraryController < ApplicationController
   def add_content
     @categories = current_user.categories.includes(:posts)
     @post = Post.new
+    current_user.identities.each { |identity| @post.social_media_posts.build identity: identity }
   end
 
   def index

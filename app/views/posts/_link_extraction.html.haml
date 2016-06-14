@@ -2,6 +2,7 @@
   %button.close{type: 'button', aria: { label: 'close' } }
     %span{aria: {hidden: 'true'}} &times;
   .col-xs-12
+    = hidden_field_tag "post[link_attributes[image_url]]", link.id
     %p.text-muted.x-small.m5.text-uppercase
       %i.fa.fa-facebook.color-facebook
       edit your facebook specific link content below:

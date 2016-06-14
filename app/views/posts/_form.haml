@@ -5,12 +5,19 @@
   .form-group
     %div
       = f.label 'nil' do
-        Select accounts:
-    = collection_check_boxes(:post, :identity_ids, identities, :id, :subname) do |b|
-      = b.label do
-        = image_tag b.object.image
-        %i.fa{class: "fa-#{b.object.provider}"}
-        = b.check_box + b.text
+        = "Select accounts:"
+    / # = f.fields_for :social_media_posts do |builder|
+    - all_identities.each_with_index do |identity, index|
+      - social_media_post = post.social_media_posts.find { |post| post.identity_id == identity.id }
+      .account-picker-item.includes-provider-logo{data: {toggle: 'tooltip', title: "#{identity.subname}"}}
+        - if social_media_post
+          = hidden_field_tag "post[social_media_posts_attributes][#{index}][id]", social_media_post.id
+        = hidden_field_tag "post[social_media_posts_attributes][#{index}][identity_id]", identity.id
+        = check_box_tag "post[social_media_posts_attributes][#{index}][_destroy]", 1, !social_media_post
+        = label_tag "post[social_media_posts_attributes][#{index}][_destroy]", class: 'm0' do
+          = image_tag identity.image
+          %i.fa{class: "fa-#{identity.provider} bg-#{identity.provider} provider-logo-br logo-square logo-radius text-center"}
+
   .form-group
     = f.label :category_id do
       Choose a category:

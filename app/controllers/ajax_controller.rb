@@ -9,6 +9,8 @@ class AjaxController < ApplicationController
     begin
       @resource = LinkThumbnailer.generate link, image_limit: 5
     rescue => e
+      puts "Error during processing: #{$!}"
+      puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
       render :no_content
     end
   end

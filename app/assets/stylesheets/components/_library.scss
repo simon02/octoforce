@@ -1,3 +1,65 @@
+.includes-provider-logo {
+  position: relative;
+  .provider-logo-br {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+  .logo-square {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+  }
+  .logo-radius {
+    @include border-radius(3px);
+  }
+}
+
+.fa-facebook_page {
+  @extend .fa-flag;
+  @extend .bg-facebook;
+  font-size: 90%;
+}
+.fa-facebook_page-square {
+  @extend .fa-facebook_page;
+  @include border-radius(3px);
+}
+
+.fa-facebook_group {
+  @extend .fa-users;
+  @extend .bg-facebook;
+  font-size: 80%;
+}
+.fa-facebook_group-square {
+  @extend .fa-facebook_group;
+  @include border-radius(3px);
+}
+
+.account-picker-item {
+  display: inline-block;
+  margin-right: 10px;
+  input[type='checkbox'] {
+    display: none;
+  }
+  img {
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    @include border-radius(3px);
+  }
+  label {
+    @include grayscale(0);
+    @include opacity(1);
+  }
+  input[type='checkbox']:checked+label {
+    @include grayscale(1);
+    @include opacity(0.5);
+    &:hover {
+      @include opacity(0.75);
+    }
+  }
+}
+
 .scheduled-update {
   border: 1px solid #ddd;
   padding: 15px;
@@ -61,6 +123,7 @@
   }
   .link-container {
     border: 1px solid #f0f0f0;
+    padding: 5px;
   }
   .footer {
     background: #fafafa;

@@ -19,7 +19,7 @@ class SchedulingFacade
       asset: social_media_post.asset,
       post: social_media_post.post,
       link: social_media_post.link,
-      identity: ?,
+      identity: social_media_post.identity,
       text: social_media_post.text,
       scheduled_at: at
   end
