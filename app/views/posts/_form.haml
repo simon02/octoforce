@@ -1,6 +1,5 @@
-/ - post ||= Post.new
 = form_for post, multipart: true, html: { class: 'jquery-upload-form post-edit' } do |f|
-  = hidden_field_tag :redirect
+  = hidden_field_tag :redirect, redirect ||= ''
   = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
   .form-group
     %div

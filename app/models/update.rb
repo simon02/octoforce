@@ -25,8 +25,12 @@ class Update < ActiveRecord::Base
   end
 
   def unschedule
-    post.move_to_front
+    post.move_to_front identity
     self.destroy
+  end
+
+  def category_color
+    category ? category.color : '757575'
   end
 
   def social_media_url

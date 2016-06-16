@@ -24,7 +24,7 @@ class SocialMediaPublisher
     end
   end
 
-  def published_update update, response
+  def self.published_update update, response
     update.published = true
     update.published_at = Time.zone.now
     update.response_id = response

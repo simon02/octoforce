@@ -11,21 +11,15 @@ class Category < ActiveRecord::Base
     category.color ||= @generator.create_hex
   end
 
-  def move_to_front post
-    post.update position: (self.first_position - 1)
-  end
-
-  def move_to_back post
-    post.update position: (self.last_position + 1)
-  end
-
   def first_position
     first = social_media_posts.sorted.first
     first ? first.position : 100
   end
 
   def last_position
-    social_media_posts.empty? ? 100 : social_media_posts.sorted.last.position
+    social_media_posts.empty? ?
+      100 :
+      social_media_posts.sorted.last.position || 100
   end
 
   def find_next_post identity

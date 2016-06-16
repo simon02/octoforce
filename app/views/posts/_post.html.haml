@@ -1,10 +1,9 @@
-- cache ["v1", post] do
+- cache ["v1", post, post.asset] do
+  .color-code{style: "background: #{lighten_color post.category.color, 0.15}"}
   .body
-    %p.text-muted.x-small.m0
+    %p.text-muted.x-small.m15.provider-icons
       - post.social_media_posts.each do |smp|
-        %i.text-center.fa{class: "fa-#{smp.identity.provider}-square color-#{smp.identity.provider}"}
-        = smp.identity.subname
-    %hr{style: 'margin: 5px 0 12px'}/
+        = image_tag smp.identity.image, class: 'provider-icon', data: { toggle: 'tooltip', title: "#{smp.identity.subname} - #{smp.identity.provider}"}
     - if post.has_media?
       .pull-right{style: 'margin-left: 10px'}
         = link_to (image_tag post.media_url(:thumb)), post.media_url
@@ -24,23 +23,13 @@
               = link_to post.link.caption, post.link.url, class: 'text-muted'
     .clearfix
   .footer
+    .category-badge
+      .name= post.category.name
     - if !(preview ||= false)
-      %span.pull-left.x-small
-        = link_to post_path(post), { method: "delete", remote: true, class: 'text-muted' } do
-          %i.fa.fa-trash
+      %span.pull-right.small.actions
+        = link_to post_path(post), { method: "delete", remote: true, class: 'text-muted action' } do
           delete
         = " | "
-        = link_to edit_post_path(post), data: { disable_with: 'loading...' }, class: 'text-muted' do
-          %i.fa.fa-pencil
+        = link_to edit_post_path(post), data: { disable_with: 'loading...' }, class: 'text-muted action' do
           edit
-        = ' | '
-        = link_to category_path(post.category), class: 'text-muted' do
-          %i.fa.fa-sort
-          reorder category
-      .pull-right.x-small.text-muted
-        %span
-          added to
-          = post.category.name
-          %abbr{title: "#{calculate_local_time(post.created_at).strftime("%l:%M %P - %d/%m/%y")}", data: {toggle: 'tooltip'}}
-            = timeago post.created_at
       .clearfix

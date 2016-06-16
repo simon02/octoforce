@@ -24,12 +24,14 @@ class Post < ActiveRecord::Base
     # asset.media.url options
   end
 
-  def move_to_front
-    category.move_to_front self
+  def move_to_front identity
+    smp = social_media_posts.identity(identity.id)
+    smp.move_to_front if smp
   end
 
-  def move_to_back
-    category.move_to_back self
+  def move_to_back identity
+    smp = social_media_posts.identity(identity.id)
+    smp.move_to_back if smp
   end
 
   private

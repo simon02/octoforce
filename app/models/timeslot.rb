@@ -1,6 +1,7 @@
 class Timeslot < ActiveRecord::Base
   belongs_to :category
   belongs_to :schedule
+  has_one :user, through: :schedule
   has_many :updates, dependent: :nullify
   validates_presence_of :day, :offset
 
@@ -12,41 +13,20 @@ class Timeslot < ActiveRecord::Base
     create params
   end
 
-  def schedule_next_update year, week
-    post = category.find_next_post(schedule.identity.provider)
-    unless post
-      return
-    else
-      puts "Could not find the post :o"
-    end
-    self.updates << post.schedule(calculate_scheduling_time(year, week), schedule.identity)
-  end
-
   # calculate schedule time based on given week + own weekday and time
   #
   # Result is a timestamp in UTC time based on user timezone!
   def calculate_scheduling_time year, week
-    begin
-      date = Date.commercial(year, week, day == 0 ? 7 : day)
-    rescue ArgumentError
-      date = Date.commercial(year + 1, 0, day == 0 ? 7 : day)
-    end
     hours = offset / 60
     minutes = offset % 60
-    datetime = date.to_datetime + hours.hours + minutes.minutes
+    datetime = calculate_date_commercial(year, week, self.day).to_datetime + hours.hours + minutes.minutes
     schedule.user.tzinfo.local_to_utc(datetime)
   end
 
-  # Warning: make sure the times given are in UTC
-  #
-  # The returned timestamp is also in UTC
-  def calculate_scheduling_time_between start_time, end_time
-    week_nr = calculate_week_number start_time
-    scheduled_time = calculate_scheduling_time(start_time.year, week_nr)
-    if scheduled_time < start_time
-      scheduled_time = calculate_scheduling_time(start_time.year, week_nr + 1)
-    end
-    return (scheduled_time <= end_time) ? scheduled_time : nil
+  def calculate_scheduling_time_after time
+    time = user.tzinfo.utc_to_local time
+    date = calculate_scheduling_time time.year, calculate_week_number(time)
+    return (date < time) ? date + 1.week : date
   end
 
   protected
@@ -58,6 +38,14 @@ class Timeslot < ActiveRecord::Base
   def calculate_day_number date
     # sunday should be the 7th day!
     (date.wday - 1) % 7
+  end
+
+  def calculate_date_commercial year, week, day
+    begin
+      Date.commercial(year, week, day == 0 ? 7 : day)
+    rescue ArgumentError
+      Date.commercial(year + 1, 0, day == 0 ? 7 : day)
+    end
   end
 
 end

@@ -1,6 +1,6 @@
 class FacebookPublisher
 
-  def publish_to_facebook target, update, client
+  def self.publish_to_facebook target, update, client
     if !update.link.nil?
       feed = 'feed'
       params = { message: update.text, link: update.link.url, caption: update.link.caption, description: update.link.description, name: update.link.title }
