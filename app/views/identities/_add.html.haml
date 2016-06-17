@@ -1,25 +1,31 @@
-.row
-  .col-md-12.m30
-    %h4
-      Connect another Social Media Account
-  .col-sm-4.m20{style: 'text-align: center'}
-    %i.fa.fa-4x.fa-twitter.color-twitter
-    %br
-    %br
-    - if @identities.filter_by_provider('twitter').count > 0
-      = link_to 'connect twitter account', omniauth_authorize_path('user', 'twitter', force_login: true), class: 'btn btn-twitter'
-    - else
-      = link_to 'connect twitter account', omniauth_authorize_path('user', 'twitter'), class: 'btn btn-twitter'
-  .col-sm-4.m20{style: 'text-align: center'}
-    %i.fa.fa-4x.fa-facebook.color-facebook
-    %br
-    %br
-    %div{'data-toggle': 'tooltip', title: 'not supported yet', style: 'display: inline-block'}
-      = link_to 'connect facebook account', omniauth_authorize_path('user', 'facebook'), class: 'btn btn-facebook disabled'
-  .col-sm-4.m20{style: 'text-align: center'}
-    %i.fa.fa-4x.fa-linkedin.color-linkedin
-    %br
-    %br
-    %div{'data-toggle': 'tooltip', title: 'not supported yet', style: 'display: inline-block'}
-      = link_to 'connect linkedin account', '', class: 'btn btn-linkedin disabled'
-
+.panel
+  %a{name: "add-new"}
+  .panel-heading
+    .title
+      Connect a social network
+    .subtitle
+      Share to unlimited social networks with Octoforce and we'll make sure the updates keep flowing. Each social network you connect, gets their own schedule.
+  .panel-body.padded
+    .row
+      .col-md-4{style: 'text-align: center'}
+        %i.fa.fa-4x.fa-twitter.color-twitter
+        %br
+        %br
+        - if @identities.filter_by_provider('twitter').count > 0
+          = link_to 'connect twitter account', omniauth_authorize_path('user', 'twitter', force_login: true), class: 'btn btn-twitter'
+        - else
+          = link_to 'connect twitter account', omniauth_authorize_path('user', 'twitter'), class: 'btn btn-twitter'
+      .col-md-4{style: 'text-align: center'}
+        %i.fa.fa-4x.fa-facebook.color-facebook
+        %br
+        %br
+        %div
+          .m5= link_to 'connect facebook profile', omniauth_authorize_path('user', 'facebook'), class: 'btn btn-facebook'
+          .m5= link_to 'connect facebook pages', omniauth_authorize_path('user', 'facebook_page'), class: 'btn btn-facebook'
+          .m5= link_to 'connect facebook groups', omniauth_authorize_path('user', 'facebook_group'), class: 'btn btn-facebook'
+      .col-md-4{style: 'text-align: center'}
+        %i.fa.fa-4x.fa-linkedin.color-linkedin
+        %br
+        %br
+        %div{'data-toggle': 'tooltip', title: 'not supported yet', style: 'display: inline-block'}
+          = link_to 'connect linkedin account', '', class: 'btn btn-linkedin disabled'

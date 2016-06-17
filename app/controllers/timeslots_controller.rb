@@ -5,17 +5,13 @@ class TimeslotsController < ApplicationController
   end
 
   def create
-    schedule = Schedule.find timeslot_params[:schedule_id]
-    # event tracking
-    intercom_event 'created-timeslot', timeslots_in_schedule: schedule.timeslots.count, number_of_schedules: current_user.schedules.count, social_media: schedule.identity.provider
-
+    puts timeslot_params
     @timeslot = Timeslot.create_with_timestamp timeslot_params
 
     QueueWorker.perform_async(@timeslot.category.id)
-    @title = 'Add a new timeslot'
 
     respond_to do |format|
-      format.html { redirect_to schedules_path(@slot.schedule) }
+      format.html { redirect_to schedules_path(@timeslot.schedule) }
       format.js
     end
   end
@@ -41,7 +37,7 @@ class TimeslotsController < ApplicationController
   private
 
   def timeslot_params
-    params.require(:timeslot).permit(:schedule_id, :day, :offset, :category_id)
+    params.require(:timeslot).permit(:schedule_id, :day, :offset, :category_id, identity_ids: [])
   end
 
 end

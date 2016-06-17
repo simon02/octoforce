@@ -28,8 +28,10 @@
   margin-bottom: 0;
 }
 
+.m0 { margin-bottom: 0px; }
 .m5 { margin-bottom: 5px; }
 .m10 { margin-bottom: 10px; }
+.m15 { margin-bottom: 15px; }
 .m20 { margin-bottom: 20px; }
 .m30 { margin-bottom: 30px; }
 .m45 { margin-bottom: 45px; }
@@ -56,6 +58,9 @@ body {
 }
 .center {
   text-align: center;
+}
+.text-light {
+  font-weight: 300;
 }
 
 .page-title {

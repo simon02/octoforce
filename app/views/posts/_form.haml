@@ -1,47 +1,67 @@
-- post ||= Post.new
-- cache ["v1",post, categories] do
-  = form_for post, multipart: true, html: { class: 'jquery-upload-form post-edit' } do |f|
-    = hidden_field_tag :redirect, redirect ||= ''
-    = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
-    - if select_category ||= false
-      .form-group
-        = f.label :category_id do
-          Choose a category:
-        - if post.new_record?
-          = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }, post.category_id), {}, class: 'form-control pull-left', style: "width: calc(100% - 130px)"
-          = link_to 'add category', '#!', class: 'btn btn-default form-control pull-left', id: 'add_category', style: "width: 120px; margin-left: 10px"
-        - else
-          = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }, post.category_id), {}, class: 'form-control'
-        .clearfix
-    - else
-      = f.hidden_field :category_id
-    .form-group
-      .pull-right.can-hide
-        %span.subtle.small
-          twitter text limit:
-          %span.twitter-counter{id: "text_counter_#{post.id}"}
-            140
-      = f.label :text, "Text", class: 'can-hide'
-      = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
-    .form-group
-      .assets#assets
-        - if post.has_media?
-          .preview
-            %i.fa.fa-close.close-button.remove-attachment
-            = image_tag post.media_url(:thumb)
-    .form-group.can-hide
-      .btn.btn-default.fileinput-button.pull-left
-        %i.fa.fa-camera
-        %span.text add an image
-        = file_field_tag "asset[media]"
-      .pull-right
-        - if post.new_record?
-          = submit_tag 'Save to Library', class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
-        - else
-          = submit_tag 'Update this Post', class: 'btn btn-primary pull-right', data: { disable_with: 'Updating...' }
-      .clearfix
+= form_for post, multipart: true, html: { class: 'jquery-upload-form post-edit' } do |f|
+  = hidden_field_tag :redirect, redirect ||= ''
+  = f.hidden_field :asset_id, class: "asset-id-#{post.id} twitter-counter-image-trigger", data: { target: "#text_counter_#{post.id}", text: ".text_#{post.id}"}
+  .form-group
+    %div
+      = f.label 'nil' do
+        = "Select accounts:"
+    / # = f.fields_for :social_media_posts do |builder|
+    - all_identities.each_with_index do |identity, index|
+      - social_media_post = post.social_media_posts.find { |post| post.identity_id == identity.id }
+      .account-picker-item.includes-provider-logo{data: {toggle: 'tooltip', title: "#{identity.subname}"}}
+        - if social_media_post
+          = hidden_field_tag "post[social_media_posts_attributes][#{index}][id]", social_media_post.id
+        = hidden_field_tag "post[social_media_posts_attributes][#{index}][identity_id]", identity.id
+        = check_box_tag "post[social_media_posts_attributes][#{index}][_destroy]", 1, !social_media_post
+        = label_tag "post[social_media_posts_attributes][#{index}][_destroy]", class: 'm0' do
+          = image_tag identity.image
+          %i.fa{class: "fa-#{identity.provider} bg-#{identity.provider} provider-logo-br logo-square logo-radius text-center"}
 
-.modal.fade#add_category_panel{tabindex: 1, role: 'dialog', 'aria-hidden': "true", 'data-show': 'false'}
+  .form-group
+    = f.label :category_id do
+      Choose a category:
+    = collection_select :post, :category_id, categories, :id, :name_with_number, {prompt: ''}, class: 'form-control pull-left', style: 'width: calc(100% - 130px)', required: 'required'
+    = link_to 'add category', '#!', class: 'btn btn-default form-control pull-left', id: 'add_content', style: "width: 120px; margin-left: 10px"
+    .clearfix
+  .form-group
+    .pull-right.can-hide
+      %span.subtle.small#twitter_text_counter
+        twitter text limit:
+        %span.twitter-counter{id: "text_counter_#{post.id}"}
+          140
+    = f.label :text do
+      Text:
+    = f.text_area :text, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter link-extractor text_#{post.id}", id: 'post_text', data: { target: "#text_counter_#{post.id}", image: ".asset-id-#{post.id}" }
+  .form-group
+    - if post.link
+      #link_extraction.with-preview.has-result
+        = render partial: 'posts/link_extraction', locals: { link: post.link }
+    - else
+      #link_extraction.hide.with-preview
+        .text-center
+          %p
+            loading link content...
+          %i.fa.fa-spinner.fa-pulse.fa-3x
+  .form-group
+    .assets#assets
+      - if post.has_media?
+        .preview
+          %i.fa.fa-close.close-button.remove-attachment
+          = image_tag post.media_url(:thumb)
+  .form-group.can-hide
+    .btn.btn-default.fileinput-button.pull-left
+      %i.fa.fa-camera
+      %span.text add an image
+      = file_field_tag "asset[media]"
+    .pull-right
+      - if post.new_record?
+        = submit_tag 'Save to Library', class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
+      - else
+        = submit_tag 'Update this Post', class: 'btn btn-primary pull-right', data: { disable_with: 'Updating...' }
+    .clearfix
+
+
+.modal.fade#add_content_panel{tabindex: 1, role: 'dialog', 'aria-hidden': "true", 'data-show': 'false'}
   .modal-dialog
     .modal-content
       .modal-header
@@ -69,23 +89,21 @@
     :javascript
       $(function() {
         initOnPageLoad();
-        $('.twitter-text-counter').trigger('keyup');
-        if ($('input[id="redirect"]').val() == '')
-          $('input[id="redirect"]').val(location.href)
-        $('#add_category').click(function() {
-          $('#add_category_panel').modal('show');
+        $('input[id="redirect"]').val(location.href);
+        $('#add_content').click(function() {
+          $('#add_content_panel').modal('show');
           $('#category_name').focus();
         });
+        checkProviderFunctions();
       });
 - else
   :javascript
     $(function() {
       initOnPageLoad();
-      $('.twitter-text-counter').trigger('keyup');
-      if ($('input[id="redirect"]').val() == '')
-        $('input[id="redirect"]').val(location.href)
-      $('#add_category').click(function() {
-        $('#add_category_panel').modal('show');
+      $('input[id="redirect"]').val(location.href);
+      $('#add_content').click(function() {
+        $('#add_content_panel').modal('show');
         $('#category_name').focus();
       });
+      checkProviderFunctions();
     });
