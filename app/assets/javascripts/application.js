@@ -36,7 +36,7 @@ $(document).ready(function() {
 });
 
 initOnPageLoad = function() {
-  $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+  $("body").tooltip({ selector: '[data-toggle=tooltip]', container: 'body' });
   $('[data-toggle="popover"]').popover();
   $('.modal').modal();
   jQuery.timeago.settings.allowFuture = true;

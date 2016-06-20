@@ -2,6 +2,7 @@ class Timeslot < ActiveRecord::Base
   belongs_to :category
   belongs_to :schedule
   has_one :user, through: :schedule
+  has_and_belongs_to_many :identities
   has_many :updates, dependent: :nullify
   validates_presence_of :day, :offset
 

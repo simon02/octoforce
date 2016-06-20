@@ -1,5 +1,6 @@
 class Identity < ActiveRecord::Base
   belongs_to :user
+  has_and_belongs_to_many :timeslots
   has_many :schedules, dependent: :destroy
   has_many :updates, dependent: :destroy
   after_save :setup

@@ -6,6 +6,9 @@ class Category < ActiveRecord::Base
   has_many :updates, dependent: :nullify
   has_many :feeds, dependent: :destroy
   has_many :imported_updates, dependent: :destroy
+
+  default_scope { order(name: :ASC) }
+
   after_initialize do |category|
     @generator = ColorGenerator.new saturation: 0.5, lightness: 0.5 unless @generator
     category.color ||= @generator.create_hex

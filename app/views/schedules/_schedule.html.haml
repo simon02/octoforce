@@ -1,9 +1,4 @@
-%p
-  %span.text-muted
-    Schedule for
-  %strong= schedule.identity.subname
-  %em.text-muted= schedule.identity.provider
-%table.calendar{border: "1", style: "border: 1px solid #F0F0F0", id: "schedule_#{schedule.id}"}
+%table.calendar{id: "schedule_#{schedule.id}"}
   - timeslots = schedule.timeslots.group_by { |slot| slot.day }
   %thead
     %tr

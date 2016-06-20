@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160610092553) do
+ActiveRecord::Schema.define(version: 20160616092944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,6 +123,13 @@ ActiveRecord::Schema.define(version: 20160610092553) do
 
   add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
 
+  create_table "identities_timeslots", id: false, force: :cascade do |t|
+    t.integer "identity_id", null: false
+    t.integer "timeslot_id", null: false
+  end
+
+  add_index "identities_timeslots", ["timeslot_id", "identity_id"], name: "index_identities_timeslots_on_timeslot_id_and_identity_id", using: :btree
+
   create_table "imported_updates", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "category_id"
@@ -171,15 +178,13 @@ ActiveRecord::Schema.define(version: 20160610092553) do
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
   create_table "schedules", force: :cascade do |t|
-    t.integer  "identity_id"
     t.integer  "user_id"
     t.string   "name"
-    t.boolean  "active",      default: true
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.boolean  "active",     default: true
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
-  add_index "schedules", ["identity_id"], name: "index_schedules_on_identity_id", using: :btree
   add_index "schedules", ["user_id"], name: "index_schedules_on_user_id", using: :btree
 
   create_table "shortened_urls", force: :cascade do |t|
@@ -294,7 +299,6 @@ ActiveRecord::Schema.define(version: 20160610092553) do
   add_foreign_key "imported_updates", "users"
   add_foreign_key "posts", "categories"
   add_foreign_key "posts", "users"
-  add_foreign_key "schedules", "identities"
   add_foreign_key "schedules", "users"
   add_foreign_key "social_media_posts", "identities"
   add_foreign_key "social_media_posts", "posts"

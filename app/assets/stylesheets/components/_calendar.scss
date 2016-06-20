@@ -1,14 +1,26 @@
 .calendar {
   width: 100%;
-  th {
-    width: 14%;
-    padding: 3px;
-    text-align: center;
-    color: #666;
-    font-size: 12px;
+  thead {
+    background: $brand-primary;
+    line-height: 28px;
+    th {
+      width: 14%;
+      text-align: center;
+      font-weight: normal;
+      color: #fff;
+      font-size: 12px;
+      border: 1px solid lighten($brand-primary, 10%);
+      &:first-child {
+        min-width: 50px;
+        width: auto;
+      }
+    }
+  }
+  tbody td {
+    border: 1px solid #f0f0f0;
+    height: 36px;
     &:first-child {
-      min-width: 50px;
-      width: auto;
+      background-color: #fafafa;
     }
   }
   td {
@@ -40,6 +52,12 @@
     }
     &:hover .actions {
       display: inline-block;
+    }
+    .identities .identity {
+      margin-top: 3px;
+      width: 24px;
+      height: 24px;
+      @include border-radius(3px);
     }
   }
 }

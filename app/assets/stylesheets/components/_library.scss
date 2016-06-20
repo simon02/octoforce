@@ -38,6 +38,13 @@
 .account-picker-item {
   display: inline-block;
   margin-right: 10px;
+  &.small {
+    margin-right: 0;
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
   input[type='checkbox'] {
     display: none;
   }
@@ -47,15 +54,27 @@
     cursor: pointer;
     @include border-radius(3px);
   }
-  label {
-    @include grayscale(0);
-    @include opacity(1);
-  }
-  input[type='checkbox']:checked+label {
+  .is-grayed-out {
     @include grayscale(1);
     @include opacity(0.5);
     &:hover {
       @include opacity(0.75);
+    }
+  }
+  .is-not-grayed-out {
+    @include grayscale(0);
+    @include opacity(1);
+  }
+  label {
+    @extend .is-grayed-out;
+    &.opposite {
+      @extend .is-not-grayed-out;
+    }
+  }
+  input[type='checkbox']:checked+label {
+    @extend .is-not-grayed-out;
+    &.opposite {
+      @extend .is-grayed-out;
     }
   }
 }

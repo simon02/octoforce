@@ -32,6 +32,8 @@
             %i.fa.fa-retweet
           %th{style: 'min-width: 90px'}
             Date
+          %th{style: "min-width: #{all_identities.size * 28 + 2}px"}
+            Publish on
           %th{style: 'min-width: 140px'}
             Category
           %th.large.text-center{style: 'min-width: 30px'}
@@ -44,6 +46,13 @@
           %td
           %td
           %td
+          %td
+            - all_identities.each_with_index do |identity, index|
+              .account-picker-item.includes-provider-logo.small
+
+                = check_box_tag "identity_ids[#{index}]", identity.id
+                = label_tag "identity_ids[#{index}]", class: 'm0', data: {toggle: 'tooltip', title: "#{identity.subname}"} do
+                  = image_tag identity.image, class: 'small'
           %td
             = select_tag 'category_all', options_for_select([['', nil]] + current_user.categories.map { |l| [l.name, l.id] }), class: 'form-control input-sm', data: { title: 'change the category of all selected updates', toggle: 'tooltip'}
           %td.text-center{data: { title: 'remove all selected updates', toggle: 'tooltip'}}
@@ -65,6 +74,12 @@
             %td.text-center= update.shares
             %td
               = link_to timeago(calculate_local_time update.published_at), update.original
+            %td
+              - all_identities.each_with_index do |identity, index|
+                .account-picker-item.includes-provider-logo.small{data: {toggle: 'tooltip', title: "#{identity.subname}"}}
+                  = check_box_tag "identity_ids[#{index}]", identity.id, true
+                  = label_tag "identity_ids[#{index}]", class: 'm0' do
+                    = image_tag identity.image, class: 'small'
             %td
               = select_tag 'updates[][category_id]', options_for_select(current_user.categories.map { |l| [l.name, l.id] }, update.category_id), class: 'form-control input-sm'
             %td.text-center
