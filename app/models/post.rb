@@ -16,21 +16,21 @@ class Post < ActiveRecord::Base
   end
 
   def has_media?
-    # !asset.nil?
+    !asset.nil?
   end
 
   def media_url options = {}
     options = :original if options.empty?
-    # asset.media.url options
+    asset.media.url options
   end
 
   def move_to_front identity
-    smp = social_media_posts.identity(identity.id)
+    smp = social_media_posts.identity(identity.id).first
     smp.move_to_front if smp
   end
 
   def move_to_back identity
-    smp = social_media_posts.identity(identity.id)
+    smp = social_media_posts.identity(identity.id).first
     smp.move_to_back if smp
   end
 

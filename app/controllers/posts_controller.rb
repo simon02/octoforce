@@ -36,6 +36,7 @@ class PostsController < ApplicationController
     # if link is not set in params, it should be destroyed
     l = { link_attributes: { _destroy: 1 } }
     @post.update l.merge(post_params)
+    QueueWorker.perform_async(@post.category.id)
     redirect_with_param category_path(@post.category), notice: 'Post was updated.'
   end
 

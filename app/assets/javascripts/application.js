@@ -27,6 +27,7 @@
 //= require queue
 //= require library
 //= require posts
+//= require bulk
 
 var twitter = require('twitter-text');
 
@@ -37,7 +38,14 @@ $(document).ready(function() {
 
 initOnPageLoad = function() {
   $("body").tooltip({ selector: '[data-toggle=tooltip]', container: 'body' });
-  $('[data-toggle="popover"]').popover();
+  $('[data-toggle="popover"]').popover({
+    html: true,
+    content: function() {
+      var content = $(this).data('content');
+      var $content = $(content);
+      return $content.length > 0 ? $content.html() : '';
+    }
+  });
   $('.modal').modal();
   jQuery.timeago.settings.allowFuture = true;
   $("time.timeago").timeago();

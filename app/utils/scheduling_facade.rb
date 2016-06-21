@@ -26,21 +26,21 @@ class SchedulingFacade
 
   # Time should be an UTC representation of the user time, not server time
   def self.schedule_post timeslot, time
-    identity = timeslot.schedule.identity
-    social_media_post = timeslot.category.social_media_posts.where(identity_id: identity.id).sorted.first
-
-    return unless social_media_post
-    Update.create \
-      user: timeslot.user,
-      timeslot: timeslot,
-      category: timeslot.category,
-      post: social_media_post.post,
-      asset: social_media_post.post.asset,
-      link: social_media_post.post.link,
-      identity: identity,
-      text: social_media_post.post.text,
-      scheduled_at: time
-    social_media_post.move_to_back
+    timeslot.identity_ids.each do |id|
+      smp = timeslot.category.social_media_posts.sorted.identity(id).first
+      next unless smp
+      Update.create \
+        user: timeslot.user,
+        timeslot: timeslot,
+        category: timeslot.category,
+        post: smp.post,
+        asset: smp.post.asset,
+        link: smp.post.link,
+        identity_id: id,
+        text: smp.post.text,
+        scheduled_at: time
+      smp.move_to_back
+    end
   end
 
   private

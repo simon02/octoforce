@@ -5,7 +5,7 @@ class SocialMediaPost < ActiveRecord::Base
   has_one :category, through: :post
   has_many :updates, through: :post
   scope :sorted, -> { order(position: :ASC) }
-  scope :identity, -> (identity_id) { find_by identity_id: identity_id }
+  scope :identity, -> (identity_id) { where identity_id: identity_id }
 
   def move_to_front
     self.update position: category.first_position - 1
