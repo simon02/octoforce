@@ -16,7 +16,7 @@ class Category < ActiveRecord::Base
 
   def first_position
     first = social_media_posts.sorted.first
-    first ? first.position : 100
+    first ? first.position || 100 : 100
   end
 
   def last_position

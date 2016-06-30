@@ -1,9 +1,8 @@
 class Identity < ActiveRecord::Base
   belongs_to :user
   has_and_belongs_to_many :timeslots
-  has_many :schedules, dependent: :destroy
+  has_many :social_media_posts, dependent: :destroy
   has_many :updates, dependent: :destroy
-  after_save :setup
   validates_presence_of :uid, :provider
   validates_uniqueness_of :uid, :scope => :provider
   scope :filter_by_provider, -> (provider) { where('provider = ?', provider)}
@@ -56,14 +55,6 @@ class Identity < ActiveRecord::Base
 
   def subname
     (self.provider == 'twitter' ? '@' : '') + self.nickname
-  end
-
-  private
-
-  def setup
-    if self.schedules.empty? && self.user
-      self.schedules.create name: "Schedule for #{self.nickname}", user: self.user
-    end
   end
 
 end

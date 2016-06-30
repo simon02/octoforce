@@ -31,12 +31,14 @@ class ImportController < ApplicationController
       col_sep: @col_sep
     }
     @csv_file_path = params['csv_file'].path
+    @identity_ids = params['identity_ids']
     @example_data = CsvImporter.new(params['csv_file'].path, nil, options).head 1
   end
 
   def csv_import
     csv = Csv.create user: current_user, file: open(params['csv_file_path'])
-    CsvImporterWorker.perform_async current_user.id, csv.id, csv_import_params
+    identity_ids = params['identity_ids']
+    CsvImporterWorker.perform_async current_user.id, csv.id, identity_ids, csv_import_params
     # redirect_to import_csv_path, notice: "Your CSV file is currently being processed. Refresh this page to view its status."
 
     if current_user.onboarding_active && current_user.onboarding_step == 5

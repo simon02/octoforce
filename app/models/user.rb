@@ -30,6 +30,9 @@ class User < ActiveRecord::Base
   private
 
   def setup_user
+    if self.schedules.empty? && self.user
+      self.schedules.create name: "Schedule for #{self.nickname}", user: self.user
+    end
     return unless self.categories.empty?
     self.categories.create name: "Blog Posts"
     self.categories.create name: "Quotes"

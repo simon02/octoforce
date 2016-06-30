@@ -19,8 +19,8 @@
               %p
                 If you have been active on Twitter for a while & you have been sending out some quality tweets before, you can import those into Octoforce. Click the 'Import from Twitter' button and Octoforce will look up your previous tweets. You can then categorize them & add them all in one fell swoop.
 
-            = link_to welcome_step3_path, class: 'small hidden-action' do
+            = link_to welcome_step6_path, class: 'small hidden-action' do
               I like my library the way it is right now
               %i.fa.fa-angle-right
 
-= render partial: 'library/add_content', locals: { categories: current_user.categories }
+= render partial: 'library/add_content', locals: { categories: current_user.categories, post: @post }

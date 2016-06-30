@@ -17,9 +17,9 @@
               %p
                 You may notice that your post is actually showing up
                 %strong TWICE
-                here. That's because in the previous step, I made it look a little easier than it is. You may have thought you were scheduling just a single post, but that's not how it works. You actually told Octoforce:
+                here. That's because you actually told Octoforce:
               %blockquote
-                = "Every #{Date::DAYNAMES[@timeslot.day]} at #{offset_to_time @timeslot.offset, "%I:%M %P"}, I want you to take the next post from category '#{@timeslot.category.name}' and publish it to #{@timeslot.schedule.identity.subname}. After publishing that post, I want you to keep it safe in my library. Only after all the other posts in that same category have been published, I want you to send it out again."
+                = "Every #{Date::DAYNAMES[@timeslot.day]} at #{offset_to_time @timeslot.offset, "%I:%M %P"}, I want you to take the next post from category '#{@timeslot.category.name}' and publish it. After publishing that post, I want you to keep it safe in my library. AND after all the other posts in that same category have been published, I want you to send it out again."
               %p
                 = "As '#{@timeslot.category.name}' only contains a single post, it is scheduled twice. And after these 2 weeks, Octoforce will keep sending it out."
               %p

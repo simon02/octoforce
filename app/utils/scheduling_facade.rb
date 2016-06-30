@@ -24,6 +24,26 @@ class SchedulingFacade
     reschedule_category category, 2
   end
 
+  def self.schedule_new_updates category, end_time
+    return if category.timeslots.empty? || category.posts.empty?
+    start_time = category.updates.scheduled.empty? ?
+      Time.zone.now :
+      # add 1 so last update doesn't get scheduled again
+      category.updates.scheduled.sorted.last.scheduled_at + 1
+
+    scheduling_times = calculate_scheduling_times_for_one_week slots, now
+    week_nr = 0
+    loop do
+      break if scheduling_times.empty? || (scheduling_times.first[:time] + week_nr.weeks) > end_time
+      scheduling_times.each do |h|
+        scheduling_time = h[:time] + week_nr.weeks
+        next if scheduling_time < start_time || scheduling_time > end_time
+        schedule_post h[:timeslot], scheduling_time
+      end
+      week_nr += 1
+    end
+  end
+
   # Time should be an UTC representation of the user time, not server time
   def self.schedule_post timeslot, time
     timeslot.identity_ids.each do |id|
