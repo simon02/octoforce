@@ -7,7 +7,7 @@ module SchedulesHelper
   end
 
   def category_options
-    current_user.categories.sort_by { |l| -l.posts.count }.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }
+    current_user.categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }
   end
 
   def block_time block, format
