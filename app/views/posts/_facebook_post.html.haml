@@ -1,0 +1,17 @@
+.l
+  / - if post.has_media?
+  /   .col-xs-4
+  /     .thumb
+  /   .col-xs-8
+  / - else
+  /   .col-xs-12
+  .text-muted.x-small.sm-banner.bg-facebook.text-center
+    %i.fa.fa-facebook
+  .large.m10
+    = raw auto_link show post.text
+  %p.m5{style: 'margin-top: 0'}
+    = post.title
+  %p.text-muted.x-small.m5
+    = post.url.to_s
+  %p.small.m0
+    = post.description

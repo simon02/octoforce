@@ -9,3 +9,8 @@
   @include border-top-radius($radius);
   @include border-bottom-radius($radius);
 }
+
+@mixin grayscale($amount) {
+  -webkit-filter: grayscale($amount);
+  filter: grayscale($amount);
+}

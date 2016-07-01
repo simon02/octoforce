@@ -1,6 +1,5 @@
 class PostsController < ApplicationController
   load_resource :category
-  skip_before_filter :onboarding, only: [:create]
 
   def new
   end
@@ -18,7 +17,7 @@ class PostsController < ApplicationController
       intercom_event 'post-created', number_of_posts: current_user.posts.count, contains_media: @post.has_media?
       flash[:success] = "Post has been added to #{@post.category.name}"
 
-      @post.move_to_front
+      @post.social_media_posts.update_all position: @post.category.first_position
       QueueWorker.perform_async(@post.category.id)
     else
       flash[:error] = "Failed to add post to #{@post.category.name}"
@@ -34,7 +33,10 @@ class PostsController < ApplicationController
 
   def update
     @post = Post.find(params[:id])
-    @post.update post_params
+    # if link is not set in params, it should be destroyed
+    l = { link_attributes: { _destroy: 1 } }
+    @post.update l.merge(post_params)
+    QueueWorker.perform_async(@post.category.id)
     redirect_with_param category_path(@post.category), notice: 'Post was updated.'
   end
 
@@ -80,8 +82,39 @@ class PostsController < ApplicationController
 
   private
 
+  # Forms return social media post specific parameters on the parent post
+  def split_in_social_media_posts
+    temp_params = params["post"].symbolize_keys
+    p = temp_params.slice :id, :category_id
+    temp_params[:identity_ids].delete_if(&:empty?) if temp_params[:identity_ids].size != 1
+    p[:social_media_posts_attributes] = clone_params_to_ids temp_params[:identity_ids], temp_params.slice(asset_id, text)
+    p
+  end
+
+  def clone_params_to_identity_ids ids, params = {}
+    ids.map { |id| params.deep_dup.merge(identity_id: id) }
+  end
+
   def post_params
-    params.require(:post).permit(:text, :category_id, :asset_id)
+    params.require(:post).permit(
+      :id,
+      :category_id,
+      :text,
+      :asset_id,
+      social_media_posts_attributes: [
+        :id,
+        :identity_id,
+        :_destroy
+      ],
+      link_attributes: [
+        :id,
+        :url,
+        :caption,
+        :title,
+        :description,
+        :image_url
+      ]
+    )
   end
 
 end

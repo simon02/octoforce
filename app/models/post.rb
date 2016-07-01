@@ -3,24 +3,16 @@ class Post < ActiveRecord::Base
   belongs_to :user, touch: true
   belongs_to :category, touch: true
   belongs_to :asset
+  belongs_to :link
+  accepts_nested_attributes_for :link, allow_destroy: true, update_only: true
+  has_many :social_media_posts, dependent: :destroy
+  accepts_nested_attributes_for :social_media_posts, allow_destroy: true
   has_many :updates, dependent: :nullify
   before_destroy :teardown, prepend: true
-  before_save :check_position
-  after_save :update_updates
-  scope :sorted, -> { order(:position) }
   scope :category, -> (category_id) { where category_id: category_id.split(',') }
-  scope :q, -> (query) { where('text LIKE ?', "%#{query}%")}
 
   def previous
     Post.where(next_id: self.id).first
-  end
-
-  def providers
-    []
-  end
-
-  def text_for_identity identity
-    text
   end
 
   def has_media?
@@ -32,35 +24,17 @@ class Post < ActiveRecord::Base
     asset.media.url options
   end
 
-  def schedule at, identity
-    u = updates.create scheduled_at: at, text: text, user: user, category: category, asset: asset, identity: identity
-    move_to_back
-    u
+  def move_to_front identity
+    smp = social_media_posts.identity(identity.id).first
+    smp.move_to_front if smp
   end
 
-  def move_to_front
-    category.move_to_front self
-  end
-
-  def move_to_back
-    category.move_to_back self
+  def move_to_back identity
+    smp = social_media_posts.identity(identity.id).first
+    smp.move_to_back if smp
   end
 
   private
-
-  def check_position
-    self.position = self.category.posts.count unless self.category.nil? || !self.position.nil?
-  end
-
-  def update_updates
-    self.updates.where(published: false).each do |update|
-      update.text = self.text
-      if self.has_media?
-        update.asset = self.asset
-      end
-      update.save
-    end
-  end
 
   def teardown
     self.updates.published(false).destroy_all

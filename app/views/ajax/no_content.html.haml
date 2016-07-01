@@ -1,0 +1,13 @@
+%div#scrape_result
+  %button.close{type: 'button', aria: { label: 'close' } }
+    %span{aria: {hidden: 'true'}} &times;
+  %p.text-center
+    Failed to load link content.
+
+  :javascript
+    $(function() {
+      $('#scrape_result .close').click(function() {
+        $('#link_extraction').removeClass('has-result');
+        $('#scrape_result').remove();
+      });
+    });

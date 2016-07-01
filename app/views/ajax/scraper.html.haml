@@ -1,0 +1,54 @@
+%div#scrape_result
+  %button.close{type: 'button', aria: { label: 'close' } }
+    %span{aria: {hidden: 'true'}} &times;
+  .col-xs-12
+    %p.text-muted.x-small.m5.text-uppercase
+      %i.fa.fa-facebook.color-facebook
+      edit your facebook specific link content below:
+  .col-xs-4
+    .thumb
+      - if !@resource.images.empty?
+        .image-container
+          = image_tag @resource.images.first.src.to_s, id: "thumbnail_image"
+          = hidden_field_tag "post[link_attributes[image_url]]", @resource.images.first.src.to_s
+      - if @resource.images.length > 1
+        %button.move.right
+          %i.fa.fa-chevron-right
+        %button.move.left
+          %i.fa.fa-chevron-left
+  .col-xs-8
+    = hidden_field_tag "post[link_attributes[url]]", @resource.url.to_s
+    %p.large.m5{style: 'margin-top: 0'}
+      = text_field_tag "post[link_attributes[title]]", @resource.title, class: 'disguised-field padding-a-5'
+    %p.m0
+      = text_area_tag "post[link_attributes[description]]", @resource.description, class: 'disguised-field padding-a-5'
+    %p.text-muted.x-small.m0
+      = text_field_tag "post[link_attributes[caption]]", @resource.url.to_s, class: 'disguised-field padding-a-5 text-uppercase'
+  .clearfix
+
+  :javascript
+    $(function() {
+      var images = #{@resource.images.to_json};
+      var count = images.length;
+      var selected = 0;
+      $('.move.right').click(function(e) {
+        e.preventDefault();
+        selected += 1;
+        selected %= count;
+        var src = images[selected].src;
+        $('#post_image_url').val(src);
+        $('#thumbnail_image').attr("src", src);
+      });
+      $('.move.left').click(function(e) {
+        e.preventDefault();
+        selected += count - 1;
+        selected %= count;
+        var src = images[selected].src;
+        $('#post_image_url').val(src);
+        $('#thumbnail_image').attr("src", src);
+      });
+      $('#scrape_result .close').click(function() {
+        $('#link_extraction').removeClass('has-result');
+        $('#scrape_result').remove();
+      });
+    });

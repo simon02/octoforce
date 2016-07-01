@@ -1,0 +1,51 @@
+= form_for Post.new, multipart: true, html: { class: 'jquery-upload-form post-edit' } do |f|
+  = hidden_field_tag :redirect
+  = hidden_field_tag :asset_id, nil, class: "asset-id twitter-counter-image-trigger"
+  .form-group
+    = f.label :category_id do
+      Choose a category:
+    = f.select :category_id, options_for_select(categories.map { |l| ["#{l.name} (#{l.posts.size})", l.id] }), {}, class: 'form-control pull-left', style: "width: calc(100% - 130px)"
+    = link_to 'add category', '#!', class: 'btn btn-default form-control pull-left', style: "width: 120px; margin-left: 10px"
+    .clearfix
+  .form-group
+    %strong Use this post on:
+    .checkbox
+      = label_tag do
+        = check_box_tag 'product[providers[]]', Identity::TWITTER, class: 'btn btn-default'
+        twitter
+    .checkbox
+      = label_tag do
+        = check_box_tag 'product[providers[]]', [Identity::FACEBOOK_PROFILE,Identity::FACEBOOK_GROUP,Identity::FACEBOOK_PAGE].join(','), class: 'btn btn-default'
+        facebook
+  .form-group
+    .pull-right.can-hide
+      %span.subtle.small#twitter_text_counter
+        twitter text limit:
+        %span.twitter-counter{id: "text_counter"}
+          140
+    = f.label :text, "Text", class: 'can-hide'
+    = text_area_tag :text, nil, placeholder: "What do you want to share?", rows: 4, class: "form-control m5 twitter-text-counter link-extractor text", id: 'post_text', data: { target: "#text_counter", image: ".asset-id" }
+  .form-group
+    #link_extraction.hide.with-preview
+      .text-center
+        %p
+          loading link content...
+        %i.fa.fa-spinner.fa-pulse.fa-3x
+  .form-group
+    .assets#assets
+  .form-group.can-hide
+    .btn.btn-default.fileinput-button.pull-left
+      %i.fa.fa-camera
+      %span.text add an image
+      = file_field_tag "asset[media]"
+    .pull-right
+      = submit_tag 'Save to Library', class: 'btn btn-primary pull-right', data: { disable_with: 'Adding...' }
+    .clearfix
+
+- content_for :javascripts do
+  :javascript
+    $(function() {
+      initOnPageLoad();
+      $('.twitter-text-counter').trigger('keyup');
+      $('.post-edit #redirect').val(location.href);
+    });

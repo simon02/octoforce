@@ -16,6 +16,9 @@ class OnboardingController < ApplicationController
   def step2
     current_user.update onboarding_step: 2
     @posts = current_user.posts
+    @post = Post.new
+    current_user.identities.each { |identity| @post.social_media_posts.build identity: identity }
+    @post.text = 'Testing this new rescheduling tool by @octoforce #socialmedia #automation #testing' if @posts.empty?
     @categories = current_user.categories
     c = current_user.categories.find_by name: 'twitter_import'
     @updates = c ? c.updates : [];
@@ -51,6 +54,8 @@ class OnboardingController < ApplicationController
 
   def step5
     current_user.update onboarding_step: 5
+    @post = Post.new
+    current_user.identities.each { |identity| @post.social_media_posts.build identity: identity }
   end
 
   def step6

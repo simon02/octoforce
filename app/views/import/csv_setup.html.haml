@@ -32,6 +32,17 @@
       .col-md-9
         = select_tag 'col_sep', options_for_select([[",",','],[';',';'],['single tab',"\t"],['double tab', "\t\t"],['single space', ' '],['double space', '  ']]), class: 'form-control'
     .form-group
+      = label_tag '', class: 'control-label col-md-3' do
+        Select accounts
+        %i.fa.fa-question-circle{data: {toggle: 'tooltip', title: 'Select what accounts imported posts can be published on'}}
+      .col-md-9
+        - all_identities.each_with_index do |identity, index|
+          .account-picker-item.includes-provider-logo{data: {toggle: 'tooltip', title: "#{identity.subname}"}}
+            = check_box_tag "identity_ids[]", identity.id, true, id: "identity_#{index}"
+            = label_tag "identity_#{index}", class: 'm0' do
+              = image_tag identity.image
+              %i.fa{class: "fa-#{identity.provider} bg-#{identity.provider} provider-logo-br logo-square logo-radius text-center"}
+    .form-group
       .col-md-9.col-md-offset-3
         = submit_tag 'Next step', class: 'btn btn-primary', data: { disable_with: 'Loading file...' }
   %h3.page-title.m20

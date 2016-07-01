@@ -1,11 +1,7 @@
 .container
   .row
-    .center_panel
-
-      .panel.only
-        .panel-heading
-          = "Edit this post"
-
-        .panel-body
-          .panel-row
-            = render partial: 'edit_form', locals: { post: @post, categories: current_user.categories }
+    .col-md-12
+      %h1.page-title
+        Edit this Post
+      %hr.m10/
+      = render partial: 'posts/form', locals: { post: @post, categories: @categories, select_category: true, redirect: request.fullpath }

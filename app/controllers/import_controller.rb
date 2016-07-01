@@ -31,12 +31,14 @@ class ImportController < ApplicationController
       col_sep: @col_sep
     }
     @csv_file_path = params['csv_file'].path
+    @identity_ids = params['identity_ids']
     @example_data = CsvImporter.new(params['csv_file'].path, nil, options).head 1
   end
 
   def csv_import
     csv = Csv.create user: current_user, file: open(params['csv_file_path'])
-    CsvImporterWorker.perform_async current_user.id, csv.id, csv_import_params
+    identity_ids = params['identity_ids']
+    CsvImporterWorker.perform_async current_user.id, csv.id, identity_ids, csv_import_params
     # redirect_to import_csv_path, notice: "Your CSV file is currently being processed. Refresh this page to view its status."
 
     if current_user.onboarding_active && current_user.onboarding_step == 5
@@ -47,29 +49,30 @@ class ImportController < ApplicationController
   end
 
   def import
-    updates = []
-    import_params.each do |u|
-      update = ImportedUpdate.find_by_id u['id']
-      if update
-        update.update category_id: u['category_id']
-        updates << update
-      end
-    end
     count = 0
-    updates.reverse.each do |u|
-      count += u.create_post ? 1 : 0
+    import_params.reverse.each do |post_params|
+      media_url = post_params.delete :media_url
+      post = Post.new post_params.merge(user: current_user)
+      if post.save
+        count += 1
+        if media_url
+          asset = post.create_asset user: current_user
+          post.save
+          AssetWorker.perform_async asset.id, media_url
+        end
+      end
     end
     if current_user.onboarding_active && current_user.onboarding_step == 5
       redirect_to welcome_step6_path
     else
-      redirect_with_param library_path, notice: "Saved #{count} posts to your library. Images are being uploaded."
+      redirect_with_param queue_path, notice: "Saved #{count} posts to your library. Images are being uploaded."
     end
   end
 
   private
 
   def import_params
-    params.require('updates').map { |u| u.permit(:id, :category_id)}
+    params.require('posts').map { |p| p.permit(:text, :media_url, :category_id, social_media_posts_attributes: [:identity_id])}
   end
 
   def twitter_import_params

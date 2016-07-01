@@ -1,0 +1,30 @@
+%div#scrape_result
+  %button.close{type: 'button', aria: { label: 'close' } }
+    %span{aria: {hidden: 'true'}} &times;
+  .col-xs-12
+    = hidden_field_tag "post[link_attributes[image_url]]", link.id
+    %p.text-muted.x-small.m5.text-uppercase
+      %i.fa.fa-facebook.color-facebook
+      edit your facebook specific link content below:
+  .col-xs-4
+    .thumb
+      .image-container
+        = image_tag link.image_url, id: "thumbnail_image"
+        = hidden_field_tag "post[link_attributes[image_url]]", link.image_url
+  .col-xs-8
+    = hidden_field_tag "post[link_attributes[url]]", link.url
+    %p.large.m5{style: 'margin-top: 0'}
+      = text_field_tag "post[link_attributes[title]]", link.title, class: 'disguised-field padding-a-5'
+    %p.m0
+      = text_area_tag "post[link_attributes[description]]", link.description, class: 'disguised-field padding-a-5'
+    %p.text-muted.x-small.m0
+      = text_field_tag "post[link_attributes[caption]]", link.url.to_s, class: 'disguised-field padding-a-5 text-uppercase'
+  .clearfix
+
+  :javascript
+    $(function() {
+      $('#scrape_result .close').click(function() {
+        $('#link_extraction').removeClass('has-result');
+        $('#scrape_result').remove();
+      });
+    });

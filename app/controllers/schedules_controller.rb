@@ -31,7 +31,7 @@ class SchedulesController < ApplicationController
   private
 
   def timeslot_params
-    params.require(:timeslot).permit(:schedule_id, :day, :offset, :category_id)
+    params.require(:timeslot).permit(:schedule_id, :day, :offset, :category_id, identity_ids: [])
   end
 
 end

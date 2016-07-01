@@ -1,7 +1,5 @@
 .container
   .row
-    .col-md-12
-  .row
     .col-md-10.col-md-offset-1
       %h1.page-title
         Social Media Accounts
@@ -15,13 +13,7 @@
       .row
         - @identities.each do |identity|
           .col-md-4.col-sm-6.m20
-            .card.bordered
-              .profile-image
-                %img.rounded{src: "#{identity.image}"}
-              .next-to-image
-                %strong= identity.subname || identity.name
-                .text-muted.small= identity.provider
-                %small= link_to 'remove', identity_path(identity), method: :delete, data: { confirm: 'This will also remove the connected schedule. Are you sure you want to proceed?' }
+            = render identity
       %hr/
 
 

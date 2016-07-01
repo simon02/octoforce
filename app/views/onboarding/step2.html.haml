@@ -27,4 +27,4 @@
       .page-subtitle
         Don't worry, nothing will be scheduled. That's the next step.
       %hr/
-      = render partial: 'posts/form', locals: { categories: @categories, select_category: true, post: Post.new(text: 'Scheduling my very first post with @octoforce #socialmedia #automation #testing'), redirect: welcome_step3_path }
+      = render partial: 'posts/form', locals: { categories: @categories, select_category: true, post: @post, redirect: welcome_step3_path }

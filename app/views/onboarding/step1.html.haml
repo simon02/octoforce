@@ -14,8 +14,6 @@
                 Octoforce is a social media scheduling tool with a focus on recycling your posts. In order to fully experience its awesomeness, you do need to connect at least one social media account.
               %p
                 So let's do that first below!
-              %p.small
-                Right now, only Twitter is supported. Facebook & LinkedIn are coming.
             = link_to welcome_step2_path, class: 'small hidden-action' do
               I'll do this later
               %i.fa.fa-angle-right
@@ -26,11 +24,31 @@
     .col-md-12
       %h1.page-title
         Social Media Accounts
+      %h4.page-subtitle
+        You currently have
+        %strong
+          = "#{@identities.count} account#{'s' if @identities.count != 1}"
+        connected to Octoforce.
       %hr/
-      .x-large.center.text-center
-        .m10
-          %i.fa.fa-4x.fa-twitter.color-twitter
-        = link_to 'connect your twitter account', omniauth_authorize_path('user', 'twitter', force_login: true), class: 'btn btn-twitter btn-lg'
+      - if @identities.size != 0
+        .row
+          - @identities.each do |identity|
+            .col-md-4.col-sm-6.m30
+              = render identity
+          .col-md-12
+            %h2.m20
+              Connect more social platforms:
+
+      .row
+        .col-md-4.x-large.center.text-center.col-md-offset-2
+          %i.fa.fa-4x.fa-twitter.color-twitter.m20
+          = link_to 'connect your twitter account', omniauth_authorize_path('user', 'twitter', force_login: true), class: 'btn btn-twitter btn-lg'
+        .col-md-4.x-large{style: 'text-align: center'}
+          %i.fa.fa-4x.fa-facebook.color-facebook.m20
+          %div
+            .m5= link_to 'connect facebook profile', omniauth_authorize_path('user', 'facebook'), class: 'btn btn-facebook btn-lg'
+            .m5= link_to 'connect facebook pages', omniauth_authorize_path('user', 'facebook_page'), class: 'btn btn-facebook btn-lg'
+            .m5= link_to 'connect facebook groups', omniauth_authorize_path('user', 'facebook_group'), class: 'btn btn-facebook btn-lg'
 
 
 

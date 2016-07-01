@@ -1,4 +1,5 @@
 - cache ["v2", post, post.asset] do
+  .color-code{style: "background: #{lighten_color post.category_color, 0.15}"}
   .scheduling-time
     = render partial: "categories/scheduling_time", locals: { post: post }
   .body

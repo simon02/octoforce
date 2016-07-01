@@ -23,12 +23,7 @@ class QueueController < ApplicationController
   def skip
     update = Update.find_by id: params["update_id"]
     authorize! :skip, update
-    if update
-      post = update.post
-      update.unschedule
-      post.move_to_back
-      post.category.reschedule 2
-    end
+    SchedulingFacade.skip_update update
     redirect_to queue_path
   end
 

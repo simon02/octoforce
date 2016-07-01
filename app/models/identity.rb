@@ -1,11 +1,19 @@
 class Identity < ActiveRecord::Base
   belongs_to :user
-  has_many :schedules, dependent: :destroy
+  has_and_belongs_to_many :timeslots
+  has_many :social_media_posts, dependent: :destroy
   has_many :updates, dependent: :destroy
-  after_save :setup
   validates_presence_of :uid, :provider
   validates_uniqueness_of :uid, :scope => :provider
   scope :filter_by_provider, -> (provider) { where('provider = ?', provider)}
+
+  FACEBOOK_PROFILE = 'facebook'
+  FACEBOOK_PAGE = 'facebook_page'
+  FACEBOOK_GROUP = 'facebook_group'
+  TWITTER = 'twitter'
+  GITHUB = 'github'
+  INSTAGRAM = 'instagram'
+  LINKEDIN = 'linkedin'
 
   def self.find_for_oauth(auth)
     identity = find_by(provider: auth.provider, uid: auth.uid)
@@ -27,7 +35,7 @@ class Identity < ActiveRecord::Base
   def client
     return @client if @client
     case self.provider
-    when 'facebook'
+    when 'facebook', 'facebook_page', 'facebook_group'
       @client = Koala::Facebook::API.new(self.accesstoken)
     when 'github'
       @client = Github.client(accesstoken: self.accesstoken)
@@ -47,14 +55,6 @@ class Identity < ActiveRecord::Base
 
   def subname
     (self.provider == 'twitter' ? '@' : '') + self.nickname
-  end
-
-  private
-
-  def setup
-    if self.schedules.empty? && self.user
-      self.schedules.create name: "Schedule for #{self.nickname}", user: self.user
-    end
   end
 
 end

@@ -21,7 +21,6 @@
     %table.m20{style: 'border-collapse:separate;border-spacing: 0 6px; width: 100%'}
       %thead
         %tr
-          %th.large.text-center{style: 'min-width: 30px'}
           %th
             Text
           %th
@@ -32,11 +31,13 @@
             %i.fa.fa-retweet
           %th{style: 'min-width: 90px'}
             Date
+          %th{style: "min-width: #{all_identities.size * 28 + 2}px"}
+            Publish on
           %th{style: 'min-width: 140px'}
             Category
           %th.large.text-center{style: 'min-width: 30px'}
       %tbody
-        %tr.large
+        -# %tr.large
           %td.text-center
             = check_box_tag 'select_all'
           %td
@@ -45,19 +46,27 @@
           %td
           %td
           %td
+            - all_identities.each_with_index do |identity, index|
+              .account-picker-item.includes-provider-logo.small
+
+                = check_box_tag "identity_ids[#{index}]", identity.id, 0, 'data-identity-id': identity.id, class: 'identity-selector'
+                = label_tag "identity_ids[#{index}]", class: 'm0', data: {toggle: 'tooltip', title: "#{identity.subname}"} do
+                  = image_tag identity.image, class: 'small'
+          %td
             = select_tag 'category_all', options_for_select([['', nil]] + current_user.categories.map { |l| [l.name, l.id] }), class: 'form-control input-sm', data: { title: 'change the category of all selected updates', toggle: 'tooltip'}
           %td.text-center{data: { title: 'remove all selected updates', toggle: 'tooltip'}}
             %a#remove_all{:href => "#!"}
               %i.fa.fa-trash
-        - @updates.each do |update|
+        - @updates.each_with_index do |update,i|
           %tr
-            %td.large.text-center
+            -# %td.large.text-center
               = check_box_tag 'lala', 1, false, class: 'row-selector'
-              = hidden_field_tag 'updates[][id]', update.id
             %td.large{style: 'padding: 4px 0'}
+              = hidden_field_tag "posts[][text]", update.text
               = raw auto_link show update.text
             %td.text-center
               - if update.has_media?
+                = hidden_field_tag "posts[][media_url]", update.media_url
                 = link_to 'yes', update.media_url, target: '_blank'
               - else
                 no
@@ -66,7 +75,13 @@
             %td
               = link_to timeago(calculate_local_time update.published_at), update.original
             %td
-              = select_tag 'updates[][category_id]', options_for_select(current_user.categories.map { |l| [l.name, l.id] }, update.category_id), class: 'form-control input-sm'
+              - all_identities.each_with_index do |identity, index|
+                .account-picker-item.includes-provider-logo.small{data: {toggle: 'tooltip', title: "#{identity.subname}"}}
+                  = check_box_tag "posts[][social_media_posts_attributes][][identity_id]", identity.id, true, 'data-identity-id': identity.id, id: "posts_#{i}_identity_ids_#{index}"
+                  = label_tag "posts_#{i}_identity_ids_#{index}", class: 'm0' do
+                    = image_tag identity.image, class: 'small'
+            %td
+              = select_tag 'posts[][category_id]', options_for_select(current_user.categories.map { |l| [l.name, l.id] }, update.category_id), class: 'form-control input-sm'
             %td.text-center
               %a.remove-line{:href => "#!"}
                 %i.fa.fa-trash

@@ -77,6 +77,8 @@ Rails.application.routes.draw do
 
   get '/:id' => "shortener/shortened_urls#show", constraints: { subdomain: 'shorten' }
 
+  post '/ajax/scraper' => 'ajax#scraper'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

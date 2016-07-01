@@ -1,6 +1,10 @@
 module ApplicationHelper
   include Twitter::Autolink
 
+  def all_identities
+    current_user.identities
+  end
+
   def flash_class(level)
     case level.to_sym
         when :notice then "alert-info"

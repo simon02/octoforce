@@ -5,11 +5,13 @@
         Add New Content to Your Library
       %h4.page-subtitle
         Your library is the backbone of this operation. Make sure to add enough fresh content so people don't see you as being spammy.
-      %hr/
+      %hr.m10/
     .col-md-8
-      = render partial: 'posts/form', locals: { categories: categories, select_category: true, redirect: request.fullpath }
+      %h4.m20 Add a Single Post
+      = render partial: 'posts/form', locals: { post: post, categories: categories, select_category: true, redirect: request.fullpath }
 
     .col-md-4
+      %h4.m20 Bulk Options
       = link_to import_csv_path, class: "btn btn-multiline btn-default m30 form-control" do
         %p.x-large
           %i.fa.fa-file-o

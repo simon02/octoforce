@@ -6,6 +6,7 @@ class Update < ActiveRecord::Base
   belongs_to :category, touch: true
   belongs_to :asset
   belongs_to :post, touch: true
+  belongs_to :link
   belongs_to :identity, touch: true
   scope :scheduled, -> { where("scheduled_at > ?", Time.zone.now) }
   scope :published, -> pub = true { where("published = ?", pub) }
@@ -24,13 +25,26 @@ class Update < ActiveRecord::Base
   end
 
   def unschedule
-    post.move_to_front
+    post.move_to_front identity
     self.destroy
   end
 
+  def category_color
+    category ? category.color : '757575'
+  end
+
   def social_media_url
-    return nil if !published || identity.provider != 'twitter'
-    "https://twitter.com/octoforce/status/#{response_id}"
+    return nil if !published
+    case self.identity.provider
+    when Identity::FACEBOOK_PROFILE, Identity::FACEBOOK_GROUP, Identity::FACEBOOK_PAGE
+      return "https://www.facebook.com/#{response_id}"
+    when Identity::TWITTER
+      return "https://twitter.com/octoforce/status/#{response_id}"
+    when Identity::GITHUB
+    when Identity::GOOGLE_PLUS
+    when Identity::INSTAGRAM
+    end
+    return nil
   end
 
 end
