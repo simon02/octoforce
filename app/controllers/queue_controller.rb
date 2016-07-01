@@ -24,7 +24,7 @@ class QueueController < ApplicationController
     update = Update.find_by id: params["update_id"]
     authorize! :skip, update
     SchedulingFacade.skip_update update
-    redirect_to queue_path
+    redirect_to queue_path(filtering_params)
   end
 
   private

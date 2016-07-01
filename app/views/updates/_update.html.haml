@@ -39,6 +39,6 @@
       .name
         = update.category.name
     .pull-right.small.actions
-      = link_to skip_update_path(update), method: 'POST', class: 'text-muted action' do
+      = link_to skip_update_path(update, @filtering_params), method: 'POST', class: 'text-muted action' do
         skip
     .clearfix

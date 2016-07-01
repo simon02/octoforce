@@ -20,9 +20,9 @@
         %br
         %br
         %div
-          .m5= link_to 'connect facebook profile', omniauth_authorize_path('user', 'facebook'), class: 'btn btn-facebook disabled'
-          .m5= link_to 'connect facebook pages', omniauth_authorize_path('user', 'facebook_page'), class: 'btn btn-facebook disabled'
-          .m5= link_to 'connect facebook groups', omniauth_authorize_path('user', 'facebook_group'), class: 'btn btn-facebook disabled'
+          .m5= link_to 'connect facebook profile', omniauth_authorize_path('user', 'facebook'), class: 'btn btn-facebook disabled', 'data-toggle': 'tooltip', title: 'not supported yet'
+          .m5= link_to 'connect facebook pages', omniauth_authorize_path('user', 'facebook_page'), class: 'btn btn-facebook disabled', 'data-toggle': 'tooltip', title: 'not supported yet'
+          .m5= link_to 'connect facebook groups', omniauth_authorize_path('user', 'facebook_group'), class: 'btn btn-facebook disabled', 'data-toggle': 'tooltip', title: 'not supported yet'
       .col-md-4{style: 'text-align: center'}
         %i.fa.fa-4x.fa-linkedin.color-linkedin
         %br
