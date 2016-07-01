@@ -40,15 +40,9 @@
               Connect more social platforms:
 
       .row
-        .col-md-4.x-large.center.text-center.col-md-offset-2
+        .col-md-12.x-large.center.text-center.col-md-offset-2
           %i.fa.fa-4x.fa-twitter.color-twitter.m20
           = link_to 'connect your twitter account', omniauth_authorize_path('user', 'twitter', force_login: true), class: 'btn btn-twitter btn-lg'
-        .col-md-4.x-large{style: 'text-align: center'}
-          %i.fa.fa-4x.fa-facebook.color-facebook.m20
-          %div
-            .m5= link_to 'connect facebook profile', omniauth_authorize_path('user', 'facebook'), class: 'btn btn-facebook btn-lg'
-            .m5= link_to 'connect facebook pages', omniauth_authorize_path('user', 'facebook_page'), class: 'btn btn-facebook btn-lg'
-            .m5= link_to 'connect facebook groups', omniauth_authorize_path('user', 'facebook_group'), class: 'btn btn-facebook btn-lg'
 
 
 
