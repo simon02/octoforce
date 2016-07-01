@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   post '/import/csv/preview' => 'import#csv_preview'
 
   get '/library' => 'library#index'
+  get '/library/bulk' => 'library#bulk'
   get '/add_content' => 'library#add_content', as: 'add_content'
 
   get '/queue' => 'queue#index'

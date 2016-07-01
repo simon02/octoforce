@@ -1,0 +1,38 @@
+.container
+  .row
+    .col-md-3.sidebar-left
+    .col-md-9.main-content
+      %h1.page-title
+        Your Content Library
+      %h4.page-subtitle
+        You have
+        %strong
+          = current_user.posts.count
+          items
+        in your library.
+      %hr/
+  .row
+    .col-md-3.sidebar-left
+      .filter
+        .pull-right
+          %a.btn.btn-mini.btn-default#add_category{data: {toggle: 'tooltip', title: 'add a new category', placement: 'auto'}}
+            %i.fa.fa-plus
+        .title Filter by Category
+        = render partial: 'shared/filter_categories', locals: { categories: @categories }
+
+    .col-md-9.main-content
+      = render partial: 'shared/filter_bar'
+      %table.table
+        %thead
+          %tr
+            %th
+            %th
+            %th
+        %tbody
+          - @sorted_posts.each do |post|
+            %tr
+              %td= post.text
+              %td
+                - post.social_media_posts.each do |smp|
+                  = smp.identity_id
+              %td= post.category.name

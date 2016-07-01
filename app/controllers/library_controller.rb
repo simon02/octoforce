@@ -19,6 +19,13 @@ class LibraryController < ApplicationController
     end
   end
 
+  def bulk
+    posts = current_user.posts.filter(filtering_params).order(created_at: :desc)
+    @sorted_posts, @count, @offset = paging posts, params['count'] || DEFAULT_RESULTS_PER_PAGE, params['offset'] || 0
+    @categories = current_user.categories.includes(:posts)
+    @filters = filtering_params
+  end
+
   def filter
     @posts = current_user.posts.filter(filtering_params)
     respond_to do |format|
