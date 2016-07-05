@@ -31,7 +31,7 @@ class SchedulingFacade
       # add 1 so last update doesn't get scheduled again
       category.updates.scheduled.sorted.last.scheduled_at + 1
 
-    scheduling_times = calculate_scheduling_times_for_one_week category.timeslots, now
+    scheduling_times = calculate_scheduling_times_for_one_week category.timeslots, start_time
     week_nr = 0
     loop do
       break if scheduling_times.empty? || (scheduling_times.first[:time] + week_nr.weeks) > end_time

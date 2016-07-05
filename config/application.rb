@@ -22,6 +22,7 @@ module OctoforceApp
     # config.i18n.default_locale = :de
 
     config.autoload_paths += %W(#{config.root}/lib/utilities)
+    config.autoload_paths += %W(#{config.root}/app/utils)
 
     # Only want helpers from the controller itself to be available
     # This way they can be overridden in multiple helpers
