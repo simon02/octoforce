@@ -2,7 +2,7 @@ class RemoveSchedules < ActiveRecord::Migration
   def up
     add_reference :timeslots, :user, index: true, foreign_key: true
     Timeslot.all.each do |timeslot|
-      timeslot.update user_id: timeslot.schedule.user_id if timeslot.schedule
+      timeslot.update user_id: Schedule.find(timeslot.schedule_id).user_id if timeslot.schedule_id
     end
     remove_reference :timeslots, :schedule
     drop_table :schedules

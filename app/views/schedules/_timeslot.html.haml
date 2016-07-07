@@ -9,5 +9,5 @@
     = link_to(slot.category.name, category_path(slot.category), class: 'text-primary') if slot.category
   .identities
     - slot.identities.each do |identity|
-      = image_tag identity.image, style: 'width: 24px', class: 'identity', data: { toggle: 'tooltip', title: "#{identity.subname} - #{identity.provider}"}
+      = image_tag identity.image, style: 'width: 24px', class: 'identity', data: { toggle: 'tooltip', title: "#{identity.subname} - #{identity.provider}", id: identity.id}
 

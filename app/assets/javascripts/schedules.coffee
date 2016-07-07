@@ -6,9 +6,10 @@ $ ->
   $('.add-timeslot').click ->
     form = $(($(@).data('target'))).find('form')
     day = $(@).data('day')
+    time = $(@).data('time')
     form.find("select option[value='#{day}']").prop('selected','selected')
+    form.find("input[id='timeslot_offset']").val(time || '')
     form.find("input[type='checkbox']").each ->
       $(this).prop('checked', true)
-    form.find("input[type='text']").focus()
-    form.removeClass('hidden').show().find('input[type!="hidden"]:first').focus()
+    form.removeClass('hidden').show()
 

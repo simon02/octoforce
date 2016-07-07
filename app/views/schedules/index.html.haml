@@ -19,8 +19,8 @@
               filter by account:
               - @identities.each_with_index do |identity, index|
                 .account-picker-item.includes-provider-logo{data: {toggle: 'tooltip', title: "#{identity.subname}"}}
-                  = check_box_tag "timeslot[identity_ids][]", identity.id, true, id: "timeslot_identity_ids_#{index}"
-                  = label_tag "timeslot_identity_ids_#{index}", class: 'm0' do
+                  = check_box_tag '', identity.id, false, id: "filter_identity_#{index}", class: 'filter-identity'
+                  = label_tag "filter_identity_#{index}", class: 'm0' do
                     = image_tag identity.image
                     %i.fa{class: "fa-#{identity.provider} bg-#{identity.provider} provider-logo-br logo-square logo-radius text-center"}
         %table.calendar.schedule
@@ -41,7 +41,7 @@
                   %td.timeslot-holder{id: "day_#{day}_block_#{block}"}
                     - ((timeblocks[day] || {})[block] || []).each do |slot|
                       = render partial: 'schedules/timeslot', locals: { slot: slot }
-                    %a.add-timeslot.hide.x-small.text-center{:href => "!#", 'data-day': day, 'data-toggle': 'modal', 'data-target': "#dialog_timeslot"}
+                    %a.add-timeslot.hide.x-small.text-center{:href => "!#", data: {day: day, time: block_time(block, "%H:%M"), toggle: 'modal', target: "#dialog_timeslot"}}
                       %i.fa.fa-plus
                       add timeslot
           %tfooter
@@ -66,3 +66,22 @@
                 = render partial: 'timeslots/form', locals: { timeslot: Timeslot.new, id: "dialog_timeslot" }
 
 
+- content_for :javascripts do
+  :coffeescript
+    $ ->
+      $('.filter-identity').change ->
+        $(".timeslot").hide()
+        ids = $('.filter-identity:checked').map ->
+          $(this).val()
+        if ids.length == 0
+          timeslots_with_identity().show()
+        else
+          $.each ids, ->
+            timeslots_with_identity(this).show()
+
+    window.timeslots_with_identity = (id) ->
+      if !id
+        $('.timeslot')
+      else
+        $('.timeslot').filter ->
+          !!$(this).find(".identity[data-id='" + id + "']").length
