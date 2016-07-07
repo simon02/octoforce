@@ -33,6 +33,9 @@
       padding: 1px 4px;
     }
   }
+  .timeslot-holder:hover .add-timeslot {
+    display: block !important;
+  }
   .timeslot {
     border: 1px solid #BBB;
     border-radius: 3px;

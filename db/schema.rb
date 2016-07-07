@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160616092944) do
+ActiveRecord::Schema.define(version: 20160705141736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,16 +177,6 @@ ActiveRecord::Schema.define(version: 20160616092944) do
   add_index "posts", ["category_id"], name: "index_posts_on_category_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
-  create_table "schedules", force: :cascade do |t|
-    t.integer  "user_id"
-    t.string   "name"
-    t.boolean  "active",     default: true
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-  end
-
-  add_index "schedules", ["user_id"], name: "index_schedules_on_user_id", using: :btree
-
   create_table "shortened_urls", force: :cascade do |t|
     t.integer  "owner_id"
     t.string   "owner_type", limit: 20
@@ -215,15 +205,15 @@ ActiveRecord::Schema.define(version: 20160616092944) do
 
   create_table "timeslots", force: :cascade do |t|
     t.integer  "category_id"
-    t.integer  "schedule_id"
     t.integer  "day"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "offset"
+    t.integer  "user_id"
   end
 
   add_index "timeslots", ["category_id"], name: "index_timeslots_on_category_id", using: :btree
-  add_index "timeslots", ["schedule_id"], name: "index_timeslots_on_schedule_id", using: :btree
+  add_index "timeslots", ["user_id"], name: "index_timeslots_on_user_id", using: :btree
 
   create_table "updates", force: :cascade do |t|
     t.integer  "user_id"
@@ -299,10 +289,9 @@ ActiveRecord::Schema.define(version: 20160616092944) do
   add_foreign_key "imported_updates", "users"
   add_foreign_key "posts", "categories"
   add_foreign_key "posts", "users"
-  add_foreign_key "schedules", "users"
   add_foreign_key "social_media_posts", "identities"
   add_foreign_key "social_media_posts", "posts"
-  add_foreign_key "timeslots", "schedules"
+  add_foreign_key "timeslots", "users"
   add_foreign_key "updates", "assets"
   add_foreign_key "updates", "categories"
   add_foreign_key "updates", "identities"

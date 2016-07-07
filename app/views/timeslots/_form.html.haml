@@ -1,5 +1,4 @@
-= form_for timeslot, url: schedule_add_timeslot_url(schedule), remote: true, html: { class: 'form-horizontal', id: "#{defined? id ? id : 'add_timeslot'}" } do |f|
-  = f.hidden_field :schedule_id, value: schedule.id
+= form_for timeslot, url: timeslots_path, remote: true, html: { class: 'form-horizontal', id: "#{defined? id ? id : 'add_timeslot'}" } do |f|
   .form-group
     = f.label :identity_ids, 'Accounts', class: 'col-sm-2 control-label'
     .col-sm-10

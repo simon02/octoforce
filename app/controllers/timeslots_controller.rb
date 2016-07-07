@@ -5,13 +5,13 @@ class TimeslotsController < ApplicationController
   end
 
   def create
-    puts timeslot_params
-    @timeslot = Timeslot.create_with_timestamp timeslot_params
+    offset = Time.zone.parse(timeslot_params[:offset].sub('.',':'))
+    @timeslot = Timeslot.create timeslot_params.merge offset: (offset.hour * 60 + offset.min), user: current_user
 
     QueueWorker.perform_async(@timeslot.category.id)
 
     respond_to do |format|
-      format.html { redirect_to schedules_path(@timeslot.schedule) }
+      format.html { redirect_to schedules_path }
       format.js
     end
   end
