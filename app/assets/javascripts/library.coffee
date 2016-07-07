@@ -4,10 +4,10 @@
 
 $ ->
   checkProviderFunctions()
-  $('body').on 'change', 'input.publish-on-twitter', ->
-    enableTwitterFunctions($(this).prop 'checked');
-  $('body').on 'change', 'input.publish-on-facebook', ->
-    enableFacebookFunctions($(this).prop 'checked');
+  #$('body').on 'change', 'input.publish-on-twitter', ->
+  #  enableTwitterFunctions($(this).prop 'checked');
+  #$('body').on 'change', 'input.publish-on-facebook', ->
+  #  enableFacebookFunctions($(this).prop 'checked');
 
   $('.share-expand').click ->
     $(@).removeClass('reduced').addClass('expanded')
@@ -25,19 +25,21 @@ enableTwitterFunctions = (enabled = true) ->
     countTweetLength($('.twitter-text-counter').data('target'), $('.twitter-text-counter').val(), 0);
     $('.twitter-text-counter').on 'keyup', ->
       countTweetLength($(this).data('target'), $(this).val(), 0);
+      return
   else
     $('#twitter_text_counter').hide()
+  return
 
 enableFacebookFunctions = (enabled = true) ->
-  enabled = false
   if enabled
     scrapeLink($('.link-extractor').val(), $('#link_extraction'))
     $('.link-extractor').on 'keyup', ->
       scrapeLink($(this).val(), $('#link_extraction'))
+      return
   else
     $('#link_extraction').removeClass('has-result').html('')
+    # this also removes the twitter handle function - soooo - recheck this dude!
     $('.link-extractor').off 'keyup'
 
 window.checkProviderFunctions = ->
-  enableTwitterFunctions($('input.publish-on-twitter').prop 'checked');
-  enableFacebookFunctions($('input.publish-on-facebook').prop 'checked');
+  enableTwitterFunctions(true);
