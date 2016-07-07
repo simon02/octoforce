@@ -2,7 +2,7 @@ class Identity < ActiveRecord::Base
   belongs_to :user
   has_and_belongs_to_many :timeslots
   has_many :social_media_posts, dependent: :destroy
-  has_many :updates, dependent: :destroy
+  has_many :updates, dependent: :nullify
   validates_presence_of :uid, :provider
   validates_uniqueness_of :uid, :scope => :provider
   scope :filter_by_provider, -> (provider) { where('provider = ?', provider)}
