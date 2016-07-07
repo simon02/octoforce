@@ -29,6 +29,7 @@ enableTwitterFunctions = (enabled = true) ->
     $('#twitter_text_counter').hide()
 
 enableFacebookFunctions = (enabled = true) ->
+  enabled = false
   if enabled
     scrapeLink($('.link-extractor').val(), $('#link_extraction'))
     $('.link-extractor').on 'keyup', ->
