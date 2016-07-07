@@ -25,8 +25,8 @@ module SchedulesHelper
   end
 
   # this will take a schedule and group the timeslots per day and then by timeblock (ie. per 30 minute interval)
-  def convert_to_timeblocks schedule
-    slots = schedule.timeslots.order(:offset).group_by(&:day)
+  def convert_to_timeblocks timeslots
+    slots = timeslots.order(:offset).group_by(&:day)
     Hash[slots.map { |i,slots| [i, slots.group_by { |slot| slot.offset / minutes_per_block }]}]
   end
 

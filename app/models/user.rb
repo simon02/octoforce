@@ -1,8 +1,7 @@
 class User < ActiveRecord::Base
   has_many :identities, dependent: :destroy
   has_many :categories, dependent: :destroy
-  has_many :schedules, dependent: :destroy
-  has_many :timeslots, through: :schedules
+  has_many :timeslots, dependent: :destroy
   has_many :updates, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :assets, dependent: :destroy
@@ -30,9 +29,6 @@ class User < ActiveRecord::Base
   private
 
   def setup_user
-    if self.schedules.empty? && self.user
-      self.schedules.create name: "Schedule for #{self.nickname}", user: self.user
-    end
     return unless self.categories.empty?
     self.categories.create name: "Blog Posts"
     self.categories.create name: "Quotes"

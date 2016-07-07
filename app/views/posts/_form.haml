@@ -81,22 +81,7 @@
             .col-sm-10.col-sm-offset-2
               = f.submit "Add Category", class: 'btn btn-primary', data: { disable_with: 'Adding...' }
 
-/ can we pretty this beast up?
-/ Problem is that content_for does not register when loading this page async
-/ While $ is not available if we just include the javascript if this partial is not loaded async...
-- if post.new_record?
-  - content_for :javascripts do
-    :javascript
-      $(function() {
-        initOnPageLoad();
-        $('input[id="redirect"]').val(location.href);
-        $('#add_content').click(function() {
-          $('#add_content_panel').modal('show');
-          $('#category_name').focus();
-        });
-        checkProviderFunctions();
-      });
-- else
+- content_for :javascripts do
   :javascript
     $(function() {
       initOnPageLoad();

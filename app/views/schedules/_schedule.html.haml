@@ -1,3 +1,7 @@
+.pull-right
+  = form_tag schedules_path, method: 'POST' do
+    - @identities.each do |identity|
+      = check_box_tag
 %table.calendar{id: "schedule_#{schedule.id}"}
   - timeslots = schedule.timeslots.group_by { |slot| slot.day }
   %thead

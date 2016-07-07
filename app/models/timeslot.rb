@@ -1,10 +1,11 @@
 class Timeslot < ActiveRecord::Base
+  include Filterable
   belongs_to :category
-  belongs_to :schedule
-  has_one :user, through: :schedule
+  belongs_to :user
   has_and_belongs_to_many :identities
   has_many :updates, dependent: :nullify
   validates_presence_of :day, :offset
+  scope :identities, -> (identity_ids) { joins(:identities).where("identities.id IN (?)", identity_ids) }
 
   def self.create_with_timestamp params
     if params.key? :offset
@@ -21,7 +22,7 @@ class Timeslot < ActiveRecord::Base
     hours = offset / 60
     minutes = offset % 60
     datetime = calculate_date_commercial(year, week, self.day).to_datetime + hours.hours + minutes.minutes
-    schedule.user.tzinfo.local_to_utc(datetime)
+    user.tzinfo.local_to_utc(datetime)
   end
 
   def calculate_scheduling_time_after time
