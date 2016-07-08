@@ -53,7 +53,7 @@
             I want to publish one post from
             = f.select :category_id, category_options, {prompt: 'choose a category'}, class: 'form-control', required: 'required'
             to
-          = f.select :identity_ids, identity_options, {include_hidden: false}, placeholder: 'select at least 1 account', class: 'form-control select-identities', multiple: true, required: 'required'
+          = f.select :identity_ids, identity_options, {include_hidden: false}, placeholder: 'select at least 1 account', class: 'form-control select-identities', multiple: true, required: 'required', style: 'width: 300px'
         = f.submit 'Update my Schedule', class: 'form-control btn btn-primary'
   .row
     .col-md-12
