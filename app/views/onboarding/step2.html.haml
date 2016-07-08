@@ -16,12 +16,22 @@
                 In order to see what Octoforce can do, you need to write your very first post. Or copy-paste one of your previously written ones in here. After all, we are a very heavy cheerleader for recycling.
               %p.small
                 Step 5 will introduce some other possibilities to get your existing content into Octoforce, but for now we will do it the old-school way: plain old typing.
+            - if @posts.size > 0
+              .bottom
+                .pull-right
+                  = link_to welcome_step3_path, class: 'btn btn-primary btn-lg' do
+                    Go to Step 3:
+                    = t 'onboarding.step3.title'
+                    %i.fa.fa-angle-right
+                %p
+                  I've got enough posts in my library for now
+                .clearfix
 
 .container
   .row
     .col-md-12
       %h1.page-title
-        Write Your Very First Post
+        Write Your Very First Posts
       %h4.page-subtitle
         To make it easy, I already provided you with a simple example. Feel free to use this or type out your own.
       .page-subtitle

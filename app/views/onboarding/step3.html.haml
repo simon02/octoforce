@@ -9,47 +9,67 @@
                 step 3 of 6
             %h1
               %strong Step 3:
-              = t 'onboarding.step3.title'
+              - if @timeslots.size == 0
+                = t 'onboarding.step3.title'
+              - else
+                You can add as many timeslots as you want
             .actions.pull-right
             .description
               %p
-                Your first post is currently sitting idle in your library, waiting in excitement to see the world. Make it work for you by scheduling it now.
-            = link_to welcome_step4_path, class: 'small hidden-action' do
-              I'll do this later
-              %i.fa.fa-angle-right
+                Octoforce automatically fills in your calendar based on your schedule. You do need to add some timeslots to your schedule to tell it what type of content you want scheduled when.
+            - if @timeslots.size == 0
+              = link_to welcome_step4_path, class: 'small hidden-action' do
+                I'll do this later
+                %i.fa.fa-angle-right
+            - else
+              .bottom
+                .pull-right
+                  = link_to welcome_step4_path, class: 'btn btn-primary btn-lg' do
+                    Go to Step 4:
+                    = t 'onboarding.step4.title'
+                    %i.fa.fa-angle-right
+                %p
+                  I like the way my schedule looks right now
+                .clearfix
+
 
 .container
   .row
     .col-md-12
       %h1.page-title
-        Choose Your Scheduling Time
-      %hr/
+        Fill in the Blanks
+      %h4.page-subtitle
+        Just select options from the dropdowns and I will add a matching timeslot in your calendar.
+      %hr.m30/
+    .col-md-8.col-md-offset-2
+      = form_for @slot, html: {class: 'form-inline center m30'} do |f|
+        = hidden_field_tag :redirect, request.path
+        %p.m20
+          %span.x-large{style: 'line-height: 40px'}
+            Every
+            = f.select :day, day_options, { prompt: 'select a day'}, class: 'form-control', prompt: 'select a day', required: 'required'
+            at
+            = f.time_field :offset, class: 'form-control', required: 'required'
+            I want to publish one post from
+            = f.select :category_id, category_options, {prompt: 'choose a category'}, class: 'form-control', required: 'required'
+            to
+          = f.select :identity_ids, identity_options, {include_hidden: false}, placeholder: 'select at least 1 account', class: 'form-control select-identities', multiple: true, required: 'required'
+        = f.submit 'Update my Schedule', class: 'form-control btn btn-primary'
   .row
+    .col-md-12
+      %h1.page-title
+        Or add timeslots directly to your schedule yourself
+      %h4.page-subtitle
+        Basically the same as above, but not as nicely formatted.
+      %hr/
+    .col-md-12
+      = render partial: 'schedules/schedule', locals: { timeslots: @timeslots, identities: @identities }
 
-    .col-md-5.col-md-offset-1.center
-      %h2.m20
-        Quick & Easy
-      = form_for @slot, url: onboarding_schedule_post_path do |f|
-        = f.hidden_field :offset, value: calculate_local_time(Time.now + 15.minutes).strftime("%I:%M %P")
-        = f.hidden_field :day
-        = f.hidden_field :category_id
-        = f.hidden_field :schedule_id
-        = f.submit "Publish post in 15 minutes", class: 'btn btn-primary btn-lg', data: { disable_with: 'Scheduling...' }
 
-    .col-md-5
-      %h2.m20.center
-        Or choose a specific time
-      = form_for @slot, url: onboarding_schedule_post_path, html: { class: 'form-horizontal' } do |f|
-        = f.hidden_field :category_id
-        = f.hidden_field :schedule_id
-        .form-group
-          = f.label :day, class: 'col-sm-2 control-label'
-          .col-sm-10
-            = f.select :day, day_options, {}, { class: 'form-control' }
-        .form-group
-          = f.label :offset, 'Time', class: 'col-sm-2 control-label', required: 'required'
-          .col-sm-10
-            = f.text_field :offset, placeholder: "Type scheduling time, eg. 2:32pm or 14:32", class: 'form-control'
-        .form-group
-          .col-sm-10.col-sm-offset-2
-            = f.submit "Schedule that post", class: 'btn btn-primary', data: { disable_with: 'Scheduling...' }
+- content_for :javascripts do
+  :javascript
+    $(function() {
+      $('.select-identities').select2({
+        placeholder: 'Select at least 1 account'
+      });
+    })

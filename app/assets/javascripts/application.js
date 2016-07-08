@@ -18,6 +18,7 @@
 //= require jquery.timeago
 //= require jquery-fileupload/basic-plus
 //= require file_upload
+//= require select2
 
 //= require jquery.highlight
 

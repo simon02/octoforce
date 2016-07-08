@@ -11,7 +11,7 @@ class TimeslotsController < ApplicationController
     QueueWorker.perform_async(@timeslot.category.id)
 
     respond_to do |format|
-      format.html { redirect_to schedules_path }
+      format.html { redirect_with_param schedules_path, notice: 'A timeslot has been added to your schedule.' }
       format.js
     end
   end
@@ -26,7 +26,7 @@ class TimeslotsController < ApplicationController
     QueueWorker.perform_async(@timeslot.category.id)
 
     respond_to do |format|
-      format.html { redirect_to schedules_path }
+      format.html { redirect_with_param schedules_path }
       format.js
     end
   rescue
@@ -37,7 +37,7 @@ class TimeslotsController < ApplicationController
   private
 
   def timeslot_params
-    params.require(:timeslot).permit(:schedule_id, :day, :offset, :category_id, identity_ids: [])
+    params.require(:timeslot).permit(:day, :offset, :category_id, identity_ids: [])
   end
 
 end

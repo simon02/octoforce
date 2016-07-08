@@ -10,6 +10,12 @@ module SchedulesHelper
     current_user.categories.map { |l| ["#{l.name} (#{l.posts.count})", l.id] }
   end
 
+  def identity_options
+    current_user.identities.map do |i|
+      ["#{i.subname} - #{i.provider}", i.id]
+    end
+  end
+
   def block_time block, format
     offset = block * minutes_per_block
     offset_to_time offset, format

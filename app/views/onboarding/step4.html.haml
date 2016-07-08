@@ -15,15 +15,9 @@
               %p
                 Below you can see your queue. This is a complete overview of all the posts Octoforce has scheduled to go out in the next 2 weeks.
               %p
-                You may notice that your post is actually showing up
-                %strong TWICE
-                here. That's because you actually told Octoforce:
-              %blockquote
-                = "Every #{Date::DAYNAMES[@timeslot.day]} at #{offset_to_time @timeslot.offset, "%I:%M %P"}, I want you to take the next post from category '#{@timeslot.category.name}' and publish it. After publishing that post, I want you to keep it safe in my library. AND after all the other posts in that same category have been published, I want you to send it out again."
+                If you have only created 1 post in step 2, you may see it show up multiple times. That's because we believe in rescheduling your content. Adding more content to the same category will make sure you don't repeat yourself too often.
               %p
-                = "As '#{@timeslot.category.name}' only contains a single post, it is scheduled twice. And after these 2 weeks, Octoforce will keep sending it out."
-              %p
-                = "In order to fix this, you need to add some more content to '#{@timeslot.category.name}'. The next step introduces 2 new possibilities that makes it easier and faster to add content in bulk."
+                The next step introduces 2 new possibilities that make it easier and faster to add content in bulk.
             .bottom
               .pull-right
                 = link_to welcome_step5_path, class: 'btn btn-primary btn-lg' do

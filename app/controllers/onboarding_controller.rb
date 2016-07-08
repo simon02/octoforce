@@ -27,18 +27,18 @@ class OnboardingController < ApplicationController
   def step3
     current_user.update onboarding_step: 3
     @post = current_user.posts.last
-    @slot = Timeslot.new(
-      schedule: current_user.schedules.first,
-      category: @post.category,
-      day: Date.today.wday
-    )
-    @schedules = current_user.schedules
+    @timeslots = current_user.timeslots
     @categories = current_user.categories.includes(:posts)
+    @identities = current_user.identities
+    @slot = Timeslot.new
+    if @identities.size == 1
+      @slot.identity_ids = @identities.map &:id
+    end
   end
 
   def step3_publish
-    slot = Timeslot.create_with_timestamp timeslot_params
-    slot.category.reschedule 2
+    slot = Timeslot.create_with_timestamp timeslot_params.merge(user: current_user)
+    SchedulingFacade.reschedule_category slot.category, 2
     redirect_to action: 'step4'
   end
 
