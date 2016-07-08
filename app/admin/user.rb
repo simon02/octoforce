@@ -9,7 +9,7 @@ ActiveAdmin.register User do
     column("Categories") { |c| c.categories.count }
     column("Feeds") { |c| c.feeds.count }
     column("Identities") { |c| c.identities.count }
-    column("Timeslots") { |c| c.schedules.map {|s| s.timeslots.count}.reduce :+ }
+    column("Timeslots") { |c| c.timeslots.count }
     column :onboarding_step
     column :onboarding_active
     column :shorten_links
