@@ -6,11 +6,4 @@
       %h4.page-subtitle
         Choose when you want your updates to be sent. Octoforce will pull them from the selected category and send them out at the right time. And if you ever run out of updates, it will automatically reschedule your oldest ones. Now - get scheduling!
       %hr/
-      - if @identities.empty?
-        %p.large
-          = "You need to add a social network first:"
-
-        = render partial: 'identities/add'
-
-      - else
-        = render partial: 'schedules/schedule', locals: { timeslots: @timeslots, identities: @identities }
+      = render partial: 'schedules/schedule', locals: { timeslots: @timeslots, identities: @identities }
