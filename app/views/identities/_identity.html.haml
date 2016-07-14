@@ -1,6 +1,6 @@
 .card.bordered
   .profile-image
-    %img.rounded{src: "#{identity.image}"}
+    %img.rounded{src: "#{identity.image}", width: 48}
   .next-to-image
     %strong= identity.subname || identity.name
     .text-muted.small= identity.provider

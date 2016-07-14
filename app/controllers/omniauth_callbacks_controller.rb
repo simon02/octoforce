@@ -13,6 +13,25 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def twitter
     generic_callback( 'twitter' )
   end
+  def linkedin
+    generic_callback( 'linkedin' )
+  end
+  def linkedin_page
+    auth = env["omniauth.auth"]
+    client = LinkedIn::API.new auth.credentials.token
+    company_pages = client.company is_admin: 'true', fields: %w{id name square_logo_url}
+    company_pages.all.each do |page|
+      identity = current_user.identities.create \
+        uid: page.id,
+        provider: auth.provider,
+        accesstoken: auth.credentials.token,
+        image: page.square_logo_url,
+        name: page.name,
+        nickname: page.name
+    end
+
+    redirect_to identities_url
+  end
   def facebook_page
     auth = env["omniauth.auth"]
     @client = Koala::Facebook::API.new(auth.credentials.token)

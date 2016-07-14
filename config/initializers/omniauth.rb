@@ -12,4 +12,12 @@ module OmniAuth::Strategies
     end
   end
 
+  class LinkedInCompanyPage < LinkedIn
+    def name
+      :linkedin_page
+    end
+  end
+
 end
+
+OmniAuth.config.add_camelization 'linkedin_page', 'LinkedInCompanyPage'

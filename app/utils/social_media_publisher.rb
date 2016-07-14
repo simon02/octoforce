@@ -18,6 +18,11 @@ class SocialMediaPublisher
     when Identity::GITHUB
     when Identity::INSTAGRAM
     when Identity::LINKEDIN
+      post = LinkedInPublisher.publish update, client
+      published_update update, post.body['updateUrl'] if post
+    when Identity::LINKEDIN_PAGE
+      post = LinkedInCompanyPagePublisher.publish update, client
+      published_update update, post.body['updateUrl'] if post
     when Identity::TWITTER
       tweet = TwitterPublisher.publish update, client
       published_update update, tweet.id.to_s if tweet

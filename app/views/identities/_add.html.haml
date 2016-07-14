@@ -27,5 +27,6 @@
         %i.fa.fa-4x.fa-linkedin.color-linkedin
         %br
         %br
-        %div{'data-toggle': 'tooltip', title: 'not supported yet', style: 'display: inline-block'}
-          = link_to 'connect linkedin account', '', class: 'btn btn-linkedin disabled'
+        %div
+          .m5= link_to 'connect linkedin account', omniauth_authorize_path('user', 'linkedin'), class: 'btn btn-linkedin'
+          .m5= link_to 'connect linkedin company page', omniauth_authorize_path('user', 'linkedin_page'), class: 'btn btn-linkedin'

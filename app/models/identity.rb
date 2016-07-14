@@ -14,6 +14,7 @@ class Identity < ActiveRecord::Base
   GITHUB = 'github'
   INSTAGRAM = 'instagram'
   LINKEDIN = 'linkedin'
+  LINKEDIN_PAGE = 'linkedin_page'
 
   def self.find_for_oauth(auth)
     identity = find_by(provider: auth.provider, uid: auth.uid)
@@ -50,6 +51,8 @@ class Identity < ActiveRecord::Base
         config.access_token        = self.accesstoken
         config.access_token_secret = self.secrettoken
       end
+    when 'linkedin', 'linkedin_page'
+      @client = LinkedIn::API.new(self.accesstoken)
     end
   end
 
