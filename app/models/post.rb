@@ -24,9 +24,13 @@ class Post < ActiveRecord::Base
     asset.media.url options
   end
 
-  def move_to_front identity
-    smp = social_media_posts.identity(identity.id).first
-    smp.move_to_front if smp
+  def move_to_front identity = nil
+    if identity
+      smp = social_media_posts.identity(identity.id).first
+      smp.move_to_front if smp
+    else
+      social_media_posts.update_all position: (category.first_position - 1)
+    end
   end
 
   def move_to_back identity

@@ -16,8 +16,9 @@ class Feed < ActiveRecord::Base
       rescue
         url = i['permalinkUrl']
       end
-      post = Post.new user: user, text: "#{i['title']} #{url}"
-      category.move_to_front(post) if category
+      post = Post.new user: user, category: category, text: "#{i['title']} #{url}", social_media_posts_attributes: user.identities.map { |i| { identity_id: i.id } }
+      post.move_to_front
+      post.save
     end
     QueueWorker.perform_async(category.id)
   end
