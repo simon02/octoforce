@@ -22,9 +22,9 @@ $ ->
 enableTwitterFunctions = (enabled = true) ->
   if enabled
     $('#twitter_text_counter').show()
-    countTweetLength($('.twitter-text-counter').data('target'), $('.twitter-text-counter').val(), 0);
+    countTweetLength($('.twitter-text-counter').data('target'), $('.twitter-text-counter').val(), $('#assets .preview').length);
     $('.twitter-text-counter').on 'keyup', ->
-      countTweetLength($(this).data('target'), $(this).val(), 0);
+      countTweetLength($(this).data('target'), $(this).val(), $('#assets .preview').length);
       return
   else
     $('#twitter_text_counter').hide()
