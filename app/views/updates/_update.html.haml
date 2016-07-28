@@ -1,5 +1,6 @@
 / # - cache ["v1", update, update.identity, update.category] do
 %div{class: "#{update.category.name.gsub(' ','_').downcase}", id: "update_#{update.id}"}
+  = render partial: 'shared/error_message', locals: { resource: update }
   .color-code{style: "background: #{lighten_color update.category.color, 0.15}"}
   .header.m15
     .profile
@@ -41,4 +42,7 @@
     .pull-right.small.actions
       = link_to skip_update_path(update, @filtering_params), method: 'POST', class: 'text-muted action' do
         skip
+        = " | "
+        = link_to edit_post_path(update.post), data: { disable_with: 'loading...' }, class: 'text-muted action' do
+          edit
     .clearfix
