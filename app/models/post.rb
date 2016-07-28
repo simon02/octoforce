@@ -1,5 +1,6 @@
 class Post < ActiveRecord::Base
   include Filterable
+  include TwitterValidator
   belongs_to :user, touch: true
   belongs_to :category, touch: true
   belongs_to :asset
@@ -36,6 +37,10 @@ class Post < ActiveRecord::Base
   def move_to_back identity
     smp = social_media_posts.identity(identity.id).first
     smp.move_to_back if smp
+  end
+
+  def contains_provider? provider
+    social_media_posts.map(&:identity).map(&:provider).include? provider.to_s
   end
 
   private

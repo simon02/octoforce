@@ -1,0 +1,9 @@
+- if resource.contains_provider?(Identity::TWITTER) && reason = resource.invalid_tweet?
+  .bg-warning.text-warning.error-message
+    %strong Warning!
+    - if reason == :too_long
+      = "This #{resource.class.to_s.downcase} exceeds the Twitter character limit."
+    - elsif reason == :empty
+      = "This #{resource.class.to_s.downcase} is empty. Please add either text or an image."
+    - else
+      = "This #{resource.class.to_s.downcase} is invalid for Twitter."

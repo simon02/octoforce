@@ -1,5 +1,6 @@
 class Update < ActiveRecord::Base
   include Filterable
+  include TwitterValidator
   has_shortened_urls
   belongs_to :user
   belongs_to :timeslot
@@ -45,6 +46,10 @@ class Update < ActiveRecord::Base
     when Identity::INSTAGRAM
     end
     return nil
+  end
+
+  def contains_provider? provider
+    identity.provider == provider.to_s
   end
 
 end

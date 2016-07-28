@@ -83,12 +83,20 @@
   border: 1px solid #f0f0f0;
   padding: 15px;
   position: relative;
+  .error-message {
+    margin: -15px;
+    margin-bottom: 15px;
+    padding: 7px 15px;
+  }
   .sm-banner {
     position: absolute;
     top: 15px;
     left: 0px;
     width: 20px;
     @include border-right-radius(4px);
+  }
+  .body {
+    position: relative;
   }
   .provider-icons {
     margin-top: -16px;
@@ -116,6 +124,7 @@
     position: absolute;
     img {
       @include border-radius(3px);
+      max-width: 50px;
     }
     i.fa {
       position: absolute;
